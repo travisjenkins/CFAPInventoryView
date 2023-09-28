@@ -10,14 +10,18 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using CFAPInventoryView.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 
 namespace CFAPInventoryView.Areas.Identity.Pages.Account
 {
@@ -30,13 +34,15 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +50,7 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -98,6 +105,38 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            // Added code for better user registration information
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Address")]
+            public string Address1 { get; set; }
+
+            [Display(Name = "Address (cont.)")]
+            public string Address2 { get; set; }
+
+            [Required]
+            [Display(Name = "City")]
+            public string City { get; set; }
+
+            [Required]
+            [Display(Name = "State")]
+            public string State { get; set; }
+
+            [Required]
+            [Display(Name = "Zip Code")]
+            [StringLength(10, MinimumLength = 5)]
+            public string ZipCode { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> StateList { get; set; }
         }
 
 
@@ -105,6 +144,15 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            Input = new InputModel()
+            {
+                StateList = HelperMethods.GetUSStatesList().Select(s => new SelectListItem 
+                { 
+                    Text = s, 
+                    Value = s 
+                })
+            };
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -117,6 +165,16 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                // Added code for better user registration information
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.Address1 = Input.Address1;
+                user.Address2 = Input.Address2;
+                user.City = Input.City;
+                user.State = Input.State.Split(' ')[0];
+                user.ZipCode = Input.ZipCode;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -155,16 +213,17 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        // This method was changed from IdentityUser to ApplicationUser to accomadate the added registration fields
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }

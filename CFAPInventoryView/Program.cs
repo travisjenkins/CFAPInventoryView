@@ -135,4 +135,21 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
+/* Add the authorization roles if they are not already in the database
+ * These are the roles available to control access to restricted resources
+ * Admin: full control (can promote members to new roles)
+ * Manager: Can approve/deny member access
+ * Member: Can add items to inventory
+ */
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Admin", "Manager", "Member" };
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
+    }
+}
+
 app.Run();

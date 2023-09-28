@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using CFAPInventoryView.Extensions;
+using System.Reflection;
 
 namespace CFAPInventoryView
 {
@@ -45,6 +46,124 @@ namespace CFAPInventoryView
                     entityToUpdate.GetType().GetProperty(prop.Name)?.SetValue(entityToUpdate, prop.GetValue(entityWithUpdates));
                 }
             }
+        }
+
+        private static readonly List<string> _USStateNames = new()
+        {
+            "Alabama",
+            "Alaska",
+            "Arizona",
+            "Arkansas",
+            "California",
+            "Colorado",
+            "Connecticut",
+            "Delaware",
+            "Florida",
+            "Georgia",
+            "Hawaii",
+            "Idaho",
+            "Illinois",
+            "Indiana",
+            "Iowa",
+            "Kansas",
+            "Kentucky",
+            "Louisiana",
+            "Maine",
+            "Maryland",
+            "Massachusetts",
+            "Michigan",
+            "Minnesota",
+            "Mississippi",
+            "Missouri",
+            "Montana",
+            "Nebraska",
+            "Nevada",
+            "NewHampshire",
+            "NewJersey",
+            "NewMexico",
+            "NewYork",
+            "NorthCarolina",
+            "NorthDakota",
+            "Ohio",
+            "Oklahoma",
+            "Oregon",
+            "Pennsylvania",
+            "RhodeIsland",
+            "SouthCarolina",
+            "SouthDakota",
+            "Tennessee",
+            "Texas",
+            "Utah",
+            "Vermont",
+            "Virginia",
+            "Washington",
+            "WestVirginia",
+            "Wisconsin",
+            "Wyoming"
+        };
+
+        private static readonly List<string> _USStateAbbreviation = new()
+        {
+            "AL",
+            "AK",
+            "AZ",
+            "AR",
+            "CA",
+            "CO",
+            "CT",
+            "DE",
+            "FL",
+            "GA",
+            "HI",
+            "ID",
+            "IL",
+            "IN",
+            "IA",
+            "KS",
+            "KY",
+            "LA",
+            "ME",
+            "MD",
+            "MA",
+            "MI",
+            "MN",
+            "MS",
+            "MO",
+            "MT",
+            "NE",
+            "NV",
+            "NH",
+            "NJ",
+            "NM",
+            "NY",
+            "NC",
+            "ND",
+            "OH",
+            "OK",
+            "OR",
+            "PA",
+            "RI",
+            "SC",
+            "SD",
+            "TN",
+            "TX",
+            "UT",
+            "VT",
+            "VA",
+            "WA",
+            "WV",
+            "WI",
+            "WY"
+        };
+
+        public static List<string> GetUSStatesList()
+        {
+            var usStateList = new List<string>();
+            for (int i = 0; i < _USStateNames.Count; i++)
+            {
+                usStateList.Add($"{_USStateNames[i].SplitCamelAndPascalCase()} - {_USStateAbbreviation[i]}");
+            }
+            return usStateList;
         }
     }
 }
