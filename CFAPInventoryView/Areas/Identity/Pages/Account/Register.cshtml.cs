@@ -28,18 +28,18 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager)
@@ -144,15 +144,7 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            Input = new InputModel()
-            {
-                StateList = HelperMethods.GetUSStatesList().Select(s => new SelectListItem 
-                { 
-                    Text = s, 
-                    Value = s 
-                })
-            };
+            PopulateStateList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -172,7 +164,7 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                 user.Address1 = Input.Address1;
                 user.Address2 = Input.Address2;
                 user.City = Input.City;
-                user.State = Input.State.Split(' ')[0];
+                user.State = HelperMethods.JustTheStateName(Input.State);
                 user.ZipCode = Input.ZipCode;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -180,6 +172,31 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    /*
+                     * Sets the first user in the database as an Administrator.
+                     * All others are initially set as Members, but can be promoted to Manager later by an Administrator on the AppRoles page.
+                     */
+                    if (_userManager.Users.Count() == 1)
+                    {
+                        var roleAddResult = await _userManager.AddToRoleAsync(user, HelperMethods.AdministratorRole);
+                        if (!roleAddResult.Succeeded)
+                        {
+                            ModelState.AddModelError(string.Empty, $"There was an error adding the user to the {HelperMethods.AdministratorRole} role.");
+                            PopulateStateList();
+                            return Page();
+                        }
+                    }
+                    else
+                    {
+                        var roleAddResult = await _userManager.AddToRoleAsync(user, HelperMethods.MemberRole);
+                        if (!roleAddResult.Succeeded)
+                        {
+                            ModelState.AddModelError(string.Empty, $"There was an error adding the user to the {HelperMethods.MemberRole} role.");
+                            PopulateStateList();
+                            return Page();
+                        }
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -207,10 +224,34 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+                PopulateStateList();
             }
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private void PopulateStateList()
+        {
+            if (Input is null)
+            {
+                Input = new InputModel
+                {
+                    StateList = HelperMethods.GetUSStatesList().Select(s => new SelectListItem
+                    {
+                        Text = s,
+                        Value = s
+                    })
+                };
+            }
+            else if (Input.StateList is null)
+            {
+                Input.StateList = HelperMethods.GetUSStatesList().Select(s => new SelectListItem
+                {
+                    Text = s,
+                    Value = s
+                });
+            }
         }
 
         // This method was changed from IdentityUser to ApplicationUser to accomadate the added registration fields
@@ -228,13 +269,13 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }

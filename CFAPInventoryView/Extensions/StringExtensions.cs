@@ -2,13 +2,22 @@
 
 namespace CFAPInventoryView.Extensions
 {
-    public static partial class StringExtensions
+    public static class StringExtensions
     {
-
         public static string SplitCamelAndPascalCase(this string str)
         {
             if (string.IsNullOrWhiteSpace(str)) return str;
-            return FirstWord().Replace(SecondWord().Replace(str, "$1 $2"), "$1 $2");
+#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+            return Regex.Replace(
+                    Regex.Replace(
+                            str,
+                            @"(\P{Ll})(\P{Ll}\p{Ll})",
+                            "$1 $2"
+                        ),
+                        @"(\p{Ll})(\P{Ll})",
+                        "$1 $2"
+                );
+#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
         }
 
         public static string Capitalize(this string str)
@@ -25,7 +34,7 @@ namespace CFAPInventoryView.Extensions
             string titleCaseString = string.Empty;
             for (int i = 0; i < arrOfStrings.Length; i++)
             {
-                if (i != arrOfStrings.Length - 1)
+                if (i != (arrOfStrings.Length - 1))
                 {
                     titleCaseString += arrOfStrings[i][..1].ToUpperInvariant() + arrOfStrings[i][1..] + " ";
                 }
@@ -37,11 +46,5 @@ namespace CFAPInventoryView.Extensions
             if (!string.IsNullOrEmpty(titleCaseString)) return titleCaseString;
             return str;
         }
-
-        [GeneratedRegex("(\\p{Ll})(\\P{Ll})")]
-        private static partial Regex FirstWord();
-
-        [GeneratedRegex("(\\P{Ll})(\\P{Ll}\\p{Ll})")]
-        private static partial Regex SecondWord();
     }
 }

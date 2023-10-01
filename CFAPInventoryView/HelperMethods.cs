@@ -5,6 +5,10 @@ namespace CFAPInventoryView
 {
     public static class HelperMethods
     {
+        public const string AdministratorRole = "Administrator";
+        public const string ManagerRole = "Manager";
+        public const string MemberRole = "Member";
+        
         public static string DisplaySafeString<T>(T displayString)
         {
             if (displayString is null) return string.Empty;
@@ -164,6 +168,13 @@ namespace CFAPInventoryView
                 usStateList.Add($"{_USStateNames[i].SplitCamelAndPascalCase()} - {_USStateAbbreviation[i]}");
             }
             return usStateList;
+        }
+
+        public static string JustTheStateName(string longName)
+        {
+            if (string.IsNullOrEmpty(longName)) return string.Empty;
+            if (!longName.Contains(' ')) return string.Empty;
+            return longName.Split(' ')[0];
         }
     }
 }

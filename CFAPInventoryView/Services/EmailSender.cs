@@ -7,7 +7,7 @@ namespace CFAPInventoryView.Services
 {
     public class EmailSender : IEmailSender
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<EmailSender> _logger;
 
         public AuthMessageSenderOptions Options { get; } // Set with Secret Manager in Program.cs
 
