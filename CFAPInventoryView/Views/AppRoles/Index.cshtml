@@ -1,31 +1,60 @@
-﻿@model IEnumerable<IdentityRole>
+﻿@model List<AppRolesViewModel>
 
 @{
     ViewData["Title"] = "Application Roles";
 }
 
-<h1>View Roles</h1>
-<p>
-    <a asp-action="Create">Create</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Id)</th>
-            <th>@Html.DisplayNameFor(model => model.Name)</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>
+<h1>@ViewData["Title"]</h1>
 
-                </td>
+<div asp-validation-summary="All" class="text-danger"></div>
+@if (Model.ElementAtOrDefault(0) is not null)
+{
+    <table class="table table-responsive text-center">
+        <thead>
+            <tr>
+                <th class="text-start">@HelperMethods.DisplaySafeString(Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName))</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.FirstName)</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastName)</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).AssignedRoles)</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.ApplicationUser is not null)
+                {
+                    <tr>
+                        <td class="text-start align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</td>
+                        <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.FirstName)</td>
+                        <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.LastName)</td>
+                        <td class="align-middle">
+                            @foreach (var role in item.AssignedRoles ??= new List<string>())
+                            {
+                                <div>@Html.DisplayFor(modelRole => role)</div>
+                            }
+                        </td>
+                        <td>
+                            @if (item.ApplicationUser.UserName == User.Identity?.Name)
+                            {
+                                <a class="btn btn-link" asp-area="Identity" asp-page="/Account/Manage/Index" asp-route-id="@item.ApplicationUser?.Id">Edit</a><span>|</span>
+                            }
+                            <form asp-action="Promote" method="post" class="d-inline">
+                                <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
+                                <button class="btn btn-link" type="submit">Promote</button>|
+                            </form>
+                            <form asp-action="Demote" method="post" class="d-inline">
+                                <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
+                                <button class="btn btn-link link-danger" type="submit">Demote</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There are no users in your database. Please <a asp-area="Identity" asp-page="/Account/Register">register</a> a user and try again.</p>
+}

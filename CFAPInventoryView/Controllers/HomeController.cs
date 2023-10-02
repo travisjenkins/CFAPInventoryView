@@ -26,9 +26,15 @@ namespace CFAPInventoryView.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string? friendlyErrorMessage = null)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (friendlyErrorMessage is not null)
+            {
+#pragma warning disable CA2254 // Template should be a static expression
+                _logger.LogError(friendlyErrorMessage);
+#pragma warning restore CA2254 // Template should be a static expression
+            }
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, FriendlyErrorMessage = friendlyErrorMessage });
         }
     }
 }
