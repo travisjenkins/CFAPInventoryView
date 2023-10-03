@@ -48,7 +48,7 @@ namespace CFAPInventoryView.Controllers
             var modelStateString = TempData["ModelState"].ToString();
             if (!string.IsNullOrEmpty(modelStateString))
             {
-                var dictionaryOfErrors = JsonSerializer.Deserialize<Dictionary<string, string>>(modelStateString);
+                var dictionaryOfErrors = JsonSerializer.Deserialize<Dictionary<string, string?>>(modelStateString);
                 if (dictionaryOfErrors is not null)
                 {
                     foreach (var item in dictionaryOfErrors)
@@ -101,7 +101,7 @@ namespace CFAPInventoryView.Controllers
             }
             if (ModelState.ErrorCount > 0)
             {
-                PrepareErrorsForTransfer();
+                await PrepareErrorsForTransfer();
             }
             return RedirectToAction(nameof(Index));
         }
@@ -148,7 +148,7 @@ namespace CFAPInventoryView.Controllers
             }
             if (ModelState.ErrorCount > 0)
             {
-                PrepareErrorsForTransfer();
+                await PrepareErrorsForTransfer();
             }
             return RedirectToAction(nameof(Index));
         }
@@ -200,11 +200,18 @@ namespace CFAPInventoryView.Controllers
             }
         }
 
-        private void PrepareErrorsForTransfer()
+        private async Task PrepareErrorsForTransfer()
         {
             var dictionaryOfErrors = ModelState.Where(s => s.Value.Errors.Any()).ToDictionary(m => m.Key, m => m.Value.Errors.Select(s => s.ErrorMessage).FirstOrDefault(s => s is not null));
-            var errorsJson = JsonSerializer.Serialize(dictionaryOfErrors);
-            TempData["ModelState"] = errorsJson;
+            
+            using var stream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(stream, dictionaryOfErrors);
+            stream.Position = 0;
+
+            using var reader = new StreamReader(stream);
+            var json = await reader.ReadToEndAsync();
+
+            TempData["ModelState"] = json;
         }
     }
 }
