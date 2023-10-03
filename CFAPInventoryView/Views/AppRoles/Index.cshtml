@@ -9,7 +9,7 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 @if (Model.ElementAtOrDefault(0) is not null)
 {
-    <table class="table table-responsive text-center">
+    <table class="table table-striped text-center">
         <thead>
             <tr>
                 <th class="text-start">@HelperMethods.DisplaySafeString(Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName))</th>
@@ -37,7 +37,7 @@
                         <td>
                             @if (item.ApplicationUser.UserName == User.Identity?.Name)
                             {
-                                <a class="btn btn-link" asp-area="Identity" asp-page="/Account/Manage/Index" asp-route-id="@item.ApplicationUser?.Id">Edit</a><span>|</span>
+                                <a class="btn btn-link d-inline-block" asp-area="Identity" asp-page="/Account/Manage/Index" asp-route-id="@item.ApplicationUser?.Id">Edit</a><span>|</span>
                             }
                             <form asp-action="Promote" method="post" class="d-inline">
                                 <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
