@@ -61,7 +61,6 @@ namespace CFAPInventoryView.Controllers
 
         [Authorize(Roles = HelperMethods.AdministratorRole)]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Promote(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -108,7 +107,6 @@ namespace CFAPInventoryView.Controllers
 
         [Authorize(Roles = HelperMethods.AdministratorRole)]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Demote(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
