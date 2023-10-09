@@ -19,12 +19,10 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        //private readonly IEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<ApplicationUser> userManager/*, IEmailSender sender*/)
+        public RegisterConfirmationModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            //_sender = sender;
         }
 
         /// <summary>
@@ -51,7 +49,9 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("/Index");
             }
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             returnUrl ??= Url.Content("~/");
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             var user = await _userManager.FindByNameAsync(email);
             if (user is null)
             {
@@ -59,20 +59,19 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
             }
 
             Email = email;
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = false;
-            // This will never display since DisplayConfirmAccountLink will always be false, this behavior is intended since we added our own emailer
-            if (DisplayConfirmAccountLink)
-            {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                EmailConfirmationUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId, code, returnUrl },
-                    protocol: Request.Scheme);
-            }
+            //// Once you add a real email sender, you should remove this code that lets you confirm the account
+            //DisplayConfirmAccountLink = true;
+            //if (DisplayConfirmAccountLink)
+            //{
+            //    var userId = await _userManager.GetUserIdAsync(user);
+            //    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            //    EmailConfirmationUrl = Url.Page(
+            //        "/Account/ConfirmEmail",
+            //        pageHandler: null,
+            //        values: new { area = "Identity", userId, code, returnUrl },
+            //        protocol: Request.Scheme);
+            //}
 
             return Page();
         }

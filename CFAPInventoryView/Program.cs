@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Net;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 builder.Services.AddControllersWithViews(options =>
 {
+    // Automatically validate all requests other than GET, HEAD, OPTIONS, and TRACE
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
 
@@ -35,30 +39,29 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireLowercase = true;
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 8;
-    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequiredLength = 8; // default is 6
+    options.Password.RequiredUniqueChars = 6; // default is 1
 
     // Lockout settings
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    options.Lockout.MaxFailedAccessAttempts = 5;
-    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30); // default is 5
+    options.Lockout.MaxFailedAccessAttempts = 3; // default is 5
 
     // User settings
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = true;
+    options.User.RequireUniqueEmail = true; // default is false
 
     // Sign In settings
-    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedEmail = true; // default is false
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // default is 14 days
+    options.ExpireTimeSpan = TimeSpan.FromHours(1); // default is 14 days
     options.LoginPath = "/Identity/Account/Login";
     options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-    options.SlidingExpiration = true;
+    options.SlidingExpiration = false; // default is true
 });
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
@@ -66,7 +69,7 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
     options.TokenLifespan = TimeSpan.FromHours(3); // default is 1 day, this is how long the emailed tokens will be valid
 });
 
-// Password hasher uses PBKDF2
+// Password hasher uses the PBKDF2 hashing function and generates a random salt per user
 builder.Services.Configure<PasswordHasherOptions>(options =>
 {
     options.IterationCount = 12000; // default is 10000
@@ -91,6 +94,39 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
+/*
+ * Add rate limiting
+ * Set to allow no more than 3 requests every 60 seconds
+ * https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit?view=aspnetcore-7.0
+ * Helps prevent DoS attacks (this needs to be tested thoroughly before release)
+ * This policy is applied to the Login, Register, and ResetPassword pages
+ */
+var myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
+if (myOptions is not null)
+{
+    builder.Services.AddRateLimiter(rateLimiterOptions => {
+        rateLimiterOptions.OnRejected = (context, cancellationToken) =>
+        {
+            if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter))
+            {
+                context.HttpContext.Response.Headers.RetryAfter =
+                    ((int)retryAfter.TotalSeconds).ToString(NumberFormatInfo.InvariantInfo);
+            }
+            context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", cancellationToken: cancellationToken);
+
+            return new ValueTask();
+        };
+        rateLimiterOptions.AddFixedWindowLimiter(policyName: myOptions.PolicyName ?? "fixed", options =>
+            {
+                options.PermitLimit = myOptions.PermitLimit;
+                options.Window = TimeSpan.FromSeconds(myOptions.Window);
+                options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                options.QueueLimit = myOptions.QueueLimit;
+            });
+        });
+}
+
 if (!builder.Environment.IsDevelopment())
 {
     builder.Services.AddHttpsRedirection(options =>
@@ -106,6 +142,7 @@ if (!builder.Environment.IsDevelopment())
      * Add the includeSubDomains parameter to the Strict-Transport-Security header (Applies HSTS policy to all host subdomains)
      * Explicity set the max-age parameter of the Strict-Transport-Security header to 12 hours (Recommend changing to 365 days after initial roll-out)
      * https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html
+     * These settings help protect against Clickjacking and Man-in-the-Middle attacks
      */
     builder.Services.AddHsts(options =>
     {
@@ -132,6 +169,7 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
+    app.UseRateLimiter();
 }
 
 app.UseHttpsRedirection();

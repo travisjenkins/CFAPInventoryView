@@ -45,7 +45,9 @@ namespace CFAPInventoryView.Controllers
 
         private void RetrieveTransferredErrors()
         {
+#pragma warning disable CS8602 // Defreference of a possibly null reference
             var modelStateString = TempData["ModelState"].ToString();
+#pragma warning restore CS8602 // Defreference of a possibly null reference
             if (!string.IsNullOrEmpty(modelStateString))
             {
                 var dictionaryOfErrors = JsonSerializer.Deserialize<Dictionary<string, string?>>(modelStateString);
@@ -67,36 +69,41 @@ namespace CFAPInventoryView.Controllers
             if (user is null)
             {
                 ModelState.AddModelError(string.Empty, $"A user with Id ({userId}) could not be located in the database.");
-                return RedirectToAction(nameof(Index));
             }
-            // Do not allow self-promoting
-            if (User.Identity?.Name is not null && User.Identity.Name != user.UserName)
+            else
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles is null || roles.Count == 0)
+                // Do not allow self-promoting
+                if (User.Identity?.Name is not null && User.Identity.Name != user.UserName)
                 {
-                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} has no roles assigned to promote from.");
-                    return RedirectToAction(nameof(Index));
-                }
-                foreach (var role in roles)
-                {
-                    if (role == HelperMethods.MemberRole)
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles is null || roles.Count == 0)
                     {
-                        await PromoteTo(user, role, HelperMethods.ManagerRole);
-                    }
-                    else if (role == HelperMethods.ManagerRole)
-                    {
-                        await PromoteTo(user, role, HelperMethods.AdministratorRole);
+                        ModelState.AddModelError(string.Empty, $"The user {user.UserName} has no roles assigned to promote from.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, $"The user {user.UserName} is already an Administrator.");
+                        // There should only ever be one role assigned
+                        foreach (var role in roles)
+                        {
+                            if (role == HelperMethods.MemberRole)
+                            {
+                                await PromoteTo(user, role, HelperMethods.ManagerRole);
+                            }
+                            else if (role == HelperMethods.ManagerRole)
+                            {
+                                await PromoteTo(user, role, HelperMethods.AdministratorRole);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError(string.Empty, $"The user {user.UserName} is already an Administrator.");
+                            }
+                        }
                     }
                 }
-            }
-            else 
-            {
-                ModelState.AddModelError(string.Empty, "Invalid operation:  You cannot promote yourself.");
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid operation:  You cannot promote yourself.");
+                }
             }
             if (ModelState.ErrorCount > 0)
             {
@@ -113,36 +120,40 @@ namespace CFAPInventoryView.Controllers
             if (user is null)
             {
                 ModelState.AddModelError(string.Empty, $"A user with Id ({userId}) could not be located in the database.");
-                return RedirectToAction(nameof(Index));
-            }
-            // Do not allow self-demoting
-            if (User.Identity?.Name is not null && User.Identity.Name != user.UserName)
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles is null || roles.Count == 0)
-                {
-                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} has no roles assigned to demote from.");
-                    return RedirectToAction(nameof(Index));
-                }
-                foreach (var role in roles)
-                {
-                    if (role == HelperMethods.AdministratorRole)
-                    {
-                        await DemoteTo(user, role, HelperMethods.ManagerRole);
-                    }
-                    else if (role == HelperMethods.ManagerRole)
-                    {
-                        await DemoteTo(user, role, HelperMethods.MemberRole);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, $"The user {user.UserName} cannot be demoted further than Member.");
-                    }
-                }
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid operation:  You cannot demote yourself.");
+                // Do not allow self-demoting
+                if (User.Identity?.Name is not null && User.Identity.Name != user.UserName)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles is null || roles.Count == 0)
+                    {
+                        ModelState.AddModelError(string.Empty, $"The user {user.UserName} has no roles assigned to demote from.");
+                    }
+                    else
+                    {
+                        foreach (var role in roles)
+                        {
+                            if (role == HelperMethods.AdministratorRole)
+                            {
+                                await DemoteTo(user, role, HelperMethods.ManagerRole);
+                            }
+                            else if (role == HelperMethods.ManagerRole)
+                            {
+                                await DemoteTo(user, role, HelperMethods.MemberRole);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError(string.Empty, $"The user {user.UserName} cannot be demoted further than Member.");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid operation:  You cannot demote yourself.");
+                }
             }
             if (ModelState.ErrorCount > 0)
             {
@@ -200,8 +211,10 @@ namespace CFAPInventoryView.Controllers
 
         private async Task PrepareErrorsForTransfer()
         {
+#pragma warning disable CS8602 // Defreference of a possibly null reference
             var dictionaryOfErrors = ModelState.Where(s => s.Value.Errors.Any()).ToDictionary(m => m.Key, m => m.Value.Errors.Select(s => s.ErrorMessage).FirstOrDefault(s => s is not null));
-            
+#pragma warning restore CS8602 // Defreference of a possibly null reference
+
             using var stream = new MemoryStream();
             await JsonSerializer.SerializeAsync(stream, dictionaryOfErrors);
             stream.Position = 0;
