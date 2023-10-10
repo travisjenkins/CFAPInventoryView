@@ -28,7 +28,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 builder.Services.AddControllersWithViews(options =>
 {
-    // Automatically validate all requests other than GET, HEAD, OPTIONS, and TRACE
+    /* Automatically validate all requests other than GET, HEAD, OPTIONS, and TRACE
+     * This prevents Cross-Site Request Forgery (XSRF/CSRF) attacks
+     * https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery?view=aspnetcore-7.0
+     */
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
 
@@ -69,10 +72,13 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
     options.TokenLifespan = TimeSpan.FromHours(3); // default is 1 day, this is how long the emailed tokens will be valid
 });
 
-// Password hasher uses the PBKDF2 hashing function and generates a random salt per user
+/*
+ * Password hasher uses the PBKDF2 with HMAC-SHA512 hashing function and generates a 128-bit random salt per user with a 256-bit subkey
+ * Default setting is 100,000 iterations, but 210,000 is recommended by OWASP & NIST
+ */
 builder.Services.Configure<PasswordHasherOptions>(options =>
 {
-    options.IterationCount = 12000; // default is 10000
+    options.IterationCount = 210000;
 });
 
 /*
@@ -98,9 +104,10 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
  * Add rate limiting
  * Set to allow no more than 3 requests every 60 seconds
  * https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit?view=aspnetcore-7.0
- * Helps prevent DoS attacks (this needs to be tested thoroughly before release)
+ * Helps prevent DoS attacks
  * This policy is applied to the Login, Register, and ResetPassword pages
  */
+// TODO:  Test rate limiting thoroughly before release
 var myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
 if (myOptions is not null)
 {
