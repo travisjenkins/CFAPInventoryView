@@ -1,5 +1,8 @@
 ﻿using CFAPInventoryView.Extensions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Reflection;
+using System.Text.Json;
 
 namespace CFAPInventoryView
 {
@@ -48,6 +51,40 @@ namespace CFAPInventoryView
                 foreach (PropertyInfo prop in entityWithUpdates.GetType().GetProperties())
                 {
                     entityToUpdate.GetType().GetProperty(prop.Name)?.SetValue(entityToUpdate, prop.GetValue(entityWithUpdates));
+                }
+            }
+        }
+
+        public static async Task PrepareErrorsForTransfer(ModelStateDictionary modelState, ITempDataDictionary tempData)
+        {
+#pragma warning disable CS8602 // Defreference of a possibly null reference
+            var dictionaryOfErrors = modelState.Where(s => s.Value.Errors.Any()).ToDictionary(m => m.Key, m => m.Value.Errors.Select(s => s.ErrorMessage).FirstOrDefault(s => s is not null));
+#pragma warning restore CS8602 // Defreference of a possibly null reference
+
+            using var stream = new MemoryStream();
+            await JsonSerializer.SerializeAsync(stream, dictionaryOfErrors);
+            stream.Position = 0;
+
+            using var reader = new StreamReader(stream);
+            var json = await reader.ReadToEndAsync();
+
+            tempData["ModelState"] = json;
+        }
+
+        public static void RetrieveTransferredErrors(ModelStateDictionary modelState, ITempDataDictionary tempData)
+        {
+#pragma warning disable CS8602 // Defreference of a possibly null reference
+            var modelStateString = tempData["ModelState"].ToString();
+#pragma warning restore CS8602 // Defreference of a possibly null reference
+            if (!string.IsNullOrEmpty(modelStateString))
+            {
+                var dictionaryOfErrors = JsonSerializer.Deserialize<Dictionary<string, string?>>(modelStateString);
+                if (dictionaryOfErrors is not null)
+                {
+                    foreach (var item in dictionaryOfErrors)
+                    {
+                        modelState.AddModelError(item.Key, item.Value ?? "");
+                    }
                 }
             }
         }

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using CFAPInventoryView.Data.Models;
 using Microsoft.AspNetCore.RateLimiting;
+using CFAPInventoryView.Data;
 
 namespace CFAPInventoryView.Areas.Identity.Pages.Account
 {
@@ -26,12 +27,14 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public LoginModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         /// <summary>
@@ -121,6 +124,10 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"User:  {Input.Email}, Successfully logged in.");
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    user.LastLogin = DateTime.Now;
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

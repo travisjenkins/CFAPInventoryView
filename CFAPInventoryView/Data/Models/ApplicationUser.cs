@@ -41,5 +41,15 @@ namespace CFAPInventoryView.Data.Models
         [StringLength(10, MinimumLength = 5)]
         [Display(Name = "Zip Code")]
         public string? ZipCode { get; set; }
+
+        [PersonalData]
+        [Display(Name = "Registered On")]
+        [DisplayFormat(DataFormatString = "{0: MMMM dd, yyyy, hh:mm tt}")]
+        public DateTime? RegisteredOn { get; set; }
+
+        [PersonalData]
+        [Display(Name = "Last Login")]
+        [DisplayFormat(DataFormatString = "{0: MMMM dd, yyyy, hh:mm tt}")]
+        public DateTime? LastLogin { get; set; }
     }
 }

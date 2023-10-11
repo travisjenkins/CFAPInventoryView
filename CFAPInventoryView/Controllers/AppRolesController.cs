@@ -3,6 +3,7 @@ using CFAPInventoryView.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace CFAPInventoryView.Controllers
@@ -23,7 +24,7 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Index()
         {
             List<AppRolesViewModel> userRoles = new();
-            var users = _userManager.Users;
+            var users = await _userManager.Users.ToListAsync();
             if (users is not null)
             {
                 foreach (var user in users)
@@ -38,27 +39,9 @@ namespace CFAPInventoryView.Controllers
             }
             if (TempData["ModelState"] is not null)
             {
-                RetrieveTransferredErrors();
+                HelperMethods.RetrieveTransferredErrors(ModelState, TempData);
             }
             return View(userRoles);
-        }
-
-        private void RetrieveTransferredErrors()
-        {
-#pragma warning disable CS8602 // Defreference of a possibly null reference
-            var modelStateString = TempData["ModelState"].ToString();
-#pragma warning restore CS8602 // Defreference of a possibly null reference
-            if (!string.IsNullOrEmpty(modelStateString))
-            {
-                var dictionaryOfErrors = JsonSerializer.Deserialize<Dictionary<string, string?>>(modelStateString);
-                if (dictionaryOfErrors is not null)
-                {
-                    foreach (var item in dictionaryOfErrors)
-                    {
-                        ModelState.AddModelError(item.Key, item.Value ?? "");
-                    }
-                }
-            }
         }
 
         [Authorize(Roles = HelperMethods.AdministratorRole)]
@@ -107,7 +90,7 @@ namespace CFAPInventoryView.Controllers
             }
             if (ModelState.ErrorCount > 0)
             {
-                await PrepareErrorsForTransfer();
+                await HelperMethods.PrepareErrorsForTransfer(ModelState, TempData);
             }
             return RedirectToAction(nameof(Index));
         }
@@ -157,7 +140,7 @@ namespace CFAPInventoryView.Controllers
             }
             if (ModelState.ErrorCount > 0)
             {
-                await PrepareErrorsForTransfer();
+                await HelperMethods.PrepareErrorsForTransfer(ModelState, TempData);
             }
             return RedirectToAction(nameof(Index));
         }
@@ -207,22 +190,6 @@ namespace CFAPInventoryView.Controllers
                     ModelState.AddModelError(string.Empty, $"{error.Code}: {error.Description}");
                 }
             }
-        }
-
-        private async Task PrepareErrorsForTransfer()
-        {
-#pragma warning disable CS8602 // Defreference of a possibly null reference
-            var dictionaryOfErrors = ModelState.Where(s => s.Value.Errors.Any()).ToDictionary(m => m.Key, m => m.Value.Errors.Select(s => s.ErrorMessage).FirstOrDefault(s => s is not null));
-#pragma warning restore CS8602 // Defreference of a possibly null reference
-
-            using var stream = new MemoryStream();
-            await JsonSerializer.SerializeAsync(stream, dictionaryOfErrors);
-            stream.Position = 0;
-
-            using var reader = new StreamReader(stream);
-            var json = await reader.ReadToEndAsync();
-
-            TempData["ModelState"] = json;
         }
     }
 }

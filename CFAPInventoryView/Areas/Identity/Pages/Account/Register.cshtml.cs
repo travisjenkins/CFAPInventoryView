@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using CFAPInventoryView.Data;
 using CFAPInventoryView.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -168,6 +169,7 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                 user.City = Input.City;
                 user.State = HelperMethods.JustTheStateName(Input.State);
                 user.ZipCode = Input.ZipCode;
+                user.RegisteredOn = DateTime.Now;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

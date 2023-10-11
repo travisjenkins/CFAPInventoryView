@@ -1,0 +1,64 @@
+﻿@model List<UserManagementViewModel>
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+@if (Model.ElementAtOrDefault(0) is not null)
+{
+    <table class="table table-striped text-center">
+        <thead>
+            <tr>
+                <th class="text-start">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName).SplitCamelAndPascalCase()</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.RegisteredOn)</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastLogin)</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.TwoFactorEnabled).SplitCamelAndPascalCase()</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.AccessFailedCount).SplitCamelAndPascalCase()</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).IsLockedOut)</th>
+                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).LockoutEndDate)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item is not null)
+                {
+                    @if (item.ApplicationUser is not null)
+                    {
+                        <tr>
+                            <td class="text-start align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.RegisteredOn)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.LastLogin)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.TwoFactorEnabled)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.AccessFailedCount)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.IsLockedOut)</td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.LockoutEndDate)</td>
+                            <td>
+                                <form asp-action="LockUserAccount" method="post" class="d-inline">
+                                    <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
+                                    <button class="btn btn-link" type="submit">Lock</button>|
+                                </form>
+                                <form asp-action="UnlockUserAccount" method="post" class="d-inline">
+                                    <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
+                                    <button class="btn btn-link link-danger" type="submit">Unlock</button>
+                                </form>
+                                <form asp-action="Delete" method="get" class="d-inline">
+                                    <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
+                                    <button class="btn btn-link" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>There are no users in your database. Please <a asp-area="Identity" asp-page="/Account/Register">register</a> a user and try again.</p>
+}
