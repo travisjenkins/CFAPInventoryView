@@ -35,7 +35,7 @@ namespace CFAPInventoryView.Controllers
                 {
                     ApplicationUser = user,
                     IsLockedOut = await _userManager.IsLockedOutAsync(user),
-                    LockoutEndDate = user.LockoutEnd?.Date
+                    LockoutEndDate = user.LockoutEnd?.LocalDateTime
                 });
             }
 
