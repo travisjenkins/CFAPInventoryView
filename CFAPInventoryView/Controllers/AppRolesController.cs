@@ -29,6 +29,10 @@ namespace CFAPInventoryView.Controllers
             {
                 foreach (var user in users)
                 {
+                    if (user.UserName == User.Identity?.Name)
+                    {
+                        continue; // Don't add the admin/manager accessing the page
+                    }
                     AppRolesViewModel viewModel = new()
                     {
                         ApplicationUser = user,

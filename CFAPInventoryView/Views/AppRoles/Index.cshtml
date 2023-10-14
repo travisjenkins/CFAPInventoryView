@@ -35,10 +35,6 @@
                             }
                         </td>
                         <td>
-                            @if (item.ApplicationUser.UserName == User.Identity?.Name)
-                            {
-                                <a class="btn btn-link d-inline-block" asp-area="Identity" asp-page="/Account/Manage/Index" asp-route-id="@item.ApplicationUser?.Id">Edit</a><span>|</span>
-                            }
                             <form asp-action="Promote" method="post" class="d-inline">
                                 <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
                                 <button class="btn btn-link" type="submit">Promote</button>|
