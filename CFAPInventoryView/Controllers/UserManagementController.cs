@@ -23,20 +23,23 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Index()
         {
             var viewModel = new List<UserManagementViewModel>();
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users.OrderBy(u => u.UserName).ToListAsync();
 
-            foreach (var user in users)
+            if (users is not null)
             {
-                if (user.UserName == User.Identity?.Name)
+                foreach (var user in users)
                 {
-                    continue; // Don't add the admin accessing the page
+                    if (user.UserName == User.Identity?.Name)
+                    {
+                        continue; // Don't add the admin accessing the page
+                    }
+                    viewModel.Add(new UserManagementViewModel
+                    {
+                        ApplicationUser = user,
+                        IsLockedOut = await _userManager.IsLockedOutAsync(user),
+                        LockoutEndDate = user.LockoutEnd?.LocalDateTime
+                    });
                 }
-                viewModel.Add(new UserManagementViewModel
-                {
-                    ApplicationUser = user,
-                    IsLockedOut = await _userManager.IsLockedOutAsync(user),
-                    LockoutEndDate = user.LockoutEnd?.LocalDateTime
-                });
             }
 
             if (TempData["ModelState"] is not null)

@@ -24,7 +24,7 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Index()
         {
             List<AppRolesViewModel> userRoles = new();
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users.OrderBy(u => u.UserName).ToListAsync();
             if (users is not null)
             {
                 foreach (var user in users)

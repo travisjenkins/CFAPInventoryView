@@ -44,7 +44,7 @@
                                 </form>
                                 <form asp-action="UnlockUserAccount" method="post" class="d-inline">
                                     <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
-                                    <button class="btn btn-link link-danger" type="submit">Unlock</button>
+                                    <button class="btn btn-link link-danger" type="submit">Unlock</button>|
                                 </form>
                                 <form asp-action="Delete" method="get" class="d-inline">
                                     <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />

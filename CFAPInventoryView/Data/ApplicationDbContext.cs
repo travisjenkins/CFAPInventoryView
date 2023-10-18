@@ -10,5 +10,11 @@ namespace CFAPInventoryView.Data
             : base(options)
         {
         }
+
+        public DbSet<AgeGroup> AgeGroups { get; set; }
+        public DbSet<Ethnicity> Ethnicities { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Basket> Baskets { get; set; }
     }
 }
