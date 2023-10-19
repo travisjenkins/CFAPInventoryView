@@ -12,14 +12,14 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow mb-3 navbar-custom-color">
+        <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark border-bottom box-shadow mb-3 navbar-custom-color">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CFAP Inventory View</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-controller="Home" asp-action="Index">Home</a>
@@ -27,6 +27,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (User.IsInRole(HelperMethods.MemberRole) || User.IsInRole(HelperMethods.ManagerRole) || User.IsInRole(HelperMethods.AdministratorRole))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Products" asp-action="Index">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Baskets" asp-action="Index">Baskets</a>
+                            </li>
+                        }
                         @if (User.IsInRole(HelperMethods.AdministratorRole) || User.IsInRole(HelperMethods.ManagerRole))
                         {
                             <li class="nav-item dropdown">
@@ -35,10 +44,10 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="nabarDropdownMenuLink">
                                     <li><a class="dropdown-item text-dark" asp-controller="AppRoles" asp-action="Index">Manage Roles</a></li>
-                                    @if (User.IsInRole(HelperMethods.AdministratorRole))
-                                    {
-                                        <li><a class="dropdown-item text-dark" asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
-                                    }
+                                    <li><a class="dropdown-item text-dark" asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="AgeGroups" asp-action="Index">Age Groups</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="Ethnicities" asp-action="Index">Ethnicities</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="Genders" asp-action="Index">Genders</a></li>
                                 </ul>
                             </li>
                         }

@@ -48,7 +48,6 @@ namespace CFAPInventoryView.Controllers
             return View(userRoles);
         }
 
-        [Authorize(Roles = HelperMethods.AdministratorRole)]
         [HttpPost]
         public async Task<IActionResult> Promote(string userId)
         {
@@ -72,17 +71,35 @@ namespace CFAPInventoryView.Controllers
                         // There should only ever be one role assigned
                         foreach (var role in roles)
                         {
-                            if (role == HelperMethods.MemberRole)
+                            if (User.IsInRole(HelperMethods.AdministratorRole))
                             {
-                                await PromoteTo(user, role, HelperMethods.ManagerRole);
+                                if (role == HelperMethods.MemberRole)
+                                {
+                                    await PromoteTo(user, role, HelperMethods.ManagerRole);
+                                }
+                                else if (role == HelperMethods.ManagerRole)
+                                {
+                                    await PromoteTo(user, role, HelperMethods.AdministratorRole);
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} is already an Administrator.");
+                                }
                             }
-                            else if (role == HelperMethods.ManagerRole)
+                            else if (User.IsInRole(HelperMethods.ManagerRole))
                             {
-                                await PromoteTo(user, role, HelperMethods.AdministratorRole);
-                            }
-                            else
-                            {
-                                ModelState.AddModelError(string.Empty, $"The user {user.UserName} is already an Administrator.");
+                                if (role == HelperMethods.MemberRole)
+                                {
+                                    await PromoteTo(user, role, HelperMethods.ManagerRole);
+                                }
+                                else if (role == HelperMethods.ManagerRole)
+                                {
+                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} is already a Manager. An Administrator is needed to promote further.");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} is already an Administrator.");
+                                }
                             }
                         }
                     }
@@ -99,7 +116,6 @@ namespace CFAPInventoryView.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = HelperMethods.AdministratorRole)]
         [HttpPost]
         public async Task<IActionResult> Demote(string userId)
         {
@@ -122,17 +138,35 @@ namespace CFAPInventoryView.Controllers
                     {
                         foreach (var role in roles)
                         {
-                            if (role == HelperMethods.AdministratorRole)
+                            if (User.IsInRole(HelperMethods.AdministratorRole))
                             {
-                                await DemoteTo(user, role, HelperMethods.ManagerRole);
+                                if (role == HelperMethods.AdministratorRole)
+                                {
+                                    await DemoteTo(user, role, HelperMethods.ManagerRole);
+                                }
+                                else if (role == HelperMethods.ManagerRole)
+                                {
+                                    await DemoteTo(user, role, HelperMethods.MemberRole);
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} cannot be demoted further than Member.");
+                                }
                             }
-                            else if (role == HelperMethods.ManagerRole)
+                            else if (User.IsInRole(HelperMethods.ManagerRole))
                             {
-                                await DemoteTo(user, role, HelperMethods.MemberRole);
-                            }
-                            else
-                            {
-                                ModelState.AddModelError(string.Empty, $"The user {user.UserName} cannot be demoted further than Member.");
+                                if (role == HelperMethods.ManagerRole)
+                                {
+                                    await DemoteTo(user, role, HelperMethods.MemberRole);
+                                }
+                                else if (role == HelperMethods.AdministratorRole)
+                                {
+                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} is an Administrator. Please contact another Administrator to perform this action.");
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} cannot be demoted further than Member.");
+                                }
                             }
                         }
                     }

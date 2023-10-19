@@ -16,5 +16,6 @@ namespace CFAPInventoryView.Data
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Basket> Baskets { get; set; }
+        public DbSet<ProductBasket> ProductBaskets { get; set; }
     }
 }

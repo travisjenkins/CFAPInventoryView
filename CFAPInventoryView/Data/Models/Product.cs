@@ -31,6 +31,14 @@ namespace CFAPInventoryView.Data.Models
         public DateTime PurchaseDate { get; set; }
 
         [Required]
+        [Range(1, 1000)]
+        public int Quantity { get; set; }
+
+        [Required]
+        [Range(1, 1000)]
+        public int SafeStockLevel { get; set; }
+
+        [Required]
         // This will format it for us
         [DataType(DataType.Currency)]
         /* 
@@ -42,19 +50,5 @@ namespace CFAPInventoryView.Data.Models
 
         [StringLength(100)]
         public string? Barcode { get; set; }
-
-        // Required as ForeignKeys to reference an assigned Basket
-        public Guid? IncludeBasketId { get; set; }
-        public Guid? OptionalBasketId { get; set; }
-        public Guid? ExcludeBasketId { get; set; }
-
-        [ForeignKey(nameof(IncludeBasketId))]
-        public virtual Basket? IncludeBasket { get; set; }
-
-        [ForeignKey(nameof(OptionalBasketId))]
-        public virtual Basket? OptionalBasket { get; set; }
-
-        [ForeignKey(nameof(ExcludeBasketId))]
-        public virtual Basket? ExcludeBasket { get; set; }
     }
 }

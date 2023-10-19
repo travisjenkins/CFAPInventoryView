@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace CFAPInventoryView.Controllers
 {
-    [Authorize(Roles = HelperMethods.AdministratorRole)]
+    [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
     public class UserManagementController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -140,6 +140,7 @@ namespace CFAPInventoryView.Controllers
         }
 
         // GET: UserManagement/Delete/5
+        [Authorize(Roles = HelperMethods.AdministratorRole)]
         public async Task<IActionResult> Delete(string email)
         {
             if (string.IsNullOrEmpty(email))
@@ -155,6 +156,7 @@ namespace CFAPInventoryView.Controllers
         }
 
         // POST: UserManagement/Delete/5
+        [Authorize(Roles = HelperMethods.AdministratorRole)]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(string email)
         {

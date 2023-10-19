@@ -31,7 +31,7 @@ namespace CFAPInventoryView.Controllers
             if (friendlyErrorMessage is not null)
             {
 #pragma warning disable CA2254 // Template should be a static expression
-                _logger.LogError(friendlyErrorMessage);
+                _logger.LogError($"RequestId: {Activity.Current?.Id ?? HttpContext.TraceIdentifier}, Message: {friendlyErrorMessage}");
 #pragma warning restore CA2254 // Template should be a static expression
             }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, FriendlyErrorMessage = friendlyErrorMessage });

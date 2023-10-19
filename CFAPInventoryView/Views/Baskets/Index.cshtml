@@ -1,0 +1,69 @@
+﻿@model IEnumerable<CFAPInventoryView.Data.Models.Basket>
+
+@{
+    ViewData["Title"] = "iBelong Baskets";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAssembled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SafeStockLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgeGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ethnicity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@if (Model is not null && Model.ElementAt(0) is not null)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAssembled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SafeStockLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgeGroup.Group)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ethnicity.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender.Description)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BasketId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BasketId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BasketId">Delete</a>
+            </td>
+        </tr>
+    }
+}
+    </tbody>
+</table>
