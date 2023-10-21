@@ -8,7 +8,7 @@ namespace CFAPInventoryView.Data.Models
     {
         [Key]
         [ScaffoldColumn(false)]
-        public Guid BasketId { get; set; } = Guid.NewGuid();
+        public Guid BasketId { get; set; }
 
         [Required]
         [Display(Name = "Age Group")]
@@ -25,6 +25,7 @@ namespace CFAPInventoryView.Data.Models
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date Assembled")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yy}")]
         public DateTime DateAssembled { get; set; } = DateTime.Today;
 
         [Required]
@@ -33,18 +34,29 @@ namespace CFAPInventoryView.Data.Models
 
         [Required]
         [Range(1, 1000)]
+        [Display(Name = "Safe Stock Level")]
         public int SafeStockLevel { get; set; }
+
+        public bool Active { get; set; }
+
+        [Display(Name = "Modified By")]
+        public string? LastUpdateId { get; set; }
+
+        [Display(Name = "Last Modified")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yy, h:mm tt}")]
+        public DateTime LastUpdateDateTime { get; set; }
 
         [Display(Name = "Age Group")]
         public virtual AgeGroup AgeGroup { get; set; } = null!;
 
-        [Display(Name = "Ethnicity")]
         public virtual Ethnicity Ethnicity { get; set; } = null!;
 
-        [Display(Name = "Gender")]
         public virtual Gender Gender { get; set; } = null!;
 
         [Display(Name = "iBelong Basket")]
         public virtual ICollection<ProductBasket>? ProductBaskets { get; set; }
+
+        [Display(Name = "iBelong Basket")]
+        public virtual ICollection<CategoryBasket>? CategoryBaskets { get; set; }
     }
 }

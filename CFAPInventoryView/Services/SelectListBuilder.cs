@@ -8,9 +8,9 @@ namespace CFAPInventoryView.Services
     {
         public static async Task<SelectList?> GetAgeGroupsSelectListAsync(ApplicationDbContext context, object? selectedOption = null)
         {
-            var query = await context.AgeGroups.OrderBy(ag => ag.Group).ToListAsync();
+            var query = await context.AgeGroups.OrderBy(ag => ag.SortOrder).ToListAsync();
             if (query is null) return null;
-            return new SelectList(query, "AgeGroupId", "Group", selectedOption);
+            return new SelectList(query, "AgeGroupId", "Description", selectedOption);
         }
 
         public static async Task<SelectList?> GetEthnicitiesSelectListAsync(ApplicationDbContext context, object? selectedOption = null)
@@ -25,6 +25,27 @@ namespace CFAPInventoryView.Services
             var query = await context.Genders.OrderBy(g => g.Description).ToListAsync();
             if ( query is null) return null;
             return new SelectList(query, "GenderId", "Description", selectedOption);
+        }
+
+        public static async Task<SelectList?> GetCategoriesSelectListAsync(ApplicationDbContext context, object? selectedOption = null)
+        {
+            var query = await context.Categories.OrderBy(c => c.Name).ToListAsync();
+            if (query is null) return null;
+            return new SelectList(query, "CategoryId", "Name", selectedOption);
+        }
+
+        public static async Task<SelectList?> GetOptionalCategoriesSelectListAsync(ApplicationDbContext context, object? selectedOption = null)
+        {
+            var query = await context.OptionalCategories.OrderBy(c => c.Name).ToListAsync();
+            if (query is null) return null;
+            return new SelectList(query, "OptionalCategoryId", "Name", selectedOption);
+        }
+
+        public static async Task<SelectList?> GetExcludeCategoriesSelectListAsync(ApplicationDbContext context, object? selectedOption = null)
+        {
+            var query = await context.ExcludeCategories.OrderBy(c => c.Name).ToListAsync();
+            if (query is null) return null;
+            return new SelectList(query, "ExcludeCategoryId", "Name", selectedOption);
         }
     }
 }

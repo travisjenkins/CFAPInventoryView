@@ -23,7 +23,7 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.AgeGroups != null ? 
-                          View(await _context.AgeGroups.AsNoTracking().OrderBy(ag => ag.Group).ToListAsync()) :
+                          View(await _context.AgeGroups.AsNoTracking().OrderBy(ag => ag.SortOrder).ToListAsync()) :
                           Problem("Entity set 'AgeGroups' is null.");
         }
 
@@ -55,12 +55,14 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Group")] AgeGroup ageGroup)
+        public async Task<IActionResult> Create([Bind("Description,SortOrder")] AgeGroup ageGroup)
         {
             if (ModelState.IsValid)
             {
                 ageGroup.AgeGroupId = Guid.NewGuid();
+                ageGroup.Active = true;
+                ageGroup.LastUpdateId = User.Identity?.Name;
+                ageGroup.LastUpdateDateTime = DateTime.Now;
                 _context.Add(ageGroup);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,8 +90,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Group")] AgeGroup ageGroup)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AgeGroupId,Description,SortOrder,Active")] AgeGroup ageGroup)
         {
             if (id != ageGroup.AgeGroupId)
             {
@@ -100,6 +101,8 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
+                    ageGroup.LastUpdateId = User.Identity?.Name;
+                    ageGroup.LastUpdateDateTime = DateTime.Now;
                     _context.Update(ageGroup);
                     await _context.SaveChangesAsync();
                 }
@@ -139,7 +142,6 @@ namespace CFAPInventoryView.Controllers
 
         // POST: AgeGroups/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.AgeGroups == null)

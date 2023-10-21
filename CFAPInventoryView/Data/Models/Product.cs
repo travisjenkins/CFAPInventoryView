@@ -8,11 +8,20 @@ namespace CFAPInventoryView.Data.Models
     {
         [Key]
         [ScaffoldColumn(false)]
-        public Guid ProductId { get; set; } = Guid.NewGuid();
+        public Guid ProductId { get; set; }
 
         [Required]
         [StringLength(100)]
         public string? Name { get; set; }
+
+        [Display(Name = "Category")]
+        public Guid? CategoryId { get; set; }
+
+        [Display(Name = "Optional Category")]
+        public Guid? OptionalCategoryId { get; set; }
+
+        [Display(Name = "Exclude Category")]
+        public Guid? ExcludeCategoryId { get; set; }
 
         public string? Description { get; set; }
 
@@ -36,6 +45,7 @@ namespace CFAPInventoryView.Data.Models
 
         [Required]
         [Range(1, 1000)]
+        [Display(Name = "Safe Stock Level")]
         public int SafeStockLevel { get; set; }
 
         [Required]
@@ -50,5 +60,22 @@ namespace CFAPInventoryView.Data.Models
 
         [StringLength(100)]
         public string? Barcode { get; set; }
+
+        public bool Active { get; set; }
+
+        [Display(Name = "Modified By")]
+        public string? LastUpdateId { get; set; }
+
+        [Display(Name = "Last Modified")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yy, h:mm tt}")]
+        public DateTime LastUpdateDateTime { get; set; }
+
+        public virtual Category? Category { get; set; }
+
+        [Display(Name = "Optional Category")]
+        public virtual OptionalCategory? OptionalCategory { get; set; }
+
+        [Display(Name = "Exclude Category")]
+        public virtual ExcludeCategory? ExcludeCategory { get; set; }
     }
 }

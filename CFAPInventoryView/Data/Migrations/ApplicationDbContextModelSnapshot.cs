@@ -28,10 +28,22 @@ namespace CFAPInventoryView.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Group")
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
 
                     b.HasKey("AgeGroupId");
 
@@ -143,6 +155,9 @@ namespace CFAPInventoryView.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("AgeGroupId")
                         .HasColumnType("uniqueidentifier");
 
@@ -154,6 +169,12 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.Property<Guid>("GenderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -172,20 +193,119 @@ namespace CFAPInventoryView.Data.Migrations
                     b.ToTable("Baskets");
                 });
 
+            modelBuilder.Entity("CFAPInventoryView.Data.Models.Category", b =>
+                {
+                    b.Property<Guid>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("CFAPInventoryView.Data.Models.CategoryBasket", b =>
+                {
+                    b.Property<Guid>("CategoryBasketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("BasketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ExcludeCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("OptionalCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CategoryBasketId");
+
+                    b.HasIndex("BasketId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ExcludeCategoryId");
+
+                    b.HasIndex("OptionalCategoryId");
+
+                    b.ToTable("CategoryBaskets");
+                });
+
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Ethnicity", b =>
                 {
                     b.Property<Guid>("EthnicityId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("EthnicityId");
 
                     b.ToTable("Ethnicities");
+                });
+
+            modelBuilder.Entity("CFAPInventoryView.Data.Models.ExcludeCategory", b =>
+                {
+                    b.Property<Guid>("ExcludeCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("ExcludeCategoryId");
+
+                    b.ToTable("ExcludeCategories");
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Gender", b =>
@@ -194,14 +314,48 @@ namespace CFAPInventoryView.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("GenderId");
 
                     b.ToTable("Genders");
+                });
+
+            modelBuilder.Entity("CFAPInventoryView.Data.Models.OptionalCategory", b =>
+                {
+                    b.Property<Guid>("OptionalCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("OptionalCategoryId");
+
+                    b.ToTable("OptionalCategories");
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Product", b =>
@@ -210,12 +364,21 @@ namespace CFAPInventoryView.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Barcode")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ExcludeCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -223,10 +386,19 @@ namespace CFAPInventoryView.Data.Migrations
                     b.Property<bool>("Expires")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid?>("OptionalCategoryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(13, 4)
@@ -243,6 +415,12 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("ProductId");
 
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ExcludeCategoryId");
+
+                    b.HasIndex("OptionalCategoryId");
+
                     b.ToTable("Products");
                 });
 
@@ -252,8 +430,17 @@ namespace CFAPInventoryView.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("BasketId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
@@ -431,6 +618,56 @@ namespace CFAPInventoryView.Data.Migrations
                     b.Navigation("Gender");
                 });
 
+            modelBuilder.Entity("CFAPInventoryView.Data.Models.CategoryBasket", b =>
+                {
+                    b.HasOne("CFAPInventoryView.Data.Models.Basket", null)
+                        .WithMany("CategoryBaskets")
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CFAPInventoryView.Data.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CFAPInventoryView.Data.Models.ExcludeCategory", "ExcludeCategory")
+                        .WithMany()
+                        .HasForeignKey("ExcludeCategoryId");
+
+                    b.HasOne("CFAPInventoryView.Data.Models.OptionalCategory", "OptionalCategory")
+                        .WithMany()
+                        .HasForeignKey("OptionalCategoryId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("ExcludeCategory");
+
+                    b.Navigation("OptionalCategory");
+                });
+
+            modelBuilder.Entity("CFAPInventoryView.Data.Models.Product", b =>
+                {
+                    b.HasOne("CFAPInventoryView.Data.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("CFAPInventoryView.Data.Models.ExcludeCategory", "ExcludeCategory")
+                        .WithMany()
+                        .HasForeignKey("ExcludeCategoryId");
+
+                    b.HasOne("CFAPInventoryView.Data.Models.OptionalCategory", "OptionalCategory")
+                        .WithMany()
+                        .HasForeignKey("OptionalCategoryId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("ExcludeCategory");
+
+                    b.Navigation("OptionalCategory");
+                });
+
             modelBuilder.Entity("CFAPInventoryView.Data.Models.ProductBasket", b =>
                 {
                     b.HasOne("CFAPInventoryView.Data.Models.Basket", null)
@@ -501,6 +738,8 @@ namespace CFAPInventoryView.Data.Migrations
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Basket", b =>
                 {
+                    b.Navigation("CategoryBaskets");
+
                     b.Navigation("ProductBaskets");
                 });
 #pragma warning restore 612, 618

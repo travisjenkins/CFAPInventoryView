@@ -6,13 +6,22 @@ namespace CFAPInventoryView.Data.Models
     {
         [Key]
         [ScaffoldColumn(false)]
-        public Guid ProductBasketId { get; set; } = Guid.NewGuid();
+        public Guid ProductBasketId { get; set; }
 
         [Required]
         public Guid BasketId { get; set; }
 
         [Required]
         public Guid ProductId { get; set; }
+
+        public bool Active { get; set; }
+
+        [Display(Name = "Modified By")]
+        public string? LastUpdateId { get; set; }
+
+        [Display(Name = "Last Modified")]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yy, h:mm tt}")]
+        public DateTime LastUpdateDateTime { get; set; }
 
         [Display(Name = "Product")]
         public virtual Product Product { get; set; } = null!;

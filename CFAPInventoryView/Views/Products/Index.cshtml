@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-striped text-center">
     <thead>
         <tr>
             <th>
@@ -39,11 +39,23 @@
             <th>
                 @Html.DisplayNameFor(model => model.Barcode)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionalCategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExcludeCategoryId)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@if (Model is not null && Model.ElementAt(0) is not null)
+{
+    foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -73,11 +85,21 @@
                 @Html.DisplayFor(modelItem => item.Barcode)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OptionalCategory.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExcludeCategory.Name)
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
             </td>
         </tr>
+    }
 }
     </tbody>
 </table>

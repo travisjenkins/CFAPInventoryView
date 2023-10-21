@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-striped text-center">
     <thead>
         <tr>
             <th>
@@ -49,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.SafeStockLevel)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AgeGroup.Group)
+                @Html.DisplayFor(modelItem => item.AgeGroup.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ethnicity.Description)

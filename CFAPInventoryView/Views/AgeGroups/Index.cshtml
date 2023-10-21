@@ -9,11 +9,14 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-striped text-center">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Group)
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SortOrder)
             </th>
             <th></th>
         </tr>
@@ -22,7 +25,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Group)
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SortOrder)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.AgeGroupId">Edit</a> |

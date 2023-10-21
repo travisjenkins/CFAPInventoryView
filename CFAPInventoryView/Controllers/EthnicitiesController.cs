@@ -55,12 +55,14 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Description")] Ethnicity ethnicity)
         {
             if (ModelState.IsValid)
             {
                 ethnicity.EthnicityId = Guid.NewGuid();
+                ethnicity.Active = true;
+                ethnicity.LastUpdateId = User.Identity?.Name;
+                ethnicity.LastUpdateDateTime = DateTime.Now;
                 _context.Add(ethnicity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,8 +90,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Description")] Ethnicity ethnicity)
+        public async Task<IActionResult> Edit(Guid id, [Bind("EthnicityId,Description,Active")] Ethnicity ethnicity)
         {
             if (id != ethnicity.EthnicityId)
             {
@@ -100,6 +101,8 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
+                    ethnicity.LastUpdateId = User.Identity?.Name;
+                    ethnicity.LastUpdateDateTime = DateTime.Now;
                     _context.Update(ethnicity);
                     await _context.SaveChangesAsync();
                 }
@@ -139,7 +142,6 @@ namespace CFAPInventoryView.Controllers
 
         // POST: Ethnicities/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.Ethnicities == null)

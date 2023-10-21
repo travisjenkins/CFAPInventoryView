@@ -40,12 +40,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
+                <input asp-for="Quantity" class="form-control" min="1" max="1000" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SafeStockLevel" class="control-label"></label>
-                <input asp-for="SafeStockLevel" class="form-control" />
+                <input asp-for="SafeStockLevel" class="form-control" min="1" max="1000" />
                 <span asp-validation-for="SafeStockLevel" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">

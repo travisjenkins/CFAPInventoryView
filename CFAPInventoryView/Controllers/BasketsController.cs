@@ -28,7 +28,7 @@ namespace CFAPInventoryView.Controllers
                                                        .Include(b => b.Ethnicity)
                                                        .Include(b => b.Gender)
                                                        .DefaultIfEmpty()
-                                                       .OrderBy(b => b.AgeGroup.Group);
+                                                       .OrderBy(b => b.AgeGroup.Description);
 
             return View(await applicationDbContext.ToListAsync());
         }
@@ -73,7 +73,10 @@ namespace CFAPInventoryView.Controllers
         {
             if (ModelState.IsValid)
             {
-                //basket.BasketId = Guid.NewGuid();
+                basket.BasketId = Guid.NewGuid();
+                basket.Active = true;
+                basket.LastUpdateId = User.Identity?.Name;
+                basket.LastUpdateDateTime = DateTime.Now;
                 _context.Add(basket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -112,7 +115,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel")] Basket basket)
+        public async Task<IActionResult> Edit(Guid id, [Bind("BasketId,AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel,Active")] Basket basket)
         {
             if (id != basket.BasketId)
             {
@@ -123,6 +126,8 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
+                    basket.LastUpdateId = User.Identity?.Name;
+                    basket.LastUpdateDateTime = DateTime.Now;
                     _context.Update(basket);
                     await _context.SaveChangesAsync();
                 }

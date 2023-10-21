@@ -39,12 +39,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
+                <input asp-for="Quantity" class="form-control" min="1" max="1000" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SafeStockLevel" class="control-label"></label>
-                <input asp-for="SafeStockLevel" class="form-control" />
+                <input asp-for="SafeStockLevel" class="form-control" min="1" max="1000" />
                 <span asp-validation-for="SafeStockLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -56,6 +56,27 @@
                 <label asp-for="Barcode" class="control-label"></label>
                 <input asp-for="Barcode" class="form-control" />
                 <span asp-validation-for="Barcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoriesSelectList">
+                    <option value="@null">Select...</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OptionalCategoryId" class="control-label"></label>
+                <select asp-for="OptionalCategoryId" class="form-control" asp-items="ViewBag.OptionalCategoriesSelectList">
+                    <option value="@null">Select...</option>
+                </select>
+                <span asp-validation-for="OptionalCategoryId" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="ExcludeCategoryId" class="control-label"></label>
+                <select asp-for="ExcludeCategoryId" class="form-control" asp-items="ViewBag.ExcludeCategoriesSelectList">
+                    <option value="@null">Select...</option>
+                </select>
+                <span asp-validation-for="ExcludeCategoryId" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
                 <input type="submit" value="Create" class="btn btn-outline-primary" />

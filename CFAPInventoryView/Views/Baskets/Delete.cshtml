@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.AgeGroup)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AgeGroup.Group)
+            @Html.DisplayFor(model => model.AgeGroup.Description)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Ethnicity)
@@ -46,6 +46,24 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Gender.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateDateTime)
         </dd>
     </dl>
     

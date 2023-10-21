@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CFAPInventoryView.Data;
 using CFAPInventoryView.Data.Models;
+using CFAPInventoryView.Services;
 
 namespace CFAPInventoryView.Controllers
 {
@@ -23,7 +24,15 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Products != null ? 
-                          View(await _context.Products.AsNoTracking().OrderBy(p => p.Name).ThenBy(p => p.PurchaseDate).ToListAsync()) :
+                          View(await _context.Products.AsNoTracking()
+                                                      .OrderBy(p => p.Name)
+                                                      .ThenBy(p => p.PurchaseDate)
+                                                      .Include(p => p.Category)
+                                                      .Include(p => p.OptionalCategory)
+                                                      .Include(p => p.ExcludeCategory)
+                                                      .Where(p => p.Active)
+                                                      .DefaultIfEmpty()
+                                                      .ToListAsync()) :
                           Problem("Entity set 'Products' is null.");
         }
 
@@ -35,8 +44,12 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+            var product = await _context.Products.AsNoTracking()
+                                                 .Include(p => p.Category)
+                                                 .Include(p => p.OptionalCategory)
+                                                 .Include(p => p.ExcludeCategory)
+                                                 .DefaultIfEmpty()
+                                                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {
                 return NotFound();
@@ -46,8 +59,11 @@ namespace CFAPInventoryView.Controllers
         }
 
         // GET: Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context);
+            ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context);
+            ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context);
             return View();
         }
 
@@ -55,16 +71,21 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Expires,ExpirationDate,PurchaseDate,Quantity,SafeStockLevel,Price,Barcode")] Product product)
+        public async Task<IActionResult> Create([Bind("Name,Description,Expires,ExpirationDate,PurchaseDate,Quantity,SafeStockLevel,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId")] Product product)
         {
             if (ModelState.IsValid)
             {
                 product.ProductId = Guid.NewGuid();
+                product.Active = true;
+                product.LastUpdateId = User.Identity?.Name;
+                product.LastUpdateDateTime = DateTime.Now;
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context, product.CategoryId);
+            ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context, product.OptionalCategoryId);
+            ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context, product.ExcludeCategoryId);
             return View(product);
         }
 
@@ -81,6 +102,9 @@ namespace CFAPInventoryView.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context, product.CategoryId);
+            ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context, product.OptionalCategoryId);
+            ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context, product.ExcludeCategoryId);
             return View(product);
         }
 
@@ -88,8 +112,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Description,Expires,ExpirationDate,PurchaseDate,Quantity,SafeStockLevel,Price,Barcode")] Product product)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,Name,Description,Expires,ExpirationDate,PurchaseDate,Quantity,SafeStockLevel,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId,Active")] Product product)
         {
             if (id != product.ProductId)
             {
@@ -100,6 +123,8 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
+                    product.LastUpdateId = User.Identity?.Name;
+                    product.LastUpdateDateTime = DateTime.Now;
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -116,6 +141,9 @@ namespace CFAPInventoryView.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context, product.CategoryId);
+            ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context, product.OptionalCategoryId);
+            ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context, product.ExcludeCategoryId);
             return View(product);
         }
 
@@ -127,8 +155,12 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.ProductId == id);
+            var product = await _context.Products.AsNoTracking()
+                                                 .Include(p => p.Category)
+                                                 .Include(p => p.OptionalCategory)
+                                                 .Include(p => p.ExcludeCategory)
+                                                 .DefaultIfEmpty()
+                                                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {
                 return NotFound();
@@ -139,7 +171,6 @@ namespace CFAPInventoryView.Controllers
 
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.Products == null)

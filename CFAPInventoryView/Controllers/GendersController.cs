@@ -55,12 +55,14 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Description")] Gender gender)
         {
             if (ModelState.IsValid)
             {
                 gender.GenderId = Guid.NewGuid();
+                gender.Active = true;
+                gender.LastUpdateId = User.Identity?.Name;
+                gender.LastUpdateDateTime = DateTime.Now;
                 _context.Add(gender);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,8 +90,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Description")] Gender gender)
+        public async Task<IActionResult> Edit(Guid id, [Bind("GenderId,Description,Active")] Gender gender)
         {
             if (id != gender.GenderId)
             {
@@ -100,6 +101,8 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
+                    gender.LastUpdateId = User.Identity?.Name;
+                    gender.LastUpdateDateTime = DateTime.Now;
                     _context.Update(gender);
                     await _context.SaveChangesAsync();
                 }
@@ -139,7 +142,6 @@ namespace CFAPInventoryView.Controllers
 
         // POST: Genders/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.Genders == null)
