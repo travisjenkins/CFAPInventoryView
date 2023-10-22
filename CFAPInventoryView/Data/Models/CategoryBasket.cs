@@ -12,8 +12,7 @@ namespace CFAPInventoryView.Data.Models
         [Required]
         public Guid BasketId { get; set; }
 
-        [Required]
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
 
         public Guid? OptionalCategoryId { get; set; }
 
@@ -29,12 +28,12 @@ namespace CFAPInventoryView.Data.Models
         public DateTime LastUpdateDateTime { get; set; }
 
         [Display(Name = "Category")]
-        public virtual Category Category { get; set; } = null!;
+        public virtual Category? Category { get; set; }
 
         [Display(Name = "Optional Category")]
-        public virtual OptionalCategory OptionalCategory { get; set; } = null!;
+        public virtual OptionalCategory? OptionalCategory { get; set; }
 
         [Display(Name = "Exclude Category")]
-        public virtual ExcludeCategory ExcludeCategory { get; set; } = null!;
+        public virtual ExcludeCategory? ExcludeCategory { get; set; }
     }
 }

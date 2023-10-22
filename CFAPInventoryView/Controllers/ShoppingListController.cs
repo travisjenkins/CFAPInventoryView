@@ -1,39 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using CFAPInventoryView.Data;
+﻿using CFAPInventoryView.Data;
 using CFAPInventoryView.Data.Models;
 using CFAPInventoryView.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Policy;
 
 namespace CFAPInventoryView.Controllers
 {
-    public class BasketsController : Controller
+    public class ShoppingListController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BasketsController(ApplicationDbContext context)
+        public ShoppingListController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Baskets
+        // GET: ShoppingList
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Baskets.AsNoTracking()
-                                                       .Include(b => b.AgeGroup)
-                                                       .Include(b => b.Ethnicity)
-                                                       .Include(b => b.Gender)
-                                                       .DefaultIfEmpty()
-                                                       .OrderBy(b => b.AgeGroup.Description);
-
-            return View(await applicationDbContext.ToListAsync());
+            return _context.CategoryBaskets != null ?
+                        View(await _context.Baskets.AsNoTracking()
+                                                   .Include(b => b.AgeGroup)
+                                                   .Include(b => b.Ethnicity)
+                                                   .Include(b => b.Gender)
+                                                   .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                   .DefaultIfEmpty()
+                                                   .OrderBy(b => b.AgeGroup.Description)
+                                                   .ThenBy(b => b.DateAssembled)
+                                                   .ToListAsync()) :
+                        Problem("Entity set 'Baskets' is null.");
         }
 
-        // GET: Baskets/Details/5
+        // GET: ShoppingList/Detials/1
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.Baskets == null)
@@ -45,9 +44,9 @@ namespace CFAPInventoryView.Controllers
                                                .Include(b => b.AgeGroup)
                                                .Include(b => b.Ethnicity)
                                                .Include(b => b.Gender)
+                                               .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
                                                .DefaultIfEmpty()
-                                               .FirstOrDefaultAsync(m => m.BasketId == id);
-
+                                               .FirstOrDefaultAsync(b => b.BasketId == id);
             if (basket == null)
             {
                 return NotFound();
@@ -56,7 +55,7 @@ namespace CFAPInventoryView.Controllers
             return View(basket);
         }
 
-        // GET: Baskets/Create
+        // GET: ShoppingList/Create
         public async Task<IActionResult> Create()
         {
             ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context);
@@ -68,17 +67,17 @@ namespace CFAPInventoryView.Controllers
             return View();
         }
 
-        // POST: Baskets/Create
+        // POST: ShoppingList/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        // TODO: Pass in selected Id's products.
+        // TODO: Pass in selected Id's for category, optional category, and exclude category.
         [HttpPost]
         public async Task<IActionResult> Create([Bind("AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel")] Basket basket)
         {
             if (ModelState.IsValid)
             {
                 basket.BasketId = Guid.NewGuid();
-                // TODO: Add selected products to ProductBasket collection
+                // TODO: Add selected categories to CategoryBasket collection
                 basket.Active = true;
                 basket.LastUpdateId = User.Identity?.Name;
                 basket.LastUpdateDateTime = DateTime.Now;
@@ -86,16 +85,16 @@ namespace CFAPInventoryView.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
-            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
-            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
+            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context);
+            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context);
+            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context);
             ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context);
             ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context);
             ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context);
             return View(basket);
         }
 
-        // GET: Baskets/Edit/5
+        // GET: ShoppingList/Edit/1
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.Baskets == null)
@@ -103,29 +102,24 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var basket = await _context.Baskets.Include(b => b.AgeGroup)
-                                               .Include(b => b.Ethnicity)
-                                               .Include(b => b.Gender)
-                                               .DefaultIfEmpty()
-                                               .FirstOrDefaultAsync(m => m.BasketId == id);
-
+            var basket = await _context.Baskets.FindAsync(id);
             if (basket == null)
             {
                 return NotFound();
             }
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
-            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
-            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
+            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context);
+            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context);
+            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context);
             ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context);
             ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context);
             ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context);
             return View(basket);
         }
 
-        // POST: Baskets/Edit/5
+        // POST: ShoppingList/Edit/1
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        // TODO: Pass in selected Id's for products.
+        // TODO: Pass in selected Id's for category, optional category, and exclude category.
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, [Bind("BasketId,AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel,Active")] Basket basket)
         {
@@ -138,7 +132,7 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
-                    // TODO: Add/Delete products in ProductBasket collection
+                    // TODO: Add/Delete categories in CategoryBasket collection
                     basket.LastUpdateId = User.Identity?.Name;
                     basket.LastUpdateDateTime = DateTime.Now;
                     _context.Update(basket);
@@ -157,16 +151,16 @@ namespace CFAPInventoryView.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
-            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
-            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
+            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context);
+            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context);
+            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context);
             ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context);
             ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context);
             ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context);
             return View(basket);
         }
 
-        // GET: Baskets/Delete/5
+        // GET: ShoppingList/Delete/1
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.Baskets == null)
@@ -178,9 +172,9 @@ namespace CFAPInventoryView.Controllers
                                                .Include(b => b.AgeGroup)
                                                .Include(b => b.Ethnicity)
                                                .Include(b => b.Gender)
+                                               .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
                                                .DefaultIfEmpty()
-                                               .FirstOrDefaultAsync(m => m.BasketId == id);
-
+                                               .FirstOrDefaultAsync(b => b.BasketId == id);
             if (basket == null)
             {
                 return NotFound();
@@ -189,7 +183,7 @@ namespace CFAPInventoryView.Controllers
             return View(basket);
         }
 
-        // POST: Baskets/Delete/5
+        // POST: ShoppingList/Delete/1
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
@@ -202,14 +196,14 @@ namespace CFAPInventoryView.Controllers
             {
                 _context.Baskets.Remove(basket);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BasketExists(Guid id)
         {
-          return (_context.Baskets?.Any(e => e.BasketId == id)).GetValueOrDefault();
+            return (_context.Baskets?.Any(e => e.BasketId == id)).GetValueOrDefault();
         }
     }
 }
