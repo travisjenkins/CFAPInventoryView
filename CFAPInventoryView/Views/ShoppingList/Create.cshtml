@@ -3,3 +3,119 @@
 @{
     ViewData["Title"] = "Create";
 }
+
+<h1>Create</h1>
+
+<h4>Basket</h4>
+<hr />
+<div class="row mb-3">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-floating mb-3">
+                        <select asp-for="AgeGroupId" class="form-select" asp-items="ViewBag.AgeGroupsSelectList">
+                            <option value="@null">Select...</option>
+                        </select>
+                        <label asp-for="AgeGroupId"></label>
+                        <span asp-validation-for="AgeGroupId" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select asp-for="EthnicityId" class="form-select" asp-items="ViewBag.EthnicitiesSelectList">
+                            <option value="@null">Select...</option>
+                        </select>
+                        <label asp-for="EthnicityId"></label>
+                        <span asp-validation-for="EthnicityId" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select asp-for="GenderId" class="form-select" asp-items="ViewBag.GendersSelectList">
+                            <option value="@null">Select...</option>
+                        </select>
+                        <label asp-for="GenderId"></label>
+                        <span asp-validation-for="GenderId" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="DateAssembled" class="form-control" aria-required="true" placeholder="date assembled" />
+                        <label asp-for="DateAssembled" class="control-label"></label>
+                        <span asp-validation-for="DateAssembled" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Quantity" class="form-control" min="1" max="1000" aria-required="true" placeholder="quantity" />
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="SafeStockLevel" class="form-control" min="1" max="1000" aria-required="true" placeholder="safe stock level" />
+                        <label asp-for="SafeStockLevel" class="control-label"></label>
+                        <span asp-validation-for="SafeStockLevel" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Categories</h4>
+                    <div class="form-check form-switch">
+                    @{
+                        List<AssignedCategoryViewModel>? assignedCategories = ViewBag.Categories as List<AssignedCategoryViewModel>;
+                        if (assignedCategories is not null)
+                        {
+                            @foreach (var category in assignedCategories)
+                            {
+                                <input type="checkbox" class="form-check-input" role="switch" name="assignedCategories" value="@category.CategoryId" @(category.Assigned ? "checked='true'" : "") />
+                                <label class="form-check-label">@category.Name</label>
+                            }
+                        }
+                    }
+                    </div>
+                </div>
+                <div class="col-md-4 my-sm-3">
+                    <h4>Optional Categories</h4>
+                    <div class="form-check form-switch">
+                    @{
+                        List<AssignedCategoryViewModel>? assignedOptionalCategories = ViewBag.OptionalCategories as List<AssignedCategoryViewModel>;
+                        if (assignedOptionalCategories is not null)
+                        {
+                            foreach (var category in assignedOptionalCategories)
+                            {
+                                <input type="checkbox" class="form-check-input" role="switch" name="assignedCategories" value="@category.CategoryId" @(category.Assigned ? "checked='true'" : "") />
+                                <label class="form-check-label">@category.Name</label>
+                            }
+                        }
+                    }
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4>Exclude Categories</h4>
+                    <div class="form-check form-switch">
+                    @{
+                        List<AssignedCategoryViewModel>? assignedExcludeCategories = ViewBag.ExcludeCategories as List<AssignedCategoryViewModel>;
+                        if (assignedExcludeCategories is not null)
+                        {
+                            foreach (var category in assignedExcludeCategories)
+                            {
+                                <input type="checkbox" class="form-check-input" role="switch" name="assignedCategories" value="@category.CategoryId" @(category.Assigned ? "checked='true'" : "") />
+                                <label class="form-check-label">@category.Name</label>
+                            }
+                        }
+                    }
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-outline-primary" />
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
