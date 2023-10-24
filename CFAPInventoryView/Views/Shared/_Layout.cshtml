@@ -35,6 +35,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-controller="Baskets" asp-action="Index">Baskets</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="ShoppingList" asp-action="Index">iBelong Shopping List</a>
+                            </li>
                         }
                         @if (User.IsInRole(HelperMethods.AdministratorRole) || User.IsInRole(HelperMethods.ManagerRole))
                         {

@@ -47,11 +47,11 @@ namespace CFAPInventoryView.Data.Models
         public DateTime LastUpdateDateTime { get; set; }
 
         [Display(Name = "Age Group")]
-        public virtual AgeGroup AgeGroup { get; set; } = null!;
+        public virtual AgeGroup? AgeGroup { get; set; }
 
-        public virtual Ethnicity Ethnicity { get; set; } = null!;
+        public virtual Ethnicity? Ethnicity { get; set; }
 
-        public virtual Gender Gender { get; set; } = null!;
+        public virtual Gender? Gender { get; set; }
 
         [Display(Name = "iBelong Basket")]
         public virtual ICollection<ProductBasket>? ProductBaskets { get; set; }

@@ -3,3 +3,85 @@
 @{
     ViewData["Title"] = "Details";
 }
+
+<h1>Details</h1>
+
+<div>
+    <h4>iBelong Basket Shopping List</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AgeGroupId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AgeGroup.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EthnicityId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ethnicity.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GenderId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Gender.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SafeStockLevel)
+        </dd>
+        <dt class="col-sm-2">
+            Include Categories
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var categoryBaskets = Model.CategoryBaskets.Where(cb => cb.CategoryId != null);
+                if (categoryBaskets is not null)
+                {
+                    foreach (var item in categoryBaskets)
+                    {
+                        <div class="row">@Html.DisplayFor(modelItem => item.Category.Name)</div>
+                    }
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Optional Categories
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var optionalCategoryBaskets = Model.CategoryBaskets.Where(cb => cb.OptionalCategoryId != null);
+                if (optionalCategoryBaskets is not null)
+                {
+                    foreach (var item in optionalCategoryBaskets)
+                    {
+                        <div class="row">@Html.DisplayFor(modelItem => item.OptionalCategory.Name)</div>
+                    }
+                }
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Exclude Categories
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var excludeCategoryBaskets = Model.CategoryBaskets.Where(cb => cb.ExcludeCategoryId != null);
+                if (excludeCategoryBaskets is not null)
+                {
+                    foreach (var item in excludeCategoryBaskets)
+                    {
+                        <div class="row">@Html.DisplayFor(modelItem => item.ExcludeCategory.Name)</div>
+                    }
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div class="mt-2">
+    <a asp-action="Edit" asp-route-id="@Model?.BasketId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
