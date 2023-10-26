@@ -44,7 +44,7 @@
                 {
                     foreach (var item in categoryBaskets)
                     {
-                        <div class="row">@Html.DisplayFor(modelItem => item.Category.Name)</div>
+                        <div>@Html.DisplayFor(modelItem => item.Category.Name)</div>
                     }
                 }
             }
@@ -59,7 +59,7 @@
                 {
                     foreach (var item in optionalCategoryBaskets)
                     {
-                        <div class="row">@Html.DisplayFor(modelItem => item.OptionalCategory.Name)</div>
+                        <div>@Html.DisplayFor(modelItem => item.OptionalCategory.Name)</div>
                     }
                 }
             }
@@ -74,10 +74,22 @@
                 {
                     foreach (var item in excludeCategoryBaskets)
                     {
-                        <div class="row">@Html.DisplayFor(modelItem => item.ExcludeCategory.Name)</div>
+                        <div>@Html.DisplayFor(modelItem => item.ExcludeCategory.Name)</div>
                     }
                 }
             }
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateDateTime)
         </dd>
     </dl>
 </div>

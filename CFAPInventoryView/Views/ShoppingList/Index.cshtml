@@ -37,9 +37,12 @@
 
             @if (item.CategoryBaskets is not null)
             {
+                var orderedCategoryBasket = item.CategoryBaskets.Where(cb => cb.CategoryId != null).OrderBy(cb => cb.Category.Name).ToList();
+                var orderedOptionalCategoryBasket = item.CategoryBaskets.Where(cb => cb.OptionalCategoryId != null).OrderBy(cb => cb.OptionalCategory.Name).ToList();
+                var orderedExcludeCategoryBasket = item.CategoryBaskets.Where(cb => cb.ExcludeCategoryId != null).OrderBy(cb => cb.ExcludeCategory.Name).ToList();
                 <td class="text-start">
                     <ul>
-                    @foreach (var categoryBasket in item.CategoryBaskets)
+                    @foreach (var categoryBasket in orderedCategoryBasket)
                     {
                         if (categoryBasket.CategoryId is not null)
                         {
@@ -50,7 +53,7 @@
                 </td>
                 <td>
                     <ul>
-                    @foreach (var categoryBasket in item.CategoryBaskets)
+                    @foreach (var categoryBasket in orderedOptionalCategoryBasket)
                     {
                         if (categoryBasket.OptionalCategoryId is not null)
                         {
@@ -61,7 +64,7 @@
                 </td>
                 <td>
                     <ul>
-                    @foreach (var categoryBasket in item.CategoryBaskets)
+                    @foreach (var categoryBasket in orderedExcludeCategoryBasket)
                     {
                         if (categoryBasket.ExcludeCategoryId is not null)
                         {

@@ -4,8 +4,6 @@ using CFAPInventoryView.Models;
 using CFAPInventoryView.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Security.Policy;
 
 namespace CFAPInventoryView.Controllers
 {
@@ -178,31 +176,44 @@ namespace CFAPInventoryView.Controllers
                     }
                     else
                     {
-                        List<Guid> categoryIdsToAdd = new();
-                        List<Guid> optionalCategoryIdsToAdd = new();
-                        List<Guid> excludeCategoryIdsToAdd = new();
-                        if (assignedCategories is not null && assignedCategories.Count > 0)
+                        // 1. Get current Categories, OptionalCategories, and ExcludeCategories from DB
+                        var currentAssignedCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.CategoryId != null).ToListAsync();
+                        var currentAssignedOptionalCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.OptionalCategoryId != null).ToListAsync();
+                        var currentAssignedExcludeCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.ExcludeCategoryId != null).ToListAsync();
+                        
+                        // 2. Get the Ids
+                        var currentAssignedCategoryIds = currentAssignedCategories.Select(cb => cb.CategoryId).ToList();
+                        var currentAssignedOptionalCategoryIds = currentAssignedOptionalCategories.Select(cb => cb.OptionalCategoryId).ToList();
+                        var currentAssignedExcludeCategoryIds = currentAssignedExcludeCategories.Select( cb => cb.ExcludeCategoryId).ToList();
+                        
+                        // 3. Get the Ids to add
+                        var categoryIdsToAdd = assignedCategories?.Where(id => !currentAssignedCategoryIds.Contains(id)).ToList();
+                        var optionalCategoryIdsToAdd = assignedOptionalCategories?.Where(id => !currentAssignedOptionalCategoryIds.Contains(id)).ToList();
+                        var excludeCategoryIdsToAdd = assignedExcludeCategories?.Where(id => !currentAssignedExcludeCategoryIds.Contains(id)).ToList();
+
+                        // 4. Get the Ids to delete
+                        var categoriesToDelete = currentAssignedCategoryIds.Where(cb => !assignedCategories.Contains((Guid)cb)).ToList();
+                        var optionalCategoriesToDelete = currentAssignedOptionalCategoryIds.Where(cb => !assignedOptionalCategories.Contains((Guid)cb)).ToList();
+                        var excludeCategoriesToDelete = currentAssignedExcludeCategoryIds.Where(cb => !assignedExcludeCategories.Contains((Guid)cb)).ToList();
+                        
+                        // 5. Delete
+                        if (categoriesToDelete?.Count > 0 || optionalCategoriesToDelete?.Count > 0 || excludeCategoriesToDelete?.Count > 0)
                         {
-                            categoryIdsToAdd.AddRange(assignedCategories);
-                        }
-                        if (assignedOptionalCategories is not null && assignedOptionalCategories.Count > 0)
-                        {
-                            optionalCategoryIdsToAdd.AddRange(assignedOptionalCategories);
-                        }
-                        if (assignedExcludeCategories is not null && assignedExcludeCategories.Count > 0)
-                        {
-                            excludeCategoryIdsToAdd.AddRange(assignedExcludeCategories);
+                            await DeleteCategoriesForBasket(
+                                                        id,
+                                                        currentAssignedCategories,
+                                                        currentAssignedOptionalCategories,
+                                                        currentAssignedExcludeCategories,
+                                                        categoriesToDelete,
+                                                        optionalCategoriesToDelete,
+                                                        excludeCategoriesToDelete
+                                                        );
                         }
                         
-                        var categoriesToDelete = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && !categoryIdsToAdd.Contains((Guid)cb.CategoryId)).Select(cb => cb.CategoryId).ToListAsync();
-                        var optionalCategoriesToDelete = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && !optionalCategoryIdsToAdd.Contains((Guid)cb.OptionalCategoryId)).Select(cb => cb.OptionalCategoryId).ToListAsync();
-                        var excludeCategoriesToDelete = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && !excludeCategoryIdsToAdd.Contains((Guid)cb.ExcludeCategoryId)).Select(cb => cb.ExcludeCategoryId).ToListAsync();
-
-                        await DeleteCategoriesForBasket(id, categoriesToDelete, optionalCategoriesToDelete, excludeCategoriesToDelete);
-
-                        if (categoryIdsToAdd.Count > 0)
+                        // 6. Add
+                        if (categoryIdsToAdd?.Count > 0 || optionalCategoryIdsToAdd?.Count > 0 || excludeCategoryIdsToAdd?.Count > 0)
                         {
-                            await AddBasketCategories(id, assignedCategories, assignedOptionalCategories, assignedExcludeCategories);
+                            await AddBasketCategories(id, categoryIdsToAdd, optionalCategoryIdsToAdd, excludeCategoryIdsToAdd);
                         }
                     }
                     return RedirectToAction(nameof(Index));
@@ -429,7 +440,7 @@ namespace CFAPInventoryView.Controllers
             
         }
 
-        private async Task DeleteCategoriesForBasket(Guid id, List<Guid?>? categoriesToDelete = null, List<Guid?>? optionalCategoriesToDelete = null, List<Guid?>? excludeCategoriesToDelete = null)
+        private async Task DeleteCategoriesForBasket(Guid id, List<CategoryBasket>? assignedCategories = null, List<CategoryBasket>? assignedOptionalCategories = null, List<CategoryBasket>? assignedExcludeCategories = null, List<Guid?>? categoriesToDelete = null, List<Guid?>? optionalCategoriesToDelete = null, List<Guid?>? excludeCategoriesToDelete = null)
         {
             List<CategoryBasket>? categoryBaskets = null;
             if (categoriesToDelete is null && optionalCategoriesToDelete is null && excludeCategoriesToDelete is null)
@@ -439,30 +450,66 @@ namespace CFAPInventoryView.Controllers
             if (categoriesToDelete is not null && categoriesToDelete.Count > 0)
             {
                 var basketCategories = new HashSet<Guid?>(categoriesToDelete);
-                categoryBaskets = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && basketCategories.Contains(cb.CategoryId)).ToListAsync();
+                if (assignedCategories is not null)
+                {
+                    categoryBaskets = assignedCategories.Where(cb => cb.BasketId == id && basketCategories.Contains(cb.CategoryId)).ToList();
+                }
+                else
+                {
+                    categoryBaskets = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && basketCategories.Contains(cb.CategoryId)).ToListAsync();
+                }
             }
             if (optionalCategoriesToDelete is not null && optionalCategoriesToDelete.Count > 0)
             {
                 var optionalCategories = new HashSet<Guid?>(optionalCategoriesToDelete);
-                if (categoryBaskets is not null)
+                if (assignedOptionalCategories is not null)
                 {
-                    categoryBaskets.AddRange(await _context.CategoryBaskets.Where(cb => cb.BasketId == id && optionalCategories.Contains(cb.OptionalCategoryId)).ToListAsync());
+                    if (categoryBaskets is not null)
+                    {
+                        categoryBaskets.AddRange(assignedOptionalCategories.Where(cb => cb.BasketId == id && optionalCategories.Contains(cb.OptionalCategoryId)).ToList());
+                    }
+                    else
+                    {
+                        categoryBaskets = assignedOptionalCategories.Where(cb => cb.BasketId == id && optionalCategories.Contains(cb.OptionalCategoryId)).ToList();
+                    }
                 }
                 else
                 {
-                    categoryBaskets = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && optionalCategories.Contains(cb.OptionalCategoryId)).ToListAsync();
+                    if (categoryBaskets is not null)
+                    {
+                        categoryBaskets.AddRange(await _context.CategoryBaskets.Where(cb => cb.BasketId == id && optionalCategories.Contains(cb.OptionalCategoryId)).ToListAsync());
+                    }
+                    else
+                    {
+                        categoryBaskets = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && optionalCategories.Contains(cb.OptionalCategoryId)).ToListAsync();
+                    }
                 }
             }
             if (excludeCategoriesToDelete is not null && excludeCategoriesToDelete.Count > 0)
             {
-                var excludeCategories = new HashSet<Guid?>(excludeCategoriesToDelete);
-                if (categoryBaskets is not null)
+                if (assignedExcludeCategories is not null)
                 {
-                    categoryBaskets.AddRange(await _context.CategoryBaskets.Where(cb => cb.BasketId == id && excludeCategories.Contains(cb.ExcludeCategoryId)).ToListAsync());
+                    var excludeCategories = new HashSet<Guid?>(excludeCategoriesToDelete);
+                    if (categoryBaskets is not null)
+                    {
+                        categoryBaskets.AddRange(assignedExcludeCategories.Where(cb => cb.BasketId == id && excludeCategories.Contains(cb.ExcludeCategoryId)).ToList());
+                    }
+                    else
+                    {
+                        categoryBaskets = assignedExcludeCategories.Where(cb => cb.BasketId == id && excludeCategories.Contains(cb.ExcludeCategoryId)).ToList();
+                    }
                 }
-                else
+                else 
                 {
-                    categoryBaskets = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && excludeCategories.Contains(cb.ExcludeCategoryId)).ToListAsync();
+                    var excludeCategories = new HashSet<Guid?>(excludeCategoriesToDelete);
+                    if (categoryBaskets is not null)
+                    {
+                        categoryBaskets.AddRange(await _context.CategoryBaskets.Where(cb => cb.BasketId == id && excludeCategories.Contains(cb.ExcludeCategoryId)).ToListAsync());
+                    }
+                    else
+                    {
+                        categoryBaskets = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && excludeCategories.Contains(cb.ExcludeCategoryId)).ToListAsync();
+                    }
                 }
             }
             if (categoryBaskets is not null && categoryBaskets.Count > 0)
