@@ -4,11 +4,143 @@
     ViewData["Title"] = "iBelong Basket Shopping List";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center text-lg-start">@ViewData["Title"]</h1>
 
-<p>
+<p class="text-center text-lg-start">
     <a asp-action="Create">Create New</a>
 </p>
+<div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.AgeGroupId)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.EthnicityId)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.GenderId)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.Quantity)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.DateAssembled)</div>
+    <div class="col-lg-2">Include</div>
+    <div class="col-lg-2">Optional</div>
+    <div class="col-lg-2">Exclude</div>
+    <div class="col-lg-1"></div>
+</div>
+@if (Model is not null && Model.ElementAt(0) is not null)
+{
+    @foreach (var item in Model)
+    {
+        <div class="row text-start text-lg-center">
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.AgeGroupId):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.AgeGroup.Description)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.AgeGroup.Description)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.EthnicityId):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Ethnicity.Description)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Ethnicity.Description)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.GenderId)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Gender.Description)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Gender.Description)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Quantity):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Quantity)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Quantity)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DateAssembled):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.DateAssembled)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DateAssembled)</div>
+            @if (item.CategoryBaskets is not null)
+            {
+                var orderedCategoryBasket = item.CategoryBaskets.Where(cb => cb.CategoryId != null && cb.Active).OrderBy(cb => cb.Category.Name).ToList();
+                var orderedOptionalCategoryBasket = item.CategoryBaskets.Where(cb => cb.OptionalCategoryId != null && cb.Active).OrderBy(cb => cb.OptionalCategory.Name).ToList();
+                var orderedExcludeCategoryBasket = item.CategoryBaskets.Where(cb => cb.ExcludeCategoryId != null && cb.Active).OrderBy(cb => cb.ExcludeCategory.Name).ToList();
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">Include:</div>
+                    <div class="col text-start">
+                        <ul>
+                            @foreach (var categoryBasket in orderedCategoryBasket)
+                            {
+                                if (categoryBasket.CategoryId is not null)
+                                {
+                                    <li>@Html.DisplayFor(modelItem => categoryBasket.Category.Name)</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 text-start d-none d-lg-inline-block">
+                    <ul>
+                        @foreach (var categoryBasket in orderedCategoryBasket)
+                        {
+                            if (categoryBasket.CategoryId is not null)
+                            {
+                                <li>@Html.DisplayFor(modelItem => categoryBasket.Category.Name)</li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">Optional:</div>
+                    <div class="col text-start">
+                        <ul>
+                            @foreach (var categoryBasket in orderedOptionalCategoryBasket)
+                            {
+                                if (categoryBasket.OptionalCategoryId is not null)
+                                {
+                                    <li>@Html.DisplayFor(modelItem => categoryBasket.OptionalCategory.Name)</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 text-start d-none d-lg-inline-block">
+                    <ul>
+                        @foreach (var categoryBasket in orderedOptionalCategoryBasket)
+                        {
+                            if (categoryBasket.OptionalCategoryId is not null)
+                            {
+                                <li>@Html.DisplayFor(modelItem => categoryBasket.OptionalCategory.Name)</li>
+                            }
+                        }
+                    </ul>
+                </div>
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">Exclude:</div>
+                    <div class="col text-start">
+                        <ul>
+                            @foreach (var categoryBasket in orderedExcludeCategoryBasket)
+                            {
+                                if (categoryBasket.ExcludeCategoryId is not null)
+                                {
+                                    <li>@Html.DisplayFor(modelItem => categoryBasket.ExcludeCategory.Name)</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 text-start d-none d-lg-inline-block">
+                    <ul>
+                        @foreach (var categoryBasket in orderedExcludeCategoryBasket)
+                        {
+                            if (categoryBasket.ExcludeCategoryId is not null)
+                            {
+                                <li>@Html.DisplayFor(modelItem => categoryBasket.ExcludeCategory.Name)</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
+            <div class="col-lg-1 text-center">
+                <a asp-action="Edit" asp-route-id="@item.BasketId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BasketId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BasketId">Delete</a>
+            </div>
+        </div>
+    }
+}
+
+<!-- Unresponsive table design for demo -->
 <table class="table table-striped text-center">
     <thead>
         <tr>

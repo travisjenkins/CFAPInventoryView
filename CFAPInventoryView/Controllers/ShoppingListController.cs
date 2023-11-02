@@ -231,6 +231,7 @@ namespace CFAPInventoryView.Controllers
                     }
                 }
             }
+            // Something failed. Redisplay the page with user provided values.
             ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
             ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
             ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
@@ -440,7 +441,13 @@ namespace CFAPInventoryView.Controllers
             
         }
 
-        private async Task DeleteCategoriesForBasket(Guid id, List<CategoryBasket>? assignedCategories = null, List<CategoryBasket>? assignedOptionalCategories = null, List<CategoryBasket>? assignedExcludeCategories = null, List<Guid?>? categoriesToDelete = null, List<Guid?>? optionalCategoriesToDelete = null, List<Guid?>? excludeCategoriesToDelete = null)
+        private async Task DeleteCategoriesForBasket(Guid id, 
+                                                     List<CategoryBasket>? assignedCategories = null, 
+                                                     List<CategoryBasket>? assignedOptionalCategories = null, 
+                                                     List<CategoryBasket>? assignedExcludeCategories = null, 
+                                                     List<Guid?>? categoriesToDelete = null, 
+                                                     List<Guid?>? optionalCategoriesToDelete = null, 
+                                                     List<Guid?>? excludeCategoriesToDelete = null)
         {
             List<CategoryBasket>? categoryBaskets = null;
             if (categoriesToDelete is null && optionalCategoriesToDelete is null && excludeCategoriesToDelete is null)
