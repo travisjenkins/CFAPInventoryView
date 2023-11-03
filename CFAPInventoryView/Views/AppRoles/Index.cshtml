@@ -4,51 +4,67 @@
     ViewData["Title"] = "Application Roles";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center text-lg-start">@ViewData["Title"]</h1>
 
 <div asp-validation-summary="All" class="text-danger"></div>
-@if (Model.ElementAtOrDefault(0) is not null)
+<div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+    <div class="col-lg-3">@HelperMethods.DisplaySafeString(Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName))</div>
+    <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.FirstName)</div>
+    <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastName)</div>
+    <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).AssignedRoles)</div>
+    <div class="col-lg-3"></div>
+</div>
+@if (Model is not null && Model.ElementAt(0) is not null)
 {
-    <table class="table table-striped text-center">
-        <thead>
-            <tr>
-                <th class="text-start">@HelperMethods.DisplaySafeString(Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName))</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.FirstName)</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastName)</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).AssignedRoles)</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                if (item.ApplicationUser is not null)
-                {
-                    <tr>
-                        <td class="text-start align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</td>
-                        <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.FirstName)</td>
-                        <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.LastName)</td>
-                        <td class="align-middle">
-                            @foreach (var role in item.AssignedRoles ??= new List<string>())
-                            {
-                                <div>@Html.DisplayFor(modelRole => role)</div>
-                            }
-                        </td>
-                        <td>
-                            <form asp-action="Promote" method="post" class="d-inline">
-                                <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
-                                <button class="btn btn-link" type="submit">Promote</button>|
-                            </form>
-                            <form asp-action="Demote" method="post" class="d-inline">
-                                <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
-                                <button class="btn btn-link link-danger" type="submit">Demote</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+    @foreach (var item in Model)
+    {
+        @if (item.ApplicationUser is not null)
+        {
+            <div class="row text-start text-lg-center">
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@HelperMethods.DisplaySafeString(Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName)):</div>
+                    <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</div>
+                </div>
+                <div class="col-lg-3 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</div>
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.FirstName):</div>
+                    <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.FirstName)</div>
+                </div>
+                <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.FirstName)</div>
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastName):</div>
+                    <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.LastName)</div>
+                </div>
+                <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.LastName)</div>
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).AssignedRoles):</div>
+                    <div class="col text-start">
+                        @foreach (var role in item.AssignedRoles ??= new List<string>())
+                        {
+                            <div>@Html.DisplayFor(modelRole => role)</div>
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-2 d-none d-lg-inline-block">
+                    @foreach (var role in item.AssignedRoles ??= new List<string>())
+                    {
+                        <div>@Html.DisplayFor(modelRole => role)</div>
+                    }
+                </div>
+                <div class="col-lg-3 text-center">
+                    <form asp-action="Promote" method="post" class="d-inline">
+                        <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
+                        <button class="btn btn-link" type="submit">Promote</button>|
+                    </form>
+                    <form asp-action="Demote" method="post" class="d-inline">
+                        <input type="hidden" name="userId" value="@item.ApplicationUser?.Id" />
+                        <button class="btn btn-link link-danger" type="submit">Demote</button>
+                    </form>
+                </div>
+                <hr />
+            </div>
+        }
+    }
 }
 else
 {

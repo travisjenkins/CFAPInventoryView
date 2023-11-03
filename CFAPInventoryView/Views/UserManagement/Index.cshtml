@@ -4,59 +4,82 @@
     ViewData["Title"] = "User Management";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center text-lg-start">@ViewData["Title"]</h1>
 
 <div asp-validation-summary="All" class="text-danger"></div>
-@if (Model.ElementAtOrDefault(0) is not null)
+<div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+    <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName).SplitCamelAndPascalCase()</div>
+    <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.RegisteredOn)</div>
+    <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastLogin)</div>
+    <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.TwoFactorEnabled).SplitCamelAndPascalCase()</div>
+    <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.AccessFailedCount).SplitCamelAndPascalCase()</div>
+    <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).IsLockedOut)</div>
+    <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).LockoutEndDate)</div>
+    <div class="col-lg"></div>
+</div>
+@if (Model is not null && Model.ElementAt(0) is not null)
 {
-    <table class="table table-striped text-center">
-        <thead>
-            <tr>
-                <th class="text-start">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName).SplitCamelAndPascalCase()</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.RegisteredOn)</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastLogin)</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.TwoFactorEnabled).SplitCamelAndPascalCase()</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.AccessFailedCount).SplitCamelAndPascalCase()</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).IsLockedOut)</th>
-                <th>@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).LockoutEndDate)</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+    @foreach (var item in Model)
+    {
+        if (item is not null)
+        {
+            if (item.ApplicationUser is not null)
             {
-                if (item is not null)
-                {
-                    @if (item.ApplicationUser is not null)
-                    {
-                        <tr>
-                            <td class="text-start align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</td>
-                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.RegisteredOn)</td>
-                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.LastLogin)</td>
-                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.TwoFactorEnabled)</td>
-                            <td class="align-middle">@Html.DisplayFor(modelItem => item.ApplicationUser.AccessFailedCount)</td>
-                            <td class="align-middle">@Html.DisplayFor(modelItem => item.IsLockedOut)</td>
-                            <td class="align-middle">@Html.DisplayFor(modelItem => item.LockoutEndDate)</td>
-                            <td>
-                                <form asp-action="LockUserAccount" method="post" class="d-inline">
-                                    <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
-                                    <button class="btn btn-link" type="submit">Lock</button>|
-                                </form>
-                                <form asp-action="UnlockUserAccount" method="post" class="d-inline">
-                                    <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
-                                    <button class="btn btn-link link-danger" type="submit">Unlock</button>|
-                                </form>
-                                <form asp-action="Delete" method="get" class="d-inline">
-                                    <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
-                                    <button class="btn btn-link" type="submit">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                }
+                <div class="row text-start text-lg-center">
+                    <div class="row row-cols-2 d-lg-none">
+                        <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName).SplitCamelAndPascalCase()</div>
+                        <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</div>
+                    </div>
+                    <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.UserName)</div>
+                    <div class="row row-cols-2 d-lg-none">
+                        <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.RegisteredOn)</div>
+                        <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.RegisteredOn)</div>
+                    </div>
+                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.RegisteredOn)</div>
+                    <div class="row row-cols-2 d-lg-none">
+                        <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastLogin)</div>
+                        <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.LastLogin)</div>
+                    </div>
+                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.LastLogin)</div>
+                    <div class="row row-cols-2 d-lg-none">
+                        <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.TwoFactorEnabled).SplitCamelAndPascalCase()</div>
+                        <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.TwoFactorEnabled)</div>
+                    </div>
+                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.TwoFactorEnabled)</div>
+                    <div class="row row-cols-2 d-lg-none">
+                        <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.AccessFailedCount).SplitCamelAndPascalCase()</div>
+                        <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.AccessFailedCount)</div>
+                    </div>
+                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.AccessFailedCount)</div>
+                    <div class="row row-cols-2 d-lg-none">
+                        <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).IsLockedOut)</div>
+                        <div class="col text-start">@Html.DisplayFor(modelItem => item.IsLockedOut)</div>
+                    </div>
+                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.IsLockedOut)</div>
+                    <div class="row row-cols-2 d-lg-none">
+                        <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).LockoutEndDate)</div>
+                        <div class="col text-start">@Html.DisplayFor(modelItem => item.LockoutEndDate)</div>
+                    </div>
+                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.LockoutEndDate)</div>
+                    <div class="col-lg text-center">
+                        <form asp-action="LockUserAccount" method="post">
+                            <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
+                            <button class="btn btn-link" type="submit">Lock</button>
+                        </form>
+                        <form asp-action="UnlockUserAccount" method="post">
+                            <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
+                            <button class="btn btn-link link-danger" type="submit">Unlock</button>
+                        </form>
+                        <form asp-action="Delete" method="get">
+                            <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
+                            <button class="btn btn-link" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                <hr />
             }
-        </tbody>
-    </table>
+        }
+    }
 }
 else
 {
