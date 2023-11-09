@@ -4,102 +4,74 @@
     ViewData["Title"] = "Products";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center text-lg-start">@ViewData["Title"]</h1>
 
-<p>
+<p class="text-center text-lg-start">
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-striped text-center">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Expires)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExpirationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PurchaseDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SafeStockLevel)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Barcode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OptionalCategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExcludeCategoryId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+
+<div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+    <div class="col-lg-2">@Html.DisplayNameFor(model => model.Name)</div>
+    <div class="col-lg-3">@Html.DisplayNameFor(model => model.Description)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.Expires)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.ExpirationDate)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.PurchaseDate)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.Quantity)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.SafeStockLevel)</div>
+    <div class="col-lg-1">@Html.DisplayNameFor(model => model.Price)</div>
+    <div class="col-lg-1"></div>
+</div>
 @if (Model is not null && Model.ElementAt(0) is not null)
 {
-    foreach (var item in Model)
+    @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Expires)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExpirationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PurchaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SafeStockLevel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Barcode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OptionalCategory.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExcludeCategory.Name)
-            </td>
-            <td>
+        <div class="row text-start text-lg-center">
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Name):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Name)</div>
+            </div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Name)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Description):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Description)</div>
+            </div>
+            <div class="col-lg-3 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Description)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Expires):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Expires)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Expires)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ExpirationDate):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.ExpirationDate)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ExpirationDate)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.PurchaseDate):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.PurchaseDate)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.PurchaseDate)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Quantity):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Quantity)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Quantity)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.SafeStockLevel):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.SafeStockLevel)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.SafeStockLevel)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Price):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Price)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Price)</div>
+            <div class="col-lg-1 text-center">
                 <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-            </td>
-        </tr>
+            </div>
+        </div>
+        <hr />
     }
 }
-    </tbody>
-</table>
