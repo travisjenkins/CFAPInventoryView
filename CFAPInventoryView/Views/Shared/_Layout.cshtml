@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,7 +22,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
@@ -43,6 +45,9 @@
                             </li>
                         }
                     </ul>
+                    <div class="navbar-nav text-lg-center @(SignInManager.IsSignedIn(User) ? "layout-page-title-loggedin" : "layout-page-title")">
+                        <h5 class="text-light">@ViewData["Title"]</h5>
+                    </div>
                     <partial name="_LoginPartial" />
                 </div>
             </div>

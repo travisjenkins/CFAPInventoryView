@@ -34,6 +34,14 @@ body {
     background-color: #425182;
 }
 
+.layout-page-title {
+    width: 14rem;
+}
+
+.layout-page-title-loggedin {
+    width: 11rem;
+}
+
 /* Home Page
 ----------------------------------------------------------- */
 .cfap-logo {

@@ -4,8 +4,6 @@
     ViewData["Title"] = "Application Roles";
 }
 
-<h1 class="text-center text-lg-start">@ViewData["Title"]</h1>
-
 <div asp-validation-summary="All" class="text-danger"></div>
 <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
     <div class="col-lg-3">@HelperMethods.DisplaySafeString(Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName))</div>
