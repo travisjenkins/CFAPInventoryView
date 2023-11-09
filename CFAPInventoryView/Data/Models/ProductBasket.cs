@@ -23,7 +23,6 @@ namespace CFAPInventoryView.Data.Models
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yy, h:mm tt}")]
         public DateTime LastUpdateDateTime { get; set; }
 
-        [Display(Name = "iBelong Basket")]
-        public virtual Basket Basket { get; set; } = null!;
+        public virtual Product Product { get; set; } = null!;
     }
 }

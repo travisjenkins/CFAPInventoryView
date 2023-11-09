@@ -1018,6 +1018,233 @@ namespace CFAPInventoryView.Data.Extensions
                         LastUpdateDateTime = DateTime.Now
                     }
                 );
+            modelBuilder.Entity<Product>().HasData(
+                    new Product
+                    {
+                        ProductId = new Guid("a4913d87-9305-4a4f-981f-09b0a226f753"),
+                        Name = "Pampers Baby Dry Diapers Size 1 (8-14 lb), 44 Count",
+                        Description = "Pampers baby-dry leakproof day & night diapers, size 1 (8-14 lb), 44 count, unisex.",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 9.97m,
+                        Quantity = 1,
+                        SafeStockLevel = 5,
+                        Active = true,
+                        CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("3e2d5eee-ebfc-4a86-9c9c-18049eccaeed"),
+                        Name = "Orthodontic Pacifiers (2 pk, girl, 0-2 month)",
+                        Description = "NUK newborn orthodontic pacifiers, girl, 0-2 months, 2-pack.",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 6.77m,
+                        Quantity = 4,
+                        SafeStockLevel = 4,
+                        Active = true,
+                        CategoryId = new Guid("d11d87e7-126c-4a3c-8125-b6a656d64fcc"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("dd6d4bec-20f1-4149-8f14-2141bad77e9b"),
+                        Name = "The Very Hungry Caterpillar (board book)",
+                        Description = "The Very Hungry Caterpillar, Board Book, English, 0-3 yrs, Infant-Toddler",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 8.78m,
+                        Quantity = 2,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("a809dfba-5e21-491e-ab19-5374a141fe88"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("d5b42185-f6f5-4d33-9c7d-392eadb5b1e6"),
+                        Name = "Baby Cotton Swaddle Blankets (0-3 months, 3-pk)",
+                        Description = "Gilquen baby organic cotton swaddle blankets for 0-3 months infant boys girls, adjustable newborn swaddles, 3-pack wrap set, twinkle & rainbow.",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 18.76m,
+                        Quantity = 1,
+                        SafeStockLevel = 2,
+                        Active = true,
+                        CategoryId = new Guid("65ea10fe-b443-4233-a48a-d8bd7896d244"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("9e0ef560-c184-46bb-9f57-45e295bf57b2"),
+                        Name = "Huggies Baby Wipes (scented, 3 pk, 168 ct)",
+                        Description = "Huggies natural care refreshing baby wipes, scented, (3 pk, 168 ct)",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 6.77m,
+                        Quantity = 5,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("06f703f4-dfbf-4fd0-b0a6-5c75bc8fe17a"),
+                        Name = "Koala Baby Footed Sleeper (girl, 2 pk, NB-6M)",
+                        Description = "Koala baby girls' newborn blanket sleeper, 2 pack, take me home sleep n play pajamas (Newborn-6M)",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 10.58m,
+                        Quantity = 2,
+                        SafeStockLevel = 5,
+                        Active = true,
+                        CategoryId = new Guid("2fb04be4-3b23-42eb-9534-20d767654667"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("16f0b155-8127-4eab-99e1-65473bc89952"),
+                        Name = "Gentle Baby Wash & Shampoo (tear-free, sulfate-free, hypoallergenic, 27.1 fl oz)",
+                        Description = "Johnson's head-to-toe gentle baby wash & shampoo, tear-free, sulfate-free & hypoallergenic wash for baby's sensitive skin & hair, 27.1 fl. oz.",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 11.95m,
+                        Quantity = 1,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("61da1441-6b0e-4d1a-88a2-ec632d01906d"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("1ec27cd4-58a3-49d3-8395-8d83536a4305"),
+                        Name = "Desitin Diaper Cream (4 oz)",
+                        Description = "Desitin maximum strength baby diaper rash cream with zinc oxide, 4 oz",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 7.78m,
+                        Quantity = 3,
+                        SafeStockLevel = 6,
+                        Active = true,
+                        CategoryId = new Guid("bf225467-4b08-4da0-a1e5-2ef0ff6e2f96"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("5aa553c8-f564-4755-9d2a-8e5a66f884d1"),
+                        Name = "Aveeno Baby Daily Moisture Body Lotion (sensitive skin, 18 FL oz)",
+                        Description = "Aveeno baby daily moisture body lotion for sensitive skin with natural colloidal oatmeal, suitable  for newborns, 18 FL oz",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 11.38m,
+                        Quantity = 4,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("cdfc6b7f-31fb-4bd1-a246-6b8efc241dff"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("331d83d3-04e4-41ca-9527-8ebcc1316090"),
+                        Name = "Pampers Baby Wipes (sensitive, 8 pk, 672 wipes)",
+                        Description = "Pampers sensitive baby wipes, 8 flip-top packs, 672 wipes",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 23.47m,
+                        Quantity = 4,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("6d59f00f-d7d8-48e3-ab36-9d96de8b09d0"),
+                        Name = "Anti-colic Baby Bottles (blue, 3 pk, 5 oz)",
+                        Description = "NUK smooth flow pro anti-colic baby bottle, 5 oz, blue, 3-pack",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 14.97m,
+                        Quantity = 1,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("7ac8c99f-aaca-4883-ab1f-fb94fbaa9fca"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("7604aea7-96b0-4096-8bbb-bbef00fdc221"),
+                        Name = "Pampers Diapers (NB, 31 count)",
+                        Description = "Pampers swaddlers diapers, newborn (< 10 lb), 31 count, unisex",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 14.5m,
+                        Quantity = 4,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("a864cd79-d226-441d-9f23-db77c2b9bd85"),
+                        Name = "Foot Finder Socks & Wrist Rattles (NB, toys, 4 pcs)",
+                        Description = "Amerteer 4 pcs foot finder socks & wrist rattles - newborn toys for baby boy or girl - brain development infant toys - hand and foot rattles suitable for 0-3, 3-6, 6-12 month babies.",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 7.28m,
+                        Quantity = 3,
+                        SafeStockLevel = 3,
+                        Active = true,
+                        CategoryId = new Guid("c50504d5-a7ec-4aab-acae-0ed0a39d1578"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("07979a90-bab9-47cf-befd-f0b16999ee00"),
+                        Name = "Baby socks (unisex, 4 pk, newborn, 0-6 months)",
+                        Description = "Gerber baby boy and girl unisex terry bootie wiggle-proof socks, 4-pack, newborn, 0-6 months.",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 4.00m,
+                        Quantity = 1,
+                        SafeStockLevel = 4,
+                        Active = true,
+                        CategoryId = new Guid("f27211ee-28cb-42a1-b487-51aa7456ccd3"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    },
+                    new Product
+                    {
+                        ProductId = new Guid("3a13f50b-b57f-44ae-ba14-f65e4e27cd54"),
+                        Name = "Pampers Baby Dry Diapers Size 2 (12-18 lb), 37 Count",
+                        Description = "Pampers baby-dry leakproof day & night diapers, size 2 (12-18 lb), 37 count, unisex.",
+                        Expires = false,
+                        PurchaseDate = DateTime.Now,
+                        Price = 9.97m,
+                        Quantity = 1,
+                        SafeStockLevel = 5,
+                        Active = true,
+                        CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                        LastUpdateId = "travis@mailsac.com",
+                        LastUpdateDateTime = DateTime.Now
+                    }
+                );
         }
     }
 }

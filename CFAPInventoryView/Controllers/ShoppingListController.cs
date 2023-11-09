@@ -23,6 +23,7 @@ namespace CFAPInventoryView.Controllers
         {
             return _context.CategoryBaskets != null ?
                         View(await _context.Baskets.AsNoTracking()
+                                                   .Where(b => b.IsShoppingListItem && b.Active)
                                                    .Include(b => b.AgeGroup)
                                                    .Include(b => b.Ethnicity)
                                                    .Include(b => b.Gender)
@@ -36,7 +37,7 @@ namespace CFAPInventoryView.Controllers
                                                    .OrderBy(b => b.AgeGroup.Description)
                                                    .ThenBy(b => b.DateAssembled)
                                                    .ToListAsync()) :
-                        Problem("Entity set 'Baskets' is null.");
+                        Problem("There are no shopping lists in the database.");
         }
 
         // GET: ShoppingList/Detials/1
@@ -96,6 +97,7 @@ namespace CFAPInventoryView.Controllers
                 try
                 {
                     basket.BasketId = Guid.NewGuid();
+                    basket.IsShoppingListItem = true;
                     basket.Active = true;
                     basket.LastUpdateId = User.Identity?.Name;
                     basket.LastUpdateDateTime = DateTime.Now;
@@ -165,6 +167,7 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
+                    basket.IsShoppingListItem = true;
                     basket.LastUpdateId = User.Identity?.Name;
                     basket.LastUpdateDateTime = DateTime.Now;
                     _context.Update(basket);
@@ -276,7 +279,7 @@ namespace CFAPInventoryView.Controllers
         {
             if (_context.Baskets == null)
             {
-                return Problem("Entity set 'Baskets' is null.");
+                return Problem("Nothing to delete.");
             }
             var basket = await _context.Baskets.FindAsync(id);
             if (basket != null)
@@ -295,7 +298,7 @@ namespace CFAPInventoryView.Controllers
 
         private async Task<List<AssignedCategoryViewModel>> PopulateAssignedCategories(string categoryType, Basket basket)
         {
-            List<AssignedCategoryViewModel> assignedCategoryViewModel = new();
+            List<AssignedCategoryViewModel> assignedCategoryViewModels = new();
             // Check if CategoryBaskets is null, if so create a new list (the line below is called a compound assignment statement)
             basket.CategoryBaskets ??= new List<CategoryBasket>();
             switch (categoryType)
@@ -307,7 +310,7 @@ namespace CFAPInventoryView.Controllers
                         var basketCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.CategoryId));
                         foreach (var category in allCategories)
                         {
-                            assignedCategoryViewModel.Add(new AssignedCategoryViewModel
+                            assignedCategoryViewModels.Add(new AssignedCategoryViewModel
                             {
                                 CategoryId = category.CategoryId,
                                 Name = category.Name,
@@ -323,7 +326,7 @@ namespace CFAPInventoryView.Controllers
                         var basketOptionalCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.OptionalCategoryId));
                         foreach (var category in allOptionalCategories)
                         {
-                            assignedCategoryViewModel.Add(new AssignedCategoryViewModel
+                            assignedCategoryViewModels.Add(new AssignedCategoryViewModel
                             {
                                 CategoryId = category.OptionalCategoryId,
                                 Name = category.Name,
@@ -339,7 +342,7 @@ namespace CFAPInventoryView.Controllers
                         var basketExcludeCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.ExcludeCategoryId));
                         foreach (var category in allExcludeCategories)
                         {
-                            assignedCategoryViewModel.Add(new AssignedCategoryViewModel
+                            assignedCategoryViewModels.Add(new AssignedCategoryViewModel
                             {
                                 CategoryId = category.ExcludeCategoryId,
                                 Name = category.Name,
@@ -351,7 +354,7 @@ namespace CFAPInventoryView.Controllers
                 default:
                     break;
             }
-            return assignedCategoryViewModel;
+            return assignedCategoryViewModels;
         }
 
         private async Task AddBasketCategories(Guid basketId, List<Guid>? assignedCategories, List<Guid>? assignedOptionalCategories, List<Guid>? assignedExcludeCategories)

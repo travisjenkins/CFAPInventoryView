@@ -4,6 +4,7 @@ using CFAPInventoryView.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CFAPInventoryView.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231107141442_AddCheckForShoppingListItemVsIBelongBasket")]
+    partial class AddCheckForShoppingListItemVsIBelongBasket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +58,7 @@ namespace CFAPInventoryView.Data.Migrations
                             AgeGroupId = new Guid("ed2da6d8-a312-489d-b7d0-253d75c6c820"),
                             Active = true,
                             Description = "0-6 months",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(3982),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(4746),
                             LastUpdateId = "travis@mailsac.com",
                             SortOrder = 0
                         },
@@ -64,7 +67,7 @@ namespace CFAPInventoryView.Data.Migrations
                             AgeGroupId = new Guid("e7581e8f-e2ac-4550-aac7-d4ff7fe778e1"),
                             Active = true,
                             Description = "6-12 months",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4023),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(4791),
                             LastUpdateId = "travis@mailsac.com",
                             SortOrder = 1
                         },
@@ -73,7 +76,7 @@ namespace CFAPInventoryView.Data.Migrations
                             AgeGroupId = new Guid("39d9931f-e6a6-449d-aa69-d7aad053e298"),
                             Active = true,
                             Description = "1-2",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4026),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(4794),
                             LastUpdateId = "travis@mailsac.com",
                             SortOrder = 2
                         },
@@ -82,7 +85,7 @@ namespace CFAPInventoryView.Data.Migrations
                             AgeGroupId = new Guid("75200021-5b2f-4079-96be-7e38a1ad1adb"),
                             Active = true,
                             Description = "3-6",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4030),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(4796),
                             LastUpdateId = "travis@mailsac.com",
                             SortOrder = 3
                         },
@@ -91,7 +94,7 @@ namespace CFAPInventoryView.Data.Migrations
                             AgeGroupId = new Guid("f574f025-f5c3-4611-96d7-ad679e6b1467"),
                             Active = true,
                             Description = "7-11",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4033),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(4799),
                             LastUpdateId = "travis@mailsac.com",
                             SortOrder = 4
                         },
@@ -100,7 +103,7 @@ namespace CFAPInventoryView.Data.Migrations
                             AgeGroupId = new Guid("290c1063-f288-46ef-8377-3113586b7c62"),
                             Active = true,
                             Description = "12-18",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4035),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(4801),
                             LastUpdateId = "travis@mailsac.com",
                             SortOrder = 5
                         });
@@ -281,7 +284,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("a6760763-1106-426c-aeb9-05142aba7f57"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4433),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5290),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Maxi pads or tampons"
                         },
@@ -289,7 +292,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("07ebd8cf-f55b-47a9-bf52-072a1f89e16f"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4436),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5293),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Body wash or mild soap (unscented)"
                         },
@@ -297,7 +300,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d24a4561-f64b-4371-943c-0d4ac6e9be57"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4439),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5296),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Hair brush or comb"
                         },
@@ -305,7 +308,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("c50504d5-a7ec-4aab-acae-0ed0a39d1578"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4442),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5298),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Infant toy (0-6 months)"
                         },
@@ -313,7 +316,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("6eb9d0bb-c37f-4ba0-a911-0f76be2fb119"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4444),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5300),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Package of socks (size youth small)"
                         },
@@ -321,7 +324,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("1db3a928-231f-48f2-acaf-16747cfdd4ad"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4447),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5303),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Deck of cards"
                         },
@@ -329,7 +332,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("c37a088f-7112-424b-a187-1b295d2b3cbc"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4450),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5305),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Deodorant (non-aerosol preferred)"
                         },
@@ -337,7 +340,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4452),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5308),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby wipes"
                         },
@@ -345,7 +348,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("3186795c-ec04-4bf2-b31d-1d0caf80cb24"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4455),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5311),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Wide tooth comb"
                         },
@@ -353,7 +356,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("7fab58da-a415-40d1-8fd7-1dc1fcdbb729"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4457),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5313),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Package of socks (size woman's)"
                         },
@@ -361,7 +364,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("2fb04be4-3b23-42eb-9534-20d767654667"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4459),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5315),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Footed sleeper"
                         },
@@ -369,7 +372,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("a8aae37c-e94b-4099-96a7-23bc27b9bdce"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4462),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5318),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Night light"
                         },
@@ -377,7 +380,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("e0f5c01d-a72a-4e59-abba-24c7309e9d37"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4464),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5320),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Pillow case"
                         },
@@ -385,7 +388,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("4b223b2e-f4fe-4640-9dd0-2aa7f0263dee"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4467),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5323),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Sketch or composition book and pencils"
                         },
@@ -393,7 +396,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("e9800b98-0e56-4260-ae26-2e2939230c01"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4470),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5326),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Twin blanket"
                         },
@@ -401,7 +404,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("bf225467-4b08-4da0-a1e5-2ef0ff6e2f96"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4515),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5328),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Diaper cream"
                         },
@@ -409,7 +412,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("618dbc0d-a9b0-4be2-9a87-3442e309f746"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4518),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5331),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Black hair care products (sulfate-free shampoo, leave-in conditioner, SheaMoisture, Cantu or Dream Kids brands)"
                         },
@@ -417,7 +420,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("2be28886-7e2e-41c6-886b-3a30ef4cf378"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4521),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5333),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby lotion"
                         },
@@ -425,7 +428,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("c4878700-862c-4748-a0f5-43b1ef4d0655"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4524),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5339),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Body lotion for sensitive skin (unscented)"
                         },
@@ -433,7 +436,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("0c2c3738-e62e-4875-b786-46246636769b"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4526),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5342),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby blanket or sleep sack"
                         },
@@ -441,7 +444,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("620b66ed-e341-4a14-b89c-48fd30632d5d"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4529),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5344),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Bottles (for age 6+ months)"
                         },
@@ -449,7 +452,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("44726539-9806-46a9-99b6-4bdb7dfd7363"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4531),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5347),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Large throw"
                         },
@@ -457,7 +460,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("1aa58da2-d195-4ffc-9bb7-51920ea8fde4"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4534),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5349),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Stuffed animal"
                         },
@@ -465,7 +468,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("f27211ee-28cb-42a1-b487-51aa7456ccd3"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4536),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5351),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Socks"
                         },
@@ -473,7 +476,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("067ac574-c50a-4f2c-b8d7-52877ea217d4"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4539),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5353),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Leak-proof water bottle"
                         },
@@ -481,7 +484,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("a809dfba-5e21-491e-ab19-5374a141fe88"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4541),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5356),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Board book"
                         },
@@ -489,7 +492,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("039c1f4e-7a2c-4b4a-9aee-53f4957a7b01"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4544),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5358),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby brush/comb"
                         },
@@ -497,7 +500,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("bf4a75e5-825c-4fed-a4c4-57ea77f21473"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4546),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5361),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Package of socks (size youth medium)"
                         },
@@ -505,7 +508,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("51d50f02-b916-4824-a9f0-59008d6bb8f8"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4549),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5363),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Soft throw"
                         },
@@ -513,7 +516,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("bb8f1f6e-57d7-4537-8b66-59aa04728add"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4551),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5366),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Gentle body wash (unscented)"
                         },
@@ -521,7 +524,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("fceef0f8-c4d3-4ba3-ba6b-5c3288d794b2"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4554),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5368),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Coloring book and washable crayons"
                         },
@@ -529,7 +532,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("0dda4f68-adc2-4136-b8cd-5efff84ae6ce"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4557),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5370),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Satin bonnet or hair scarf"
                         },
@@ -537,7 +540,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("cdfc6b7f-31fb-4bd1-a246-6b8efc241dff"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4559),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5373),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby lotion for sensitive skin"
                         },
@@ -545,7 +548,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d2d503a2-f55c-4f44-87e1-6c4464a5f16b"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4562),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5375),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Infant toy or stuffed animal (6+ months)"
                         },
@@ -553,7 +556,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("802350c7-e12b-4ac2-a57e-6f394d67cc0c"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4564),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5378),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Nerf or stress ball"
                         },
@@ -561,7 +564,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("86921bfc-74e7-47f8-a3eb-72928e5e2a8c"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4567),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5380),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Shampoo/Conditioner 2-in-1"
                         },
@@ -569,7 +572,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("17d0900f-c48d-4059-8caa-7697af8efbe0"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4569),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5382),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Twin sheet set"
                         },
@@ -577,7 +580,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("027ea222-f944-41b8-8dea-7f922c43c8a3"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4572),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5385),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Body lotion"
                         },
@@ -585,7 +588,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("dd47744e-3eb3-4cdc-a697-8a707bf8ab3c"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4575),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5387),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Package of socks (size men's)"
                         },
@@ -593,7 +596,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("b43b17b3-b34d-4efb-a07e-8c00e6e7aab0"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4577),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5389),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Crib sheet"
                         },
@@ -601,7 +604,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("b396c541-ffc3-4231-86fb-8cfed6eae3a4"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4580),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5392),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Gift card for diapers (Walmart/Target/Amazon)"
                         },
@@ -609,7 +612,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d69feee3-f0ae-456b-b000-9b8fb301dad2"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4582),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5394),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Soft throw (crib/toddler sized)"
                         },
@@ -617,7 +620,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("9441220a-15ea-40e5-b452-9d5406794978"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4585),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5397),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Hair brush"
                         },
@@ -625,7 +628,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("280a00c3-05b5-415e-876d-9e74d723b175"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4588),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5400),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Bar soap"
                         },
@@ -633,7 +636,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("b8409915-46fb-408b-9070-a1bc72240000"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4590),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5403),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby bottle (for ages 12+ months)"
                         },
@@ -641,7 +644,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("65d5ca12-de4b-4f4b-b57b-a28f14f4fd42"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4592),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5405),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Toothbrush and toothpaste"
                         },
@@ -649,7 +652,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("7665e398-50b4-4e36-a8fc-a6368f192946"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4595),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5408),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Body wash or bar soap"
                         },
@@ -657,7 +660,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4598),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5411),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Package of diapers (size NB, 1, or 2)"
                         },
@@ -665,7 +668,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("2fcbd4e6-479f-4c55-858e-ac69aeab01b1"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4600),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5413),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Toddler toothbrush and toothpaste (fluoride-free)"
                         },
@@ -673,7 +676,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("4edacb15-8c72-4361-911e-add9c1ef26af"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4602),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5416),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Water bottle"
                         },
@@ -681,7 +684,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("377311f0-f434-46c1-ac21-b05b82413e41"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4605),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5418),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Composition book and pens"
                         },
@@ -689,7 +692,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d8ac84a3-afff-485b-8949-b0c2c6272e85"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4608),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5421),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Flashlight"
                         },
@@ -697,7 +700,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d11d87e7-126c-4a3c-8125-b6a656d64fcc"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4610),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5423),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Pacifier (newborn/up to 6 months)"
                         },
@@ -705,7 +708,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d5f318f9-d031-416f-b61d-bff6eb3ddc21"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4613),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5425),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Pillow"
                         },
@@ -713,7 +716,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("d0083f7a-cf78-4223-8328-c5fcac9a8639"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4617),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5428),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Body lotion (unscented: Jergens, Vaseline with Cocoa or Shea butter)"
                         },
@@ -721,7 +724,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("4a7c2d02-c39a-48c9-9e81-c6198f87a2ed"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4619),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5431),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Head-to-toe body wash"
                         },
@@ -729,7 +732,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("18b0b2a3-3163-463d-b8a1-c6314aee6766"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4622),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5433),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Detangling comb"
                         },
@@ -737,7 +740,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("3c7975d7-283f-4876-bf2c-c6c4a885d6ca"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4624),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5435),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Aluminum-free deodorant"
                         },
@@ -745,7 +748,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("dfa15e75-56e9-4fd9-8abe-c7ce9c28a6d8"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4627),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5438),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Clear/invisible deodorant (non-aerosol preferred)"
                         },
@@ -753,7 +756,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("483c2687-b6cc-4132-a386-c8351a3ce03c"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4629),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5440),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Towel and wash cloth"
                         },
@@ -761,7 +764,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("305f2292-4230-403c-8e78-ccab2b7faf66"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4632),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5443),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Pacifier (for age 6+ months)"
                         },
@@ -769,7 +772,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("b0a6921d-55fd-40ff-b7e4-cef32e093c21"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4634),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5445),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Pillow (travel or child sized)"
                         },
@@ -777,7 +780,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("dce8a93b-66c4-4d10-a5c5-d72ae5add07f"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4637),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5447),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Package of socks (size youth large)"
                         },
@@ -785,7 +788,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("65ea10fe-b443-4233-a48a-d8bd7896d244"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4639),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5450),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Swaddle wrap"
                         },
@@ -793,7 +796,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("e90c0353-dd59-4a87-9897-da2ba2070999"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4642),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5452),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Conditioner"
                         },
@@ -801,7 +804,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("70feab08-d33a-409b-af35-dee1c37fe46b"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4644),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5455),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Shampoo"
                         },
@@ -809,7 +812,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("726ccf14-58b8-4878-b3ea-e58504bb71b3"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4647),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5457),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Deodorant"
                         },
@@ -817,7 +820,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("badafee8-1c62-46be-98c9-e83c89f06322"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4650),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5460),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Package of socks"
                         },
@@ -825,7 +828,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("61da1441-6b0e-4d1a-88a2-ec632d01906d"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4652),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5463),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Gentle baby wash and shampoo (sulfate-free)"
                         },
@@ -833,7 +836,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("c915d086-e1cb-4a9c-a8f4-ef7d6331eb1d"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4654),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5466),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Plastic hair pick"
                         },
@@ -841,7 +844,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("7ac8c99f-aaca-4883-ab1f-fb94fbaa9fca"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4657),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5470),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Anti-colic bottles"
                         },
@@ -849,7 +852,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             CategoryId = new Guid("b2488733-9e8d-47a5-b1a4-fe6ffe3da0d5"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4659),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5473),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Kids 3-in-1 soap (shampoo/conditioner/body wash)"
                         });
@@ -925,7 +928,7 @@ namespace CFAPInventoryView.Data.Migrations
                             EthnicityId = new Guid("0040e5c2-0d7f-4db8-a7e8-28c5efa6cf4f"),
                             Active = true,
                             Description = "Black/Mixed Race",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4228),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5032),
                             LastUpdateId = "travis@mailsac.com"
                         },
                         new
@@ -933,7 +936,7 @@ namespace CFAPInventoryView.Data.Migrations
                             EthnicityId = new Guid("b5c934b6-c7e0-493f-8726-c3fd5ff2141f"),
                             Active = true,
                             Description = "White/Hispanic",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4233),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5037),
                             LastUpdateId = "travis@mailsac.com"
                         });
                 });
@@ -967,7 +970,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             ExcludeCategoryId = new Guid("bb0c0779-5261-4d14-8a96-12ff3e0d8dff"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4282),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5090),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Items requiring batteries"
                         },
@@ -975,7 +978,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             ExcludeCategoryId = new Guid("9fe23dd1-3946-4456-8c5d-5808458eafd3"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4285),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5093),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Items with spiral binding"
                         },
@@ -983,7 +986,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             ExcludeCategoryId = new Guid("5cef1269-2589-4a6f-a150-5ed172d16a1a"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4288),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5096),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby food or formula"
                         },
@@ -991,7 +994,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             ExcludeCategoryId = new Guid("ebfef241-8abb-4b02-89a1-9a5d19893c11"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4290),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5098),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Used items"
                         },
@@ -999,7 +1002,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             ExcludeCategoryId = new Guid("f77cbfaa-11cd-44e7-abb7-e3e0f030e212"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4293),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5101),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Sharp objects such as razors or manicure sets"
                         },
@@ -1007,7 +1010,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             ExcludeCategoryId = new Guid("695b89cf-9c4d-4ad4-af45-e9d0422d41ef"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4296),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5104),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Food or beverages"
                         });
@@ -1043,7 +1046,7 @@ namespace CFAPInventoryView.Data.Migrations
                             GenderId = new Guid("78cc56f2-717b-45cb-b025-09c0cca68f27"),
                             Active = true,
                             Description = "Girl",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4258),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5063),
                             LastUpdateId = "travis@mailsac.com"
                         },
                         new
@@ -1051,7 +1054,7 @@ namespace CFAPInventoryView.Data.Migrations
                             GenderId = new Guid("629f93b9-15d1-4aab-a0a6-9ab22e6ac159"),
                             Active = true,
                             Description = "Boy",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4262),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5067),
                             LastUpdateId = "travis@mailsac.com"
                         },
                         new
@@ -1059,7 +1062,7 @@ namespace CFAPInventoryView.Data.Migrations
                             GenderId = new Guid("aedb28bc-17de-436e-8348-217802299584"),
                             Active = true,
                             Description = "Neutral",
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4265),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5069),
                             LastUpdateId = "travis@mailsac.com"
                         });
                 });
@@ -1093,7 +1096,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("a2197138-9321-473e-891f-1507671d43d7"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4315),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5127),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Satin bonnet or hair scarf"
                         },
@@ -1101,7 +1104,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("4a0e060b-e159-49af-9ecd-1790f8d7a0b3"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4318),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5130),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Adhesive bandages/band-aids"
                         },
@@ -1109,7 +1112,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("1d6ad3d8-d44c-4982-a912-24454286fead"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4320),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5133),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Small toy"
                         },
@@ -1117,7 +1120,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("741217d0-a963-489a-863d-2570bb91c4e5"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4324),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5136),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Hair gel"
                         },
@@ -1125,7 +1128,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("d9caf847-0312-4808-979b-25b5bffc4fb8"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4326),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5138),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Oil/cream moisturizer for curly hair"
                         },
@@ -1133,7 +1136,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("989a01f0-8f0e-468c-ab51-2c6501348672"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4329),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5141),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Small backpack"
                         },
@@ -1141,7 +1144,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("d0193bc7-1a7f-48a2-bee5-2d5402a2c66f"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4331),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5143),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Sleep sack"
                         },
@@ -1149,7 +1152,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("7c65fb61-080a-4ff7-9d27-37904280e926"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4334),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5145),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Wave brush or Denman brush"
                         },
@@ -1157,7 +1160,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("a698b945-513b-4379-a13c-398f31e47bb6"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4336),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5148),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Backpack or drawstring bag"
                         },
@@ -1165,7 +1168,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("18db181a-39c7-4ff6-aa5f-504c9fd42495"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4339),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5151),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby towel and washcloths"
                         },
@@ -1173,7 +1176,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("84f608e3-e046-4cfc-9525-56677374cce9"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4342),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5153),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Children's book"
                         },
@@ -1181,7 +1184,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("6c31ed18-3271-4434-af24-5697a341ed6e"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4344),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5156),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Nerf ball or fidget toy"
                         },
@@ -1189,7 +1192,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("337e6455-6bcb-4241-a3b8-58c7a6f2200c"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4347),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5158),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Themed adhesive band-aids"
                         },
@@ -1197,7 +1200,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("aa154101-bce0-4973-b9aa-7291f06b571c"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4349),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5161),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Infant nail clippers"
                         },
@@ -1205,7 +1208,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("02561934-85a8-4ef0-a890-82092b240fb4"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4352),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5163),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Burp cloths"
                         },
@@ -1213,7 +1216,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("678425c7-3b3e-4f23-b073-8268f4ce273a"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4354),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5165),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Aquaphor healing ointment"
                         },
@@ -1221,7 +1224,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("010a1cc4-259b-4198-a841-92a5b784787d"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4357),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5168),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Gift card (Walmart/Target)"
                         },
@@ -1229,7 +1232,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("e58de252-2495-4a19-94b4-9641320fa900"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4360),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5170),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Soft bristle brush"
                         },
@@ -1237,7 +1240,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("743c8970-b53d-496c-9ee9-96c0be328f55"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4362),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5172),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Kids satin night cap/bonnet"
                         },
@@ -1245,7 +1248,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("86eecf1b-d8bb-4526-a9c1-9b3d511ec50f"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4365),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5175),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Coloring or sketch book, and colored pencils"
                         },
@@ -1253,7 +1256,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("b9a71948-1ac2-4e86-bda7-9dde074be330"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4368),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5177),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Hair accessories"
                         },
@@ -1261,7 +1264,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("b88a0b8b-0460-4fa6-b5cf-9f94261fd823"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4370),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5180),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Toiletry bag"
                         },
@@ -1269,7 +1272,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("373ffcaf-8c96-4dc5-b7fd-a5247e1a62cd"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4373),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5182),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Crib Sheet"
                         },
@@ -1277,7 +1280,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("bf55fcfc-ce99-436c-8127-aa6898af039f"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4376),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5185),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Diaper cream"
                         },
@@ -1285,7 +1288,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("811f6a9a-0845-4116-a3f6-b1c0cd3a5912"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4379),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5188),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Toy (e.g. chunky puzzle, baby doll, toy car)"
                         },
@@ -1293,7 +1296,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("de8bbea2-fffe-4073-9acc-b91c45a05a2c"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4381),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5190),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Chapstick"
                         },
@@ -1301,7 +1304,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("15423c38-cbd8-4b49-bbb8-ba74804189e2"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4384),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5192),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Baby brush/comb"
                         },
@@ -1309,7 +1312,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("6c1f919d-8b90-43f0-9bf4-c4d69ed6537d"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4387),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5195),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Body lotion"
                         },
@@ -1317,7 +1320,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("355cfdc5-4ef5-4ef1-b881-c5cede5d6270"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4389),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5198),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Hair lotion, oil, or gel"
                         },
@@ -1325,7 +1328,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("85bcb30f-f902-485d-a82f-c9544d435df5"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4392),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5200),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Face wipes or face wash"
                         },
@@ -1333,7 +1336,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("d03154ff-da79-4b02-b231-cd0d8494c2e5"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4395),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5203),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Thermometer"
                         },
@@ -1341,7 +1344,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("34f51fd8-5e64-46df-beb9-d3caad869f22"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4398),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5205),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Activity book and crayons/pencils"
                         },
@@ -1349,7 +1352,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("a31f289e-a7b7-4b51-ae96-d742a3dbf460"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4400),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5207),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Wave cap or satin hair tie"
                         },
@@ -1357,7 +1360,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("7e95c73e-2251-4680-b71a-ed86f3951efb"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4403),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5210),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Shower cap"
                         },
@@ -1365,7 +1368,7 @@ namespace CFAPInventoryView.Data.Migrations
                         {
                             OptionalCategoryId = new Guid("2d024344-dd8e-49bb-a069-ef59a2625d34"),
                             Active = true,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4405),
+                            LastUpdateDateTime = new DateTime(2023, 11, 7, 8, 14, 41, 939, DateTimeKind.Local).AddTicks(5212),
                             LastUpdateId = "travis@mailsac.com",
                             Name = "Bulb aspirator"
                         });
@@ -1435,233 +1438,6 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasIndex("OptionalCategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductId = new Guid("a4913d87-9305-4a4f-981f-09b0a226f753"),
-                            Active = true,
-                            CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
-                            Description = "Pampers baby-dry leakproof day & night diapers, size 1 (8-14 lb), 44 count, unisex.",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4710),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Pampers Baby Dry Diapers Size 1 (8-14 lb), 44 Count",
-                            Price = 9.97m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4702),
-                            Quantity = 1,
-                            SafeStockLevel = 5
-                        },
-                        new
-                        {
-                            ProductId = new Guid("3e2d5eee-ebfc-4a86-9c9c-18049eccaeed"),
-                            Active = true,
-                            CategoryId = new Guid("d11d87e7-126c-4a3c-8125-b6a656d64fcc"),
-                            Description = "NUK newborn orthodontic pacifiers, girl, 0-2 months, 2-pack.",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4716),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Orthodontic Pacifiers (2 pk, girl, 0-2 month)",
-                            Price = 6.77m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4713),
-                            Quantity = 4,
-                            SafeStockLevel = 4
-                        },
-                        new
-                        {
-                            ProductId = new Guid("dd6d4bec-20f1-4149-8f14-2141bad77e9b"),
-                            Active = true,
-                            CategoryId = new Guid("a809dfba-5e21-491e-ab19-5374a141fe88"),
-                            Description = "The Very Hungry Caterpillar, Board Book, English, 0-3 yrs, Infant-Toddler",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4723),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "The Very Hungry Caterpillar (board book)",
-                            Price = 8.78m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4719),
-                            Quantity = 2,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("d5b42185-f6f5-4d33-9c7d-392eadb5b1e6"),
-                            Active = true,
-                            CategoryId = new Guid("65ea10fe-b443-4233-a48a-d8bd7896d244"),
-                            Description = "Gilquen baby organic cotton swaddle blankets for 0-3 months infant boys girls, adjustable newborn swaddles, 3-pack wrap set, twinkle & rainbow.",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4729),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Baby Cotton Swaddle Blankets (0-3 months, 3-pk)",
-                            Price = 18.76m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4725),
-                            Quantity = 1,
-                            SafeStockLevel = 2
-                        },
-                        new
-                        {
-                            ProductId = new Guid("9e0ef560-c184-46bb-9f57-45e295bf57b2"),
-                            Active = true,
-                            CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
-                            Description = "Huggies natural care refreshing baby wipes, scented, (3 pk, 168 ct)",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4735),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Huggies Baby Wipes (scented, 3 pk, 168 ct)",
-                            Price = 6.77m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4732),
-                            Quantity = 5,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("06f703f4-dfbf-4fd0-b0a6-5c75bc8fe17a"),
-                            Active = true,
-                            CategoryId = new Guid("2fb04be4-3b23-42eb-9534-20d767654667"),
-                            Description = "Koala baby girls' newborn blanket sleeper, 2 pack, take me home sleep n play pajamas (Newborn-6M)",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4740),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Koala Baby Footed Sleeper (girl, 2 pk, NB-6M)",
-                            Price = 10.58m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4737),
-                            Quantity = 2,
-                            SafeStockLevel = 5
-                        },
-                        new
-                        {
-                            ProductId = new Guid("16f0b155-8127-4eab-99e1-65473bc89952"),
-                            Active = true,
-                            CategoryId = new Guid("61da1441-6b0e-4d1a-88a2-ec632d01906d"),
-                            Description = "Johnson's head-to-toe gentle baby wash & shampoo, tear-free, sulfate-free & hypoallergenic wash for baby's sensitive skin & hair, 27.1 fl. oz.",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4747),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Gentle Baby Wash & Shampoo (tear-free, sulfate-free, hypoallergenic, 27.1 fl oz)",
-                            Price = 11.95m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4743),
-                            Quantity = 1,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("1ec27cd4-58a3-49d3-8395-8d83536a4305"),
-                            Active = true,
-                            CategoryId = new Guid("bf225467-4b08-4da0-a1e5-2ef0ff6e2f96"),
-                            Description = "Desitin maximum strength baby diaper rash cream with zinc oxide, 4 oz",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4753),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Desitin Diaper Cream (4 oz)",
-                            Price = 7.78m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4749),
-                            Quantity = 3,
-                            SafeStockLevel = 6
-                        },
-                        new
-                        {
-                            ProductId = new Guid("5aa553c8-f564-4755-9d2a-8e5a66f884d1"),
-                            Active = true,
-                            CategoryId = new Guid("cdfc6b7f-31fb-4bd1-a246-6b8efc241dff"),
-                            Description = "Aveeno baby daily moisture body lotion for sensitive skin with natural colloidal oatmeal, suitable  for newborns, 18 FL oz",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4759),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Aveeno Baby Daily Moisture Body Lotion (sensitive skin, 18 FL oz)",
-                            Price = 11.38m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4756),
-                            Quantity = 4,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("331d83d3-04e4-41ca-9527-8ebcc1316090"),
-                            Active = true,
-                            CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
-                            Description = "Pampers sensitive baby wipes, 8 flip-top packs, 672 wipes",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4798),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Pampers Baby Wipes (sensitive, 8 pk, 672 wipes)",
-                            Price = 23.47m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4795),
-                            Quantity = 4,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("6d59f00f-d7d8-48e3-ab36-9d96de8b09d0"),
-                            Active = true,
-                            CategoryId = new Guid("7ac8c99f-aaca-4883-ab1f-fb94fbaa9fca"),
-                            Description = "NUK smooth flow pro anti-colic baby bottle, 5 oz, blue, 3-pack",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4805),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Anti-colic Baby Bottles (blue, 3 pk, 5 oz)",
-                            Price = 14.97m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4802),
-                            Quantity = 1,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("7604aea7-96b0-4096-8bbb-bbef00fdc221"),
-                            Active = true,
-                            CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
-                            Description = "Pampers swaddlers diapers, newborn (< 10 lb), 31 count, unisex",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4810),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Pampers Diapers (NB, 31 count)",
-                            Price = 14.5m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4808),
-                            Quantity = 4,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("a864cd79-d226-441d-9f23-db77c2b9bd85"),
-                            Active = true,
-                            CategoryId = new Guid("c50504d5-a7ec-4aab-acae-0ed0a39d1578"),
-                            Description = "Amerteer 4 pcs foot finder socks & wrist rattles - newborn toys for baby boy or girl - brain development infant toys - hand and foot rattles suitable for 0-3, 3-6, 6-12 month babies.",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4816),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Foot Finder Socks & Wrist Rattles (NB, toys, 4 pcs)",
-                            Price = 7.28m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4813),
-                            Quantity = 3,
-                            SafeStockLevel = 3
-                        },
-                        new
-                        {
-                            ProductId = new Guid("07979a90-bab9-47cf-befd-f0b16999ee00"),
-                            Active = true,
-                            CategoryId = new Guid("f27211ee-28cb-42a1-b487-51aa7456ccd3"),
-                            Description = "Gerber baby boy and girl unisex terry bootie wiggle-proof socks, 4-pack, newborn, 0-6 months.",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4822),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Baby socks (unisex, 4 pk, newborn, 0-6 months)",
-                            Price = 4.00m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4818),
-                            Quantity = 1,
-                            SafeStockLevel = 4
-                        },
-                        new
-                        {
-                            ProductId = new Guid("3a13f50b-b57f-44ae-ba14-f65e4e27cd54"),
-                            Active = true,
-                            CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
-                            Description = "Pampers baby-dry leakproof day & night diapers, size 2 (12-18 lb), 37 count, unisex.",
-                            Expires = false,
-                            LastUpdateDateTime = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4827),
-                            LastUpdateId = "travis@mailsac.com",
-                            Name = "Pampers Baby Dry Diapers Size 2 (12-18 lb), 37 Count",
-                            Price = 9.97m,
-                            PurchaseDate = new DateTime(2023, 11, 9, 12, 30, 10, 926, DateTimeKind.Local).AddTicks(4824),
-                            Quantity = 1,
-                            SafeStockLevel = 5
-                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.ProductBasket", b =>

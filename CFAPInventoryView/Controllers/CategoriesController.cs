@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CFAPInventoryView.Data;
 using CFAPInventoryView.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CFAPInventoryView.Controllers
 {
+    [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

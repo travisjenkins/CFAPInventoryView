@@ -1,0 +1,98 @@
+﻿@model Basket
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Basket</h4>
+<hr />
+<div class="row mb-3">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <select asp-for="AgeGroupId" class="form-select" asp-items="ViewBag.AgeGroupsSelectList" aria-required="true">
+                        <option value="@null">Select...</option>
+                    </select>
+                    <label asp-for="AgeGroupId"></label>
+                    <span asp-validation-for="AgeGroupId" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <select asp-for="EthnicityId" class="form-select" asp-items="ViewBag.EthnicitiesSelectList" aria-required="true">
+                        <option value="@null">Select...</option>
+                    </select>
+                    <label asp-for="EthnicityId"></label>
+                    <span asp-validation-for="EthnicityId" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <select asp-for="GenderId" class="form-select" asp-items="ViewBag.GendersSelectList" aria-required="true">
+                        <option value="@null">Select...</option>
+                    </select>
+                    <label asp-for="GenderId"></label>
+                    <span asp-validation-for="GenderId" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="DateAssembled" class="form-control" aria-required="true" placeholder="date assembled" />
+                    <label asp-for="DateAssembled" class="control-label"></label>
+                    <span asp-validation-for="DateAssembled" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Quantity" class="form-control" min="1" max="50" aria-required="true" placeholder="quantity" />
+                    <label asp-for="Quantity" class="control-label"></label>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="SafeStockLevel" class="form-control" min="1" max="50" aria-required="true" placeholder="safe stock level" />
+                    <label asp-for="SafeStockLevel" class="control-label"></label>
+                    <span asp-validation-for="SafeStockLevel" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <h4><label asp-for="ProductBaskets" class="control-label"></label></h4>
+            <hr />
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    <input type="text" id="search-txt" name="search-txt" class="form-control" aria-required="false" placeholder="Search..." onkeyup="filterProducts()" />
+                    <label for="search-txt" class="control-label">Search...</label>
+                </div>
+            </div>
+            <div class="row mt-2">   
+            @{
+                int count = 0;
+                List<AssignedProductViewModel>? assignedProducts = ViewBag.AssignedProductsList as List<AssignedProductViewModel>;
+                if (assignedProducts is not null)
+                {
+                    @foreach (var product in assignedProducts)
+                    {
+                        if (count++ % 4 == 0)
+                        {
+                            @:</div><div class="row">
+                        }
+                        @:<div class="col-md-3 mb-2 filter-elms">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" role="switch" class="form-check-input" name="assignedProducts" value="@product.ProductId" @(product.Assigned ? "checked='true'" : "") />
+                                <label class="form-check-label">@product.Name</label>
+                            </div>
+                        @:</div>
+                    }
+                }
+                @:</div>
+            }
+        </div>
+        <div class="form-group mt-3">
+            <input type="submit" value="Create" class="btn btn-outline-primary" />
+        </div>
+    </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

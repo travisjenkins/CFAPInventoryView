@@ -25,13 +25,13 @@ namespace CFAPInventoryView.Controllers
         {
               return _context.Products != null ? 
                           View(await _context.Products.AsNoTracking()
-                                                      .OrderBy(p => p.Name)
-                                                      .ThenBy(p => p.PurchaseDate)
+                                                      .Where(p => p.Active)
                                                       .Include(p => p.Category)
                                                       .Include(p => p.OptionalCategory)
                                                       .Include(p => p.ExcludeCategory)
-                                                      .Where(p => p.Active)
                                                       .DefaultIfEmpty()
+                                                      .OrderBy(p => p.PurchaseDate)
+                                                      .ThenByDescending(p => p.Price)
                                                       .ToListAsync()) :
                           Problem("Entity set 'Products' is null.");
         }

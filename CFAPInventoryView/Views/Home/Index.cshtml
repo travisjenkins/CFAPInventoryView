@@ -4,40 +4,52 @@
 
 <h1 class="text-center mb-0">The Columbia Foster &amp; Adoption Project's Inventory View</h1>
 
-<img class="w-25 mx-auto d-block" src="~/imgs/cfap-logo.svg" alt="CFAP Logo" />
+<img class="cfap-logo mx-auto my-3 d-block" src="~/imgs/cfap-logo.svg" alt="CFAP Logo" />
 
-<div id="iBelongCarousel" class="carousel slide w-50 my-1 mx-auto" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#iBelongCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#iBelongCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#iBelongCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        <button type="button" data-bs-target="#iBelongCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-        <button type="button" data-bs-target="#iBelongCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
-    </div>
-    @* Images go inside of this div tag *@
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img class="d-block w-100" src="~/imgs/i-belong-baskets-1.jpeg" alt="Display of iBelong baskets" />
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/imgs/i-belong-baskets-2.jpeg" alt="Angled display of iBelong baskets" />
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/imgs/i-belong-baskets-3.jpg" alt="iBelong baskets close-up" />
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/imgs/i-belong-baskets-4.jpeg" alt="iBelong baskets in SUV" />
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/imgs/i-belong-baskets-5.jpeg" alt="Example of a iBelong basket's contents" />
+<div class="row justify-content-around">
+    <div class="col-md-6 col-lg-4 mb-3 mb-lg-0">
+        <div class="card text-center w-75 mx-auto">
+            <img src="~/imgs/i-belong-baskets-5.jpeg" class="card-img-top card-img-home" />
+            <div class="card-body">
+                <h5 class="card-title">Products</h5>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes
+                </p>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="Products" asp-action="Index" role="button" class="btn btn-outline-primary">Products »</a>
+            </div>
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#iBelongCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#iBelongCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
+    <div class="col-md-6 col-lg-4 mb-3 mb-lg-0">
+        <div class="card text-center w-75 mx-auto">
+            <img src="~/imgs/i-belong-baskets-4.jpeg" class="card-img-top card-img-home" />
+            <div class="card-body">
+                <h5 class="card-title">iBelong Shopping Lists</h5>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes
+                </p>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="ShoppingList" asp-action="Index" role="button" class="btn btn-outline-primary">iBelong Shopping Lists »</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-3 mb-lg-0">
+        <div class="card text-center w-75 mx-auto">
+            <img src="~/imgs/i-belong-baskets-2.jpeg" class="card-img-top card-img-home" />
+            <div class="card-body">
+                <h5 class="card-title">iBelong Baskets</h5>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes
+                </p>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="IBelongBaskets" asp-action="Index" role="button" class="btn btn-outline-primary">iBelong Baskets »</a>
+            </div>
+        </div>
+    </div>
 </div>

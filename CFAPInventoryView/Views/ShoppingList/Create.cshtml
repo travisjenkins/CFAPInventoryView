@@ -55,6 +55,10 @@
             <div class="row">
                 <div class="col-md-4">
                     <h4>Categories</h4>
+                    <div class="form-floating mb-3">
+                        <input type="text" id="search-category" name="search-category" class="form-control" aria-required="false" placeholder="Search..." onkeyup="filterCategories('category')" />
+                        <label for="search-category" class="control-label">Search...</label>
+                    </div>
                     <div class="row">
                         @{
                             List<AssignedCategoryViewModel>? assignedCategories = ViewBag.Categories as List<AssignedCategoryViewModel>;
@@ -62,7 +66,7 @@
                             {
                                 @foreach (var category in assignedCategories)
                                 {
-                                    <div class="form-check form-switch">
+                                    <div class="form-check form-switch filter-category">
                                         <input type="checkbox" role="switch" class="form-check-input" name="assignedCategories" value="@category.CategoryId" @(category.Assigned ? "checked='true'" : "") />
                                         <label class="form-check-label">@category.Name</label>
                                     </div>
@@ -73,6 +77,10 @@
                 </div>
                 <div class="col-md-4 my-sm-3 my-md-0">
                     <h4>Optional Categories</h4>
+                    <div class="form-floating mb-3">
+                        <input type="text" id="search-optional" name="search-optional" class="form-control" aria-required="false" placeholder="Search..." onkeyup="filterCategories('optional')" />
+                        <label for="search-optional" class="control-label">Search...</label>
+                    </div>
                     <div class="row">
                         @{
                             List<AssignedCategoryViewModel>? assignedOptionalCategories = ViewBag.OptionalCategories as List<AssignedCategoryViewModel>;
@@ -80,7 +88,7 @@
                             {
                                 foreach (var category in assignedOptionalCategories)
                                 {
-                                    <div class="form-check form-switch">
+                                    <div class="form-check form-switch filter-optional">
                                         <input type="checkbox" role="switch" class="form-check-input" name="assignedOptionalCategories" value="@category.CategoryId" @(category.Assigned ? "checked='true'" : "") />
                                         <label class="form-check-label">@category.Name</label>
                                     </div>
@@ -91,6 +99,10 @@
                 </div>
                 <div class="col-md-4">
                     <h4>Exclude Categories</h4>
+                    <div class="form-floating mb-3">
+                        <input type="text" id="search-exclude" name="search-exclude" class="form-control" aria-required="false" placeholder="Search..." onkeyup="filterCategories('exclude')" />
+                        <label for="search-exclude" class="control-label">Search...</label>
+                    </div>
                     <div class="row">
                         @{
                             List<AssignedCategoryViewModel>? assignedExcludeCategories = ViewBag.ExcludeCategories as List<AssignedCategoryViewModel>;
@@ -98,7 +110,7 @@
                             {
                                 foreach (var category in assignedExcludeCategories)
                                 {
-                                    <div class="form-check form-switch">
+                                    <div class="form-check form-switch filter-exclude">
                                         <input type="checkbox" role="switch" class="form-check-input" name="assignedExcludeCategories" value="@category.CategoryId" @(category.Assigned ? "checked='true'" : "") />
                                         <label class="form-check-label">@category.Name</label>
                                     </div>

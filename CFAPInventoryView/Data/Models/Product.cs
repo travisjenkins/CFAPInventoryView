@@ -56,7 +56,13 @@ namespace CFAPInventoryView.Data.Models
          * This would allow a value up to 999,999,999.9999
          */
         [Precision(13,4)]
+        [Display(Name = "Price (EA)")]
         public decimal Price { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Precision(13,4)]
+        [Display(Name = "Total Price")]
+        public decimal TotalPrice { get => Price * Quantity; }
 
         [StringLength(100)]
         public string? Barcode { get; set; }

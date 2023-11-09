@@ -37,6 +37,9 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Safe Stock Level")]
         public int SafeStockLevel { get; set; }
 
+        [ScaffoldColumn(false)]
+        public bool IsShoppingListItem { get; set; }
+
         public bool Active { get; set; }
 
         [Display(Name = "Modified By")]
@@ -53,10 +56,10 @@ namespace CFAPInventoryView.Data.Models
 
         public virtual Gender? Gender { get; set; }
 
-        [Display(Name = "iBelong Basket")]
+        [Display(Name = "Products")]
         public virtual ICollection<ProductBasket>? ProductBaskets { get; set; }
 
-        [Display(Name = "iBelong Basket")]
+        [Display(Name = "Categories")]
         public virtual ICollection<CategoryBasket>? CategoryBaskets { get; set; }
     }
 }

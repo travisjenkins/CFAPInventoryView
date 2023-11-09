@@ -1,11 +1,3 @@
-/*
-    Color Palette
-    Orange:  #FF731D or rgb(255, 115, 29)
-    White:  #FFF7E9 or rgb(255, 247, 233)
-    Light Blue:  #5F9DF7 or rgb(95, 157, 247)
-    Dark Blue:  #1746A2 or rgb(23, 70, 162)
-*/
-
 html {
   font-size: 14px;
 }
@@ -27,7 +19,7 @@ html {
 
 body {
   margin-bottom: 60px;
-  background-color: #FFF7E9;
+  background-color: #EEE;
 }
 
 /*  END SCAFFOLDED CSS */
@@ -39,8 +31,11 @@ body {
 }
 
 .navbar-custom-color {
-    background-color: #1746A2;
+    background-color: #425182;
 }
 
 /* Home Page
 ----------------------------------------------------------- */
+.cfap-logo {
+    width: 18rem;
+}
