@@ -10,9 +10,11 @@ using CFAPInventoryView.Data.Models;
 using CFAPInventoryView.Services;
 using CFAPInventoryView.Models;
 using Microsoft.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CFAPInventoryView.Controllers
 {
+    [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole},{HelperMethods.MemberRole}")]
     public class IBelongBasketsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -250,6 +252,7 @@ namespace CFAPInventoryView.Controllers
         }
 
         // POST: IBelongBaskets/Delete/5
+        [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {

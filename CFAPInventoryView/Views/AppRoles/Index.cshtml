@@ -47,14 +47,14 @@
                     <div class="col text-start">
                         @foreach (var role in item.AssignedRoles ??= new List<string>())
                         {
-                            <div>@Html.DisplayFor(modelRole => role)</div>
+                            <div>@role.SplitCamelAndPascalCase()</div>
                         }
                     </div>
                 </div>
                 <div class="col-lg-2 d-none d-lg-inline-block">
                     @foreach (var role in item.AssignedRoles ??= new List<string>())
                     {
-                        <div>@Html.DisplayFor(modelRole => role)</div>
+                        <div>@role.SplitCamelAndPascalCase()</div>
                     }
                 </div>
                 <div class="col-lg-3 text-center">

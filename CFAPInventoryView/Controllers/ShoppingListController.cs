@@ -2,11 +2,13 @@
 using CFAPInventoryView.Data.Models;
 using CFAPInventoryView.Models;
 using CFAPInventoryView.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CFAPInventoryView.Controllers
 {
+    [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole},{HelperMethods.MemberRole}")]
     public class ShoppingListController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -274,6 +276,7 @@ namespace CFAPInventoryView.Controllers
         }
 
         // POST: ShoppingList/Delete/1
+        [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {

@@ -11,6 +11,7 @@ namespace CFAPInventoryView
         public const string AdministratorRole = "Administrator";
         public const string ManagerRole = "Manager";
         public const string MemberRole = "Member";
+        public const string RegisteredUser = "RegisteredUser";
         
         public static string DisplaySafeString<T>(T displayString)
         {

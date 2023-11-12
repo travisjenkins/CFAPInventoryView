@@ -1,11 +1,13 @@
 ﻿using CFAPInventoryView.Data;
 using CFAPInventoryView.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
 
 namespace CFAPInventoryView.Controllers
 {
+    [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
     public class ReportsController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -3,6 +3,7 @@ using CFAPInventoryView.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Construction;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -73,7 +74,11 @@ namespace CFAPInventoryView.Controllers
                         {
                             if (User.IsInRole(HelperMethods.AdministratorRole))
                             {
-                                if (role == HelperMethods.MemberRole)
+                                if (role == HelperMethods.RegisteredUser)
+                                {
+                                    await PromoteTo(user, role, HelperMethods.MemberRole);
+                                }
+                                else if (role == HelperMethods.MemberRole)
                                 {
                                     await PromoteTo(user, role, HelperMethods.ManagerRole);
                                 }
@@ -88,7 +93,11 @@ namespace CFAPInventoryView.Controllers
                             }
                             else if (User.IsInRole(HelperMethods.ManagerRole))
                             {
-                                if (role == HelperMethods.MemberRole)
+                                if (role == HelperMethods.RegisteredUser)
+                                {
+                                    await PromoteTo(user, role, HelperMethods.MemberRole);
+                                }
+                                else if (role == HelperMethods.MemberRole)
                                 {
                                     await PromoteTo(user, role, HelperMethods.ManagerRole);
                                 }
@@ -148,9 +157,13 @@ namespace CFAPInventoryView.Controllers
                                 {
                                     await DemoteTo(user, role, HelperMethods.MemberRole);
                                 }
+                                else if (role == HelperMethods.MemberRole)
+                                {
+                                    await DemoteTo(user, role, HelperMethods.RegisteredUser);
+                                }
                                 else
                                 {
-                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} cannot be demoted further than Member.");
+                                    ModelState.AddModelError(string.Empty, $"The user {user.UserName} cannot be demoted further than Registered User.");
                                 }
                             }
                             else if (User.IsInRole(HelperMethods.ManagerRole))

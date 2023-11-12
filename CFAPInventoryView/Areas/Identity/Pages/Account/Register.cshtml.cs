@@ -193,10 +193,10 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        var roleAddResult = await _userManager.AddToRoleAsync(user, HelperMethods.MemberRole);
+                        var roleAddResult = await _userManager.AddToRoleAsync(user, HelperMethods.RegisteredUser);
                         if (!roleAddResult.Succeeded)
                         {
-                            ModelState.AddModelError(string.Empty, $"There was an error adding the user to the {HelperMethods.MemberRole} role.");
+                            ModelState.AddModelError(string.Empty, $"There was an error adding the user to the {HelperMethods.RegisteredUser} role.");
                             PopulateStateList();
                             return Page();
                         }
