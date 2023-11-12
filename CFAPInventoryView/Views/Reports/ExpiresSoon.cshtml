@@ -18,11 +18,16 @@
     {
         count++;
         string alternatingRowColorClass = string.Empty;
+        string expiredRowColorClass = string.Empty;
         if (count % 2 == 0)
         {
             alternatingRowColorClass = "medium-row-color";
         }
-        <div class="row text-start text-lg-center @alternatingRowColorClass">
+        if (item.ExpirationDate <= DateTime.Today)
+        {
+            expiredRowColorClass = "expired-row-color";
+        }
+        <div class="row text-start text-lg-center @alternatingRowColorClass @expiredRowColorClass">
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Name):</div>
                 <div action="col text-start">@Html.DisplayFor(modelItem => item.Name)</div>

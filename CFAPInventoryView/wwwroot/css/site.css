@@ -85,3 +85,9 @@ body {
 .card-img-inventory {
     background-color: #80ceff;
 }
+
+/* Expiring Page
+----------------------------------------------------------- */
+.expired-row-color {
+    background-color: #ff00006b;
+}
