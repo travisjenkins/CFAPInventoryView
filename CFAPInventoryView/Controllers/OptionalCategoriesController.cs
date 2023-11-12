@@ -24,9 +24,9 @@ namespace CFAPInventoryView.Controllers
         // GET: OptionalCategories
         public async Task<IActionResult> Index()
         {
-              return _context.OptionalCategories != null ? 
-                          View(await _context.OptionalCategories.OrderBy(oc => oc.Name).ToListAsync()) :
-                          Problem("Entity set 'OptionalCategories' is null.");
+            return _context.OptionalCategories != null ?
+                        View(await _context.OptionalCategories.AsNoTracking().Where(oc => oc.Active).OrderBy(oc => oc.Name).ToListAsync()) :
+                        Problem("Entity set 'OptionalCategories' is null.");
         }
 
         // GET: OptionalCategories/Details/5

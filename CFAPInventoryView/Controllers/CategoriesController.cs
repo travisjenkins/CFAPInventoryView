@@ -24,9 +24,9 @@ namespace CFAPInventoryView.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-              return _context.Categories != null ? 
-                          View(await _context.Categories.OrderBy(c => c.Name).ToListAsync()) :
-                          Problem("Entity set 'Categories' is null.");
+            return _context.Categories != null ?
+                        View(await _context.Categories.Where(c => c.Active).OrderBy(c => c.Name).ToListAsync()) :
+                        Problem("Entity set 'Categories' is null.");
         }
 
         // GET: Categories/Details/5

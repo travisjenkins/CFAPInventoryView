@@ -6,10 +6,10 @@
 
 <img class="cfap-logo mx-auto my-3 d-block" src="~/imgs/cfap-logo.svg" alt="CFAP Logo" />
 
-<div class="row justify-content-around">
-    <div class="col-md-6 col-lg-4 mb-3 mb-lg-0">
-        <div class="card text-center w-75 mx-auto">
-            <img src="~/imgs/i-belong-baskets-5.jpeg" class="card-img-top card-img-home" />
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 justify-content-around">
+    <div class="col mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <img src="~/imgs/i-belong-baskets-5.jpeg" class="card-img-top" alt="Variety of products" />
             <div class="card-body">
                 <h5 class="card-title">Products</h5>
                 <p class="card-text">
@@ -22,9 +22,9 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-lg-4 mb-3 mb-lg-0">
-        <div class="card text-center w-75 mx-auto">
-            <img src="~/imgs/i-belong-baskets-4.jpeg" class="card-img-top card-img-home" />
+    <div class="col mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <img src="~/imgs/i-belong-baskets-4.jpeg" class="card-img-top" alt="iBelong Baskets in vehicle" />
             <div class="card-body">
                 <h5 class="card-title">iBelong Shopping Lists</h5>
                 <p class="card-text">
@@ -37,9 +37,9 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-lg-4 mb-3 mb-lg-0">
-        <div class="card text-center w-75 mx-auto">
-            <img src="~/imgs/i-belong-baskets-2.jpeg" class="card-img-top card-img-home" />
+    <div class="col mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <img src="~/imgs/i-belong-baskets-2.jpeg" class="card-img-top" alt="iBelong Basket inventory" />
             <div class="card-body">
                 <h5 class="card-title">iBelong Baskets</h5>
                 <p class="card-text">
@@ -49,6 +49,21 @@
             </div>
             <div class="card-footer text-center">
                 <a asp-controller="IBelongBaskets" asp-action="Index" role="button" class="btn btn-outline-primary">iBelong Baskets »</a>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <img src="~/imgs/statistics.svg" class="card-img-top card-img-statistics card-img-statistics-home" alt="Statistics graphs" />
+            <div class="card-body">
+                <h5 class="card-title">Reports</h5>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes
+                </p>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="Reports" asp-action="Index" role="button" class="btn btn-outline-primary">Reports »</a>
             </div>
         </div>
     </div>

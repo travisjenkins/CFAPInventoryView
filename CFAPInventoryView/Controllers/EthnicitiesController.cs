@@ -24,9 +24,9 @@ namespace CFAPInventoryView.Controllers
         // GET: Ethnicities
         public async Task<IActionResult> Index()
         {
-              return _context.Ethnicities != null ? 
-                          View(await _context.Ethnicities.AsNoTracking().OrderBy(e => e.Description).ToListAsync()) :
-                          Problem("Entity set 'Ethnicities' is null.");
+            return _context.Ethnicities != null ?
+                        View(await _context.Ethnicities.AsNoTracking().Where(e => e.Active).OrderBy(e => e.Description).ToListAsync()) :
+                        Problem("Entity set 'Ethnicities' is null.");
         }
 
         // GET: Ethnicities/Details/5

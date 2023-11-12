@@ -39,6 +39,11 @@
                 <span asp-validation-for="PurchaseDate" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
+                <input asp-for="DateDistributed" class="form-control" aria-required="false" placeholder="distribution date" />
+                <label asp-for="DateDistributed" class="control-label"></label>
+                <span asp-validation-for="DateDistributed" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
                 <input asp-for="Quantity" class="form-control" min="1" max="1000" aria-required="true" placeholder="quantity" />
                 <label asp-for="Quantity" class="control-label"></label>
                 <span asp-validation-for="Quantity" class="text-danger"></span>

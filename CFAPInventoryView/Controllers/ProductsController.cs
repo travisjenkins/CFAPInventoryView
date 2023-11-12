@@ -23,17 +23,17 @@ namespace CFAPInventoryView.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-              return _context.Products != null ? 
-                          View(await _context.Products.AsNoTracking()
-                                                      .Where(p => p.Active)
-                                                      .Include(p => p.Category)
-                                                      .Include(p => p.OptionalCategory)
-                                                      .Include(p => p.ExcludeCategory)
-                                                      .DefaultIfEmpty()
-                                                      .OrderBy(p => p.PurchaseDate)
-                                                      .ThenByDescending(p => p.Price)
-                                                      .ToListAsync()) :
-                          Problem("Entity set 'Products' is null.");
+            return _context.Products != null ?
+                        View(await _context.Products.AsNoTracking()
+                                                    .Where(p => p.Active)
+                                                    .Include(p => p.Category)
+                                                    .Include(p => p.OptionalCategory)
+                                                    .Include(p => p.ExcludeCategory)
+                                                    .DefaultIfEmpty()
+                                                    .OrderBy(p => p.PurchaseDate)
+                                                    .ThenByDescending(p => p.Price)
+                                                    .ToListAsync()) :
+                        Problem("Entity set 'Products' is null.");
         }
 
         // GET: Products/Details/5

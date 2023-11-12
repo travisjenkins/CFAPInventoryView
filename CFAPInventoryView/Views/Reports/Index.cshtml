@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-around">
+    <div class="col mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <img src="~/imgs/statistics.svg" class="card-img-top card-img-statistics h-50" />
+            <div class="card-body">
+                <h5 class="card-title">Statistics</h5>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes
+                </p>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="Reports" asp-action="Statistics" role="button" class="btn btn-outline-primary">Statistics »</a>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <img src="~/imgs/inventory.svg" class="card-img-top card-img-inventory h-50" />
+            <div class="card-body">
+                <h5 class="card-title">Restock Needed?</h5>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes
+                </p>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="Reports" asp-action="Restock" role="button" class="btn btn-outline-primary">Restock Needed? »</a>
+            </div>
+        </div>
+    </div>
+    <div class="col mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <img src="~/imgs/expired-circle.svg" class="card-img-top card-img-home h-50" />
+            <div class="card-body">
+                <h5 class="card-title">Expiring Soon?</h5>
+                <p class="card-text">
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes
+                </p>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="Reports" asp-action="ExpiresSoon" role="button" class="btn btn-outline-primary">Expiring Soon? »</a>
+            </div>
+        </div>
+    </div>
+</div>

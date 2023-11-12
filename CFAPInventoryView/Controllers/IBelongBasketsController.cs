@@ -28,18 +28,18 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Index()
         {
             return _context.ProductBaskets != null ?
-                        View(await _context.Baskets.AsNoTracking()
-                                                   .Where(b => !b.IsShoppingListItem && b.Active)
-                                                   .Include(b => b.AgeGroup)
-                                                   .Include(b => b.Ethnicity)
-                                                   .Include(b => b.Gender)
-                                                   .Include(b => b.ProductBaskets.Where(pb => pb.Active))
-                                                      .ThenInclude(pb => pb.Product)
-                                                   .DefaultIfEmpty()
-                                                   .OrderBy(b => b.AgeGroup.Description)
-                                                   .ThenBy(b => b.DateAssembled)
-                                                   .ToListAsync()) :
-                        Problem("There are no iBelong Baskets in the database.");
+                    View(await _context.Baskets.AsNoTracking()
+                                                .Where(b => !b.IsShoppingListItem && b.Active)
+                                                .Include(b => b.AgeGroup)
+                                                .Include(b => b.Ethnicity)
+                                                .Include(b => b.Gender)
+                                                .Include(b => b.ProductBaskets.Where(pb => pb.Active))
+                                                    .ThenInclude(pb => pb.Product)
+                                                .DefaultIfEmpty()
+                                                .OrderBy(b => b.AgeGroup.Description)
+                                                .ThenBy(b => b.DateAssembled)
+                                                .ToListAsync()) :
+                    Problem("There are no iBelong Baskets in the database.");
         }
 
         // GET: IBelongBaskets/Details/5
@@ -50,7 +50,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var productBasket = await _context.Baskets.AsNoTracking()
+            var basket = await _context.Baskets.AsNoTracking()
                                                       .Include(b => b.AgeGroup)
                                                       .Include(b => b.Ethnicity)
                                                       .Include(b => b.Gender)
@@ -58,12 +58,12 @@ namespace CFAPInventoryView.Controllers
                                                          .ThenInclude(pb => pb.Product)
                                                       .DefaultIfEmpty()
                                                       .FirstOrDefaultAsync(b => b.BasketId == id);
-            if (productBasket == null)
+            if (basket == null)
             {
                 return NotFound();
             }
 
-            return View(productBasket);
+            return View(basket);
         }
 
         // GET: IBelongBaskets/Create
@@ -76,8 +76,8 @@ namespace CFAPInventoryView.Controllers
              * Get all products from the database
              * Create a new basket and initialize the ProductBaskets property with an empty list (since the basket does not exist yet)
              */
-            Basket productBasket = new();
-            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(productBasket);
+            Basket basket = new();
+            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(basket);
             return View();
         }
 
@@ -85,7 +85,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel")] Basket productBasket, List<Guid>? assignedProducts)
+        public async Task<IActionResult> Create([Bind("AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel")] Basket basket, List<Guid>? assignedProducts)
         {
             if (assignedProducts is not null)
             {
@@ -93,14 +93,14 @@ namespace CFAPInventoryView.Controllers
                 {
                     try
                     {
-                        productBasket.BasketId = Guid.NewGuid();
-                        productBasket.IsShoppingListItem = false;
-                        productBasket.Active = true;
-                        productBasket.LastUpdateId = User.Identity?.Name;
-                        productBasket.LastUpdateDateTime = DateTime.Now;
-                        _context.Add(productBasket);
+                        basket.BasketId = Guid.NewGuid();
+                        basket.IsShoppingListItem = false;
+                        basket.Active = true;
+                        basket.LastUpdateId = User.Identity?.Name;
+                        basket.LastUpdateDateTime = DateTime.Now;
+                        _context.Add(basket);
                         await _context.SaveChangesAsync();
-                        await AddProductsToBasket(productBasket.BasketId, assignedProducts);
+                        await AddProductsToBasket(basket.BasketId, assignedProducts);
                         return RedirectToAction(nameof(Index));
                     }
                     catch (DbUpdateException ex)
@@ -113,11 +113,11 @@ namespace CFAPInventoryView.Controllers
             ModelState.AddModelError(string.Empty, "You must assign at least one product to create the basket.");
             
             // Something failed. Redisplay the page with the user provided values.
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, productBasket.AgeGroupId);
-            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, productBasket.EthnicityId);
-            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, productBasket.GenderId);
-            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(productBasket);
-            return View(productBasket);
+            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
+            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
+            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
+            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(basket);
+            return View(basket);
         }
 
         // GET: IBelongBaskets/Edit/5
@@ -128,31 +128,31 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var productBasket = await _context.Baskets.Include(b => b.AgeGroup)
+            var basket = await _context.Baskets.Include(b => b.AgeGroup)
                                                       .Include(b => b.Ethnicity)
                                                       .Include(b => b.Gender)
                                                       .Include(b => b.ProductBaskets.Where(pb => pb.Active))
                                                       .DefaultIfEmpty()
                                                       .FirstOrDefaultAsync(b => b.BasketId == id);     
-            if (productBasket == null)
+            if (basket == null)
             {
                 return NotFound();
             }
 
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, productBasket.AgeGroupId);
-            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, productBasket.EthnicityId);
-            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, productBasket.GenderId);
-            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(productBasket);
-            return View(productBasket);
+            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
+            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
+            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
+            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(basket);
+            return View(basket);
         }
 
         // POST: IBelongBaskets/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BasketId,AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel,Active")] Basket productBasket, List<Guid>? assignedProducts)
+        public async Task<IActionResult> Edit(Guid id, [Bind("BasketId,AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel,Active")] Basket basket, List<Guid>? assignedProducts)
         {
-            if (id != productBasket.BasketId)
+            if (id != basket.BasketId)
             {
                 return NotFound();
             }
@@ -161,49 +161,52 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
-                    productBasket.IsShoppingListItem = false;
-                    productBasket.LastUpdateId = User.Identity?.Name;
-                    productBasket.LastUpdateDateTime = DateTime.Now;
-                    _context.Update(productBasket);
-                    await _context.SaveChangesAsync();
+                    basket.IsShoppingListItem = false;
+                    basket.LastUpdateId = User.Identity?.Name;
+                    basket.LastUpdateDateTime = DateTime.Now;
+                    _context.Update(basket);
 
-                    // TODO:  Handle subtracting or adding the product quantity when added or removed from a basket
+                    // 1. Get current assigned products
+                    var currentAssignedProducts = await _context.ProductBaskets.Where(pb => pb.BasketId == id).ToListAsync();
 
                     if (assignedProducts is null)
                     {
-                        await DeleteProductsFromBasket(id);
+                        await DeleteProductsFromBasket(id); // 2. If null delete all assigned
                     }
                     else
                     {
-                        // 1. Get current assigned products
-                        var currentAssignedProducts = await _context.ProductBaskets.Where(pb => pb.BasketId == id).ToListAsync();
-
-                        // 2. Get the Ids
+                        // 3. Get the Ids only
                         var currentAssignedProductIds = currentAssignedProducts.Select(pb => pb.ProductId).ToList();
 
-                        // 3. Get the Ids to add
+                        // 4. Get the Ids to add
                         var productIdsToAdd = assignedProducts?.Where(id => !currentAssignedProductIds.Contains(id)).ToList();
 
-                        // 4. Get the Ids to delete
+                        // 5. Get the Ids to delete
                         var productIdsToDelete = currentAssignedProductIds.Where(id => !assignedProducts.Contains(id)).ToList();
 
-                        // 5. Delete
+                        // 6. Delete
                         if (productIdsToDelete?.Count > 0)
                         {
                             await DeleteProductsFromBasket(id, currentAssignedProducts, productIdsToDelete);
                         }
 
-                        // 6. Add
+                        // 7. Add
                         if (productIdsToAdd?.Count > 0)
                         {
                             await AddProductsToBasket(id, productIdsToAdd);
+                        }
+
+                        // 8. If there were no products to add or remove ensure other changes are saved to the database.
+                        if (productIdsToDelete?.Count is null || productIdsToDelete?.Count == 0 && productIdsToAdd?.Count is null || productIdsToAdd?.Count == 0)
+                        {
+                            await _context.SaveChangesAsync();
                         }
                     }
                     return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException ex)
                 {
-                    if (!BasketExists(productBasket.BasketId))
+                    if (!BasketExists(basket.BasketId))
                     {
                         return NotFound();
                     }
@@ -215,11 +218,11 @@ namespace CFAPInventoryView.Controllers
                 }
             }
             // Something failed. Redisplay the page with the user provided values.
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, productBasket.AgeGroupId);
-            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, productBasket.EthnicityId);
-            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, productBasket.GenderId);
-            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(productBasket);
-            return View(productBasket);
+            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
+            ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
+            ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
+            ViewData["AssignedProductsList"] = await PopulateAssignedProducts(basket);
+            return View(basket);
         }
 
         // GET: IBelongBaskets/Delete/5
@@ -230,7 +233,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var productBasket = await _context.Baskets.AsNoTracking()
+            var basket = await _context.Baskets.AsNoTracking()
                                                       .Include(b => b.AgeGroup)
                                                       .Include(b => b.Ethnicity)
                                                       .Include(b => b.Gender)
@@ -238,12 +241,12 @@ namespace CFAPInventoryView.Controllers
                                                          .ThenInclude(pb => pb.Product)
                                                       .DefaultIfEmpty()
                                                       .FirstOrDefaultAsync(b => b.BasketId == id);
-            if (productBasket == null)
+            if (basket == null)
             {
                 return NotFound();
             }
 
-            return View(productBasket);
+            return View(basket);
         }
 
         // POST: IBelongBaskets/Delete/5
@@ -254,10 +257,10 @@ namespace CFAPInventoryView.Controllers
             {
                 return Problem("Nothing to delete.");
             }
-            var productBasket = await _context.Baskets.FindAsync(id);
-            if (productBasket != null)
+            var basket = await _context.Baskets.FindAsync(id);
+            if (basket != null)
             {
-                _context.Baskets.Remove(productBasket);
+                _context.Baskets.Remove(basket);
             }
             
             await _context.SaveChangesAsync();
@@ -277,14 +280,14 @@ namespace CFAPInventoryView.Controllers
             var allProducts = await _context.Products.AsNoTracking().Where(p => p.Active).OrderBy(p => p.Name).ToListAsync();
             if (allProducts is not null)
             {
-                var basketProducts = new HashSet<Guid>(basket.ProductBaskets.Select(p => p.ProductId));
+                var productBasketProductIds = new HashSet<Guid>(basket.ProductBaskets.Select(p => p.ProductId));
                 foreach (var product in allProducts)
                 {
                     assignedProductViewModels.Add(new AssignedProductViewModel
                     {
                         ProductId = product.ProductId,
                         Name = product.Name,
-                        Assigned = basketProducts.Contains(product.ProductId)
+                        Assigned = productBasketProductIds.Contains(product.ProductId)
                     });
                 }
             }
@@ -294,7 +297,7 @@ namespace CFAPInventoryView.Controllers
         private async Task AddProductsToBasket(Guid basketId, List<Guid>? assignedProducts)
         {
             var productBaskets = await _context.ProductBaskets.Where(pb => pb.BasketId == basketId).ToListAsync();
-            List<ProductBasket> productsToAdd = new();
+            List<ProductBasket> productBasketsToAdd = new();
             if (assignedProducts is not null)
             {
                 foreach (var productId in assignedProducts)
@@ -311,7 +314,7 @@ namespace CFAPInventoryView.Controllers
                             LastUpdateId = User.Identity?.Name,
                             LastUpdateDateTime = DateTime.Now
                         };
-                        productsToAdd.Add(productToAdd);
+                        productBasketsToAdd.Add(productToAdd);
 
                         if (product.Quantity > 0)
                         {
@@ -320,9 +323,9 @@ namespace CFAPInventoryView.Controllers
                     }
                 }
             }
-            if (productsToAdd.Count > 0)
+            if (productBasketsToAdd.Count > 0)
             {
-                await _context.ProductBaskets.AddRangeAsync(productsToAdd);
+                await _context.ProductBaskets.AddRangeAsync(productBasketsToAdd);
                 await _context.SaveChangesAsync();
             }
         }

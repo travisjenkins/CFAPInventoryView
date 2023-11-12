@@ -24,9 +24,9 @@ namespace CFAPInventoryView.Controllers
         // GET: ExcludeCategories
         public async Task<IActionResult> Index()
         {
-              return _context.ExcludeCategories != null ? 
-                          View(await _context.ExcludeCategories.OrderBy(ec => ec.Name).ToListAsync()) :
-                          Problem("Entity set 'ExcludeCategories' is null.");
+            return _context.ExcludeCategories != null ?
+                        View(await _context.ExcludeCategories.Where(ec => ec.Active).OrderBy(ec => ec.Name).ToListAsync()) :
+                        Problem("Entity set 'ExcludeCategories' is null.");
         }
 
         // GET: ExcludeCategories/Details/5

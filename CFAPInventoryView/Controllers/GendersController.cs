@@ -24,9 +24,9 @@ namespace CFAPInventoryView.Controllers
         // GET: Genders
         public async Task<IActionResult> Index()
         {
-              return _context.Genders != null ? 
-                          View(await _context.Genders.AsNoTracking().OrderBy(g => g.Description).ToListAsync()) :
-                          Problem("Entity set 'Genders' is null.");
+            return _context.Genders != null ?
+                        View(await _context.Genders.AsNoTracking().Where(g => g.Active).OrderBy(g => g.Description).ToListAsync()) :
+                        Problem("Entity set 'Genders' is null.");
         }
 
         // GET: Genders/Details/5

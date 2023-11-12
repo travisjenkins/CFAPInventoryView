@@ -7,39 +7,50 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-striped text-center">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SortOrder)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SortOrder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AgeGroupId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AgeGroupId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AgeGroupId">Delete</a>
-            </td>
-        </tr>
+
+@if (Model is not null && Model.ElementAtOrDefault(0) is not null)
+{
+    <table class="table table-striped text-center">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SortOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Active)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SortOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Active)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.AgeGroupId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.AgeGroupId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.AgeGroupId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
+else
+{
+    <div class="text-center py-2 border border-2 border-secondary rounded text-secondary">
+        <p class="pt-2 fs-4">There are no @ViewData["Title"] in your database.</p>
+    </div>
+}

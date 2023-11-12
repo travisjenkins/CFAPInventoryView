@@ -24,9 +24,9 @@ namespace CFAPInventoryView.Controllers
         // GET: AgeGroups
         public async Task<IActionResult> Index()
         {
-              return _context.AgeGroups != null ? 
-                          View(await _context.AgeGroups.AsNoTracking().OrderBy(ag => ag.SortOrder).ToListAsync()) :
-                          Problem("Entity set 'AgeGroups' is null.");
+            return _context.AgeGroups != null ?
+                        View(await _context.AgeGroups.AsNoTracking().Where(a => a.Active).OrderBy(ag => ag.SortOrder).ToListAsync()) :
+                        Problem("Entity set 'AgeGroups' is null.");
         }
 
         // GET: AgeGroups/Details/5
