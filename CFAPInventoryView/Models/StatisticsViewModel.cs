@@ -22,15 +22,15 @@ namespace CFAPInventoryView.Models
         public TimeSpan TotalProductDurationOnShelf { get; set; }
 
         // iBelong Baskets
-        [Display(Name = "Total iBelong Shopping Lists")]
+        [Display(Name = "Total Shopping Lists")]
         public int TotalShoppingListBaskets { get; set; }
 
-        [Display(Name = "Total iBelong Baskets")]
+        [Display(Name = "Total Baskets")]
         public int TotaliBelongBaskets { get; set; }
 
         [DataType(DataType.Currency)]
         [Precision(13, 4)]
-        [Display(Name = "Total iBelong Basket Price")]
+        [Display(Name = "Total Basket Price")]
         public decimal TotaliBelongBasketPrice { get; set; }
 
         [Display(Name = "Duration on Shelf")]

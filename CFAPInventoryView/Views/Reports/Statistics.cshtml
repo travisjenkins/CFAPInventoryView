@@ -8,7 +8,7 @@
     <div class="col-lg-6 mb-3 mb-lg-0">
         <div class="card text-center h-100 mx-auto">
             <div class="card-body">
-                <h5 class="card-title">Products</h5>
+                <h4 class="card-title">Products</h4>
                 <p class="card-text">
                     <div class="row">
                         <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TotalProducts):</div>
@@ -22,6 +22,14 @@
                         <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TotalItemsThatExpire):</div>
                         <div class="col-5 text-start mt-auto">@Html.DisplayFor(model => model.TotalItemsThatExpire)</div>
                     </div>
+                    <div class="row">
+                        <div class="col-6 fw-bold text-end"></div>
+                        <div class="col-5 text-start mt-auto">dd:hh:mm:ss</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TotalProductDurationOnShelf):</div>
+                        <div class="col-5 text-start mt-auto">@Html.DisplayFor(model => model.TotalProductDurationOnShelf)</div>
+                    </div>
                 </p>
             </div>
         </div>
@@ -29,19 +37,27 @@
     <div class="col-lg-6 mb-3 mb-lg-0">
         <div class="card text-center h-100 mx-auto">
             <div class="card-body">
-                <h5 class="card-title">iBelong Baskets</h5>
+                <h4 class="card-title">iBelong Baskets</h4>
                 <p class="card-text">
                     <div class="row">
-                        <div class="col-8 fw-bold text-end">@Html.DisplayNameFor(model => model.TotalShoppingListBaskets):</div>
-                        <div class="col-3 text-start mt-auto">@Html.DisplayFor(model => model.TotalShoppingListBaskets)</div>
+                        <div class="col-7 fw-bold text-end">@Html.DisplayNameFor(model => model.TotalShoppingListBaskets):</div>
+                        <div class="col-4 text-start mt-auto">@Html.DisplayFor(model => model.TotalShoppingListBaskets)</div>
                     </div>
                     <div class="row">
-                        <div class="col-8 fw-bold text-end">@Html.DisplayNameFor(model => model.TotaliBelongBaskets):</div>
-                        <div class="col-3 text-start mt-auto">@Html.DisplayFor(model => model.TotaliBelongBaskets)</div>
+                        <div class="col-7 fw-bold text-end">@Html.DisplayNameFor(model => model.TotaliBelongBaskets):</div>
+                        <div class="col-4 text-start mt-auto">@Html.DisplayFor(model => model.TotaliBelongBaskets)</div>
                     </div>
                     <div class="row">
-                        <div class="col-8 fw-bold text-end">@Html.DisplayNameFor(model => model.TotaliBelongBasketPrice):</div>
-                        <div class="col-3 text-start mt-auto">@Html.DisplayFor(model => model.TotaliBelongBasketPrice)</div>
+                        <div class="col-7 fw-bold text-end">@Html.DisplayNameFor(model => model.TotaliBelongBasketPrice):</div>
+                        <div class="col-4 text-start mt-auto">@Html.DisplayFor(model => model.TotaliBelongBasketPrice)</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7 fw-bold text-end"></div>
+                        <div class="col-4 text-start mt-auto">dd:hh:mm:ss</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7 fw-bold text-end">@Html.DisplayNameFor(model => model.TotalBasketDurationOnShelf):</div>
+                        <div class="col-4 text-start mt-auto">@Html.DisplayFor(model => model.TotalBasketDurationOnShelf)</div>
                     </div>
                 </p>
             </div>
