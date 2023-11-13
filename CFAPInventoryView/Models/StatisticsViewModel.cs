@@ -17,7 +17,7 @@ namespace CFAPInventoryView.Models
         [Display(Name = "Total Perishable")]
         public int TotalItemsThatExpire { get; set; }
 
-        [Display(Name = "Duration on Shelf")]
+        [Display(Name = "Average Duration on Shelf")]
         [DisplayFormat(DataFormatString = "{0:dd\\.hh\\:mm\\:ss}")]
         public TimeSpan TotalProductDurationOnShelf { get; set; }
 
@@ -33,7 +33,7 @@ namespace CFAPInventoryView.Models
         [Display(Name = "Total Basket Price")]
         public decimal TotaliBelongBasketPrice { get; set; }
 
-        [Display(Name = "Duration on Shelf")]
+        [Display(Name = "Average Duration on Shelf")]
         [DisplayFormat(DataFormatString = "{0:dd\\.hh\\:mm\\:ss}")]
         public TimeSpan TotalBasketDurationOnShelf { get; set; }
     }
