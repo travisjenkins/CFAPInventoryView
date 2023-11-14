@@ -16,7 +16,15 @@ using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("CFAPInventory") ?? throw new InvalidOperationException("Connection string 'CFAPInventory' not found.");
+string connectionString = string.Empty;
+if (!builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING") ?? throw new InvalidOperationException("Connection string 'AZURE_SQL_CONNECTIONSTRING' not found.");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("CFAPInventory") ?? throw new InvalidOperationException("Connection string 'CFAPInventory' not found.");
+}
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -108,7 +116,25 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
  * This policy is applied to the Login, Register, and ResetPassword pages
  */
 // TODO:  Test rate limiting thoroughly before release
-var myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
+RateLimitOptions? myOptions;
+if (!builder.Environment.IsDevelopment())
+{
+    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_PERMIT_LIMIT").Value, out int permitLimit)) { }
+    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_WINDOW").Value, out int window)) { }
+    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_QUEUELIMIT").Value, out int queueLimit)) { }
+    myOptions = new()
+    {
+        PolicyName = builder.Configuration.GetSection("RATELIMIT_POLICY_NAME").Value,
+        PermitLimit = permitLimit,
+        Window = window,
+        QueueLimit = queueLimit
+    };
+}
+else
+{
+    myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
+}
+
 if (myOptions is not null)
 {
     builder.Services.AddRateLimiter(rateLimiterOptions => {
