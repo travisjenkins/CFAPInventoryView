@@ -37,7 +37,7 @@ jobs:
       - name: Publish
         run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build
       - name: dotnet install ef
-        run: dotnet tool install --global dotnet-ef --version ${{ env.DOTNET_CORE_VERSION }}
+        run: dotnet tool install --global dotnet-ef --version 7.0.12
       - name: dotnet bundle migration
         run: dotnet ef migrations bundle --runtime linux-x64 -p CFAPInventoryView/CFAPInventoryView.csproj -o \${{env.WORKING_DIRECTORY}}/myapp/migrate
 
