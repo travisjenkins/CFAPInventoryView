@@ -37,25 +37,7 @@ namespace CFAPInventoryView.Data.Models
         [DataType(DataType.Date)]
         [Display(Name = "Purchase Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yy}")]
-        public DateTime PurchaseDate { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Date Distributed")]
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yy}")]
-        public DateTime? DateDistributed { get; set; }
-
-        [Display(Name = "Duration on Shelf")]
-        public long? DurationOnShelf 
-        { 
-            get
-            {
-                if (DateDistributed.HasValue)
-                {
-                    return (DateDistributed.Value - PurchaseDate).Ticks;
-                }
-                return default;
-            }
-        }
+        public DateTime PurchaseDate { get; set; } = DateTime.Today;
 
         [Required]
         [Range(1, 1000)]

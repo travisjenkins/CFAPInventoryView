@@ -41,10 +41,10 @@ namespace CFAPInventoryView.Controllers
                     foreach (var product in products)
                     {
                         totalInventoryPrice += product.Price * product.Quantity;
-                        if (product.DurationOnShelf.HasValue)
-                        {
-                            temp += product.DurationOnShelf.Value / products.Count;
-                        }
+                        //if (product.DurationOnShelf.HasValue)
+                        //{
+                        //    temp += product.DurationOnShelf.Value / products.Count;
+                        //}
                     }
                     viewModel.TotalProductDurationOnShelf = new TimeSpan(temp);
                 }
@@ -61,11 +61,11 @@ namespace CFAPInventoryView.Controllers
                     long temp = 0;
                     foreach (var basket in baskets)
                     {
-                        totalIBelongBasketPrice += basket.TotalPrice;
-                        if (basket.DurationOnShelf.HasValue)
-                        {
-                            temp += basket.DurationOnShelf.Value / baskets.Count;
-                        }
+                        //totalIBelongBasketPrice += basket.TotalPrice;
+                        //if (basket.DurationOnShelf.HasValue)
+                        //{
+                        //    temp += basket.DurationOnShelf.Value / baskets.Count;
+                        //}
                     }
                     viewModel.TotalBasketDurationOnShelf = new TimeSpan(temp);
                 }

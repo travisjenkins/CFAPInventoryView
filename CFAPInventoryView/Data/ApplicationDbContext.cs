@@ -27,7 +27,12 @@ namespace CFAPInventoryView.Data
         public DbSet<ExcludeCategory> ExcludeCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Basket> Baskets { get; set; }
+        public DbSet<Donor> Donors { get; set; }
+        public DbSet<Parent> Parents { get; set; }
         public DbSet<ProductBasket> ProductBaskets { get; set; }
         public DbSet<CategoryBasket> CategoryBaskets { get; set; }
+        public DbSet<ProductTransaction> ProductTransactions { get; set; }
+        public DbSet<BasketTransaction> BasketTransactions { get; set; }
+        
     }
 }

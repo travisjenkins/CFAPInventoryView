@@ -114,7 +114,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,Name,Description,Expires,ExpirationDate,PurchaseDate,DateDistributed,Quantity,SafeStockLevel,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId,Active")] Product product)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ProductId,Name,Description,Expires,ExpirationDate,PurchaseDate,Quantity,SafeStockLevel,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId,Active")] Product product)
         {
             if (id != product.ProductId)
             {

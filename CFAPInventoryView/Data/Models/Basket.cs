@@ -28,24 +28,6 @@ namespace CFAPInventoryView.Data.Models
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yy}")]
         public DateTime DateAssembled { get; set; } = DateTime.Today;
 
-        [DataType(DataType.Date)]
-        [Display(Name = "Date Distributed")]
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yy}")]
-        public DateTime? DateDistributed { get; set; }
-
-        [Display(Name = "Duration on Shelf")]
-        public long? DurationOnShelf
-        {
-            get
-            {
-                if (DateDistributed.HasValue)
-                {
-                    return (DateDistributed.Value - DateAssembled).Ticks;
-                }
-                return default;
-            }
-        }
-
         [Required]
         [Range(1, 1000)]
         public int Quantity { get; set; }
