@@ -116,24 +116,25 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
  * This policy is applied to the Login, Register, and ResetPassword pages
  */
 // TODO:  Test rate limiting thoroughly before release
-RateLimitOptions? myOptions;
-if (!builder.Environment.IsDevelopment())
-{
-    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_PERMIT_LIMIT").Value, out int permitLimit)) { }
-    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_WINDOW").Value, out int window)) { }
-    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_QUEUELIMIT").Value, out int queueLimit)) { }
-    myOptions = new()
-    {
-        PolicyName = builder.Configuration.GetSection("RATELIMIT_POLICY_NAME").Value,
-        PermitLimit = permitLimit,
-        Window = window,
-        QueueLimit = queueLimit
-    };
-}
-else
-{
-    myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
-}
+//RateLimitOptions? myOptions;
+//if (!builder.Environment.IsDevelopment())
+//{
+//    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_PERMIT_LIMIT").Value, out int permitLimit)) { }
+//    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_WINDOW").Value, out int window)) { }
+//    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_QUEUELIMIT").Value, out int queueLimit)) { }
+//    myOptions = new()
+//    {
+//        PolicyName = builder.Configuration.GetSection("RATELIMIT_POLICY_NAME").Value,
+//        PermitLimit = permitLimit,
+//        Window = window,
+//        QueueLimit = queueLimit
+//    };
+//}
+//else
+//{
+//    myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
+//}
+var myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
 
 if (myOptions is not null)
 {
@@ -185,15 +186,15 @@ if (!builder.Environment.IsDevelopment())
     });
     builder.Services.AddWebOptimizer();
 
-    // Add Azure App Service logging
-    builder.Logging.AddAzureWebAppDiagnostics();
+    //// Add Azure App Service logging
+    //builder.Logging.AddAzureWebAppDiagnostics();
 
-    // Add Redis memory caching for Azure
-    builder.Services.AddStackExchangeRedisCache(options =>
-    {
-        options.Configuration = builder.Configuration["AZURE_REDIS_CONNECTIONSTRING"];
-        options.InstanceName = "SampleInstance";
-    });
+    //// Add Redis memory caching for Azure
+    //builder.Services.AddStackExchangeRedisCache(options =>
+    //{
+    //    options.Configuration = builder.Configuration["AZURE_REDIS_CONNECTIONSTRING"];
+    //    options.InstanceName = "SampleInstance";
+    //});
 }
 else
 {
@@ -212,7 +213,7 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
-    app.UseRateLimiter();
+    //app.UseRateLimiter();
 }
 
 app.UseHttpsRedirection();
