@@ -184,6 +184,16 @@ if (!builder.Environment.IsDevelopment())
         options.MaxAge = TimeSpan.FromHours(12);
     });
     builder.Services.AddWebOptimizer();
+
+    // Add Azure App Service logging
+    builder.Logging.AddAzureWebAppDiagnostics();
+
+    // Add Redis memory caching for Azure
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration["AZURE_REDIS_CONNECTIONSTRING"];
+        options.InstanceName = "SampleInstance";
+    });
 }
 else
 {
