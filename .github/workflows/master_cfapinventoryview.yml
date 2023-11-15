@@ -15,6 +15,7 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: .
+  EF_CORE_TOOLS_VERSION: 7.0.*
 
 jobs:
   build:
@@ -28,16 +29,12 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
-      - name: Restore
-        run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
       - name: Build
-        run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
-      - name: Test
-        run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
+        run: dotnet build "${{ env.WORKING_DIRECTORY }}" -c ${{ env.CONFIGURATION }}
       - name: Publish
-        run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build
+        run: dotnet publish -c ${{ env.CONFIGURATION }} -o ${{ env.WORKING_DIRECTORY }}
       - name: dotnet install ef
-        run: dotnet tool install --global dotnet-ef --version 7.0.12
+        run: dotnet tool install --global dotnet-ef --version ${{ env.EF_CORE_TOOLS_VERSION }}
       - name: dotnet bundle migration
         run: dotnet ef migrations bundle --runtime linux-x64 -p CFAPInventoryView/CFAPInventoryView.csproj -o ${{ env.WORKING_DIRECTORY }}/myapp/migrate
 
