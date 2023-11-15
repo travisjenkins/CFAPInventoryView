@@ -39,7 +39,7 @@ jobs:
       - name: dotnet install ef
         run: dotnet tool install --global dotnet-ef --version 7.0.12
       - name: dotnet bundle migration
-        run: dotnet ef migrations bundle --runtime linux-x64 -p CFAPInventoryView/CFAPInventoryView.csproj -o \${{env.WORKING_DIRECTORY}}/myapp/migrate
+        run: dotnet ef migrations bundle --runtime linux-x64 -p CFAPInventoryView/CFAPInventoryView.csproj -o ${{ env.WORKING_DIRECTORY }}/myapp/migrate
 
       - name: Publish Artifacts
         uses: actions/upload-artifact@v3
