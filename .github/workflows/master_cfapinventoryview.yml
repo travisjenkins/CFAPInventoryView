@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: dotnet build "${{ env.WORKING_DIRECTORY }}" -c ${{ env.CONFIGURATION }}
       - name: Publish
-        run: dotnet publish -c ${{ env.CONFIGURATION }} -o ${{ env.WORKING_DIRECTORY }}
+        run: dotnet publish -c ${{ env.CONFIGURATION }} -o ${{ env.WORKING_DIRECTORY }}/myapp
       - name: dotnet install ef
         run: dotnet tool install --global dotnet-ef --version ${{ env.EF_CORE_TOOLS_VERSION }}
       - name: dotnet bundle migration
