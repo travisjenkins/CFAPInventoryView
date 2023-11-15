@@ -30,7 +30,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
       - name: Build
-        run: dotnet build "${{ env.WORKING_DIRECTORY }}" -c ${{ env.CONFIGURATION }}
+        run: dotnet build -c ${{ env.CONFIGURATION }}
       - name: Publish
         run: dotnet publish -c ${{ env.CONFIGURATION }} -o ${{ env.WORKING_DIRECTORY }}/myapp
       - name: dotnet install ef
@@ -41,8 +41,8 @@ jobs:
       - name: Publish Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          name: .net-app
+          path: ${{ env.WORKING_DIRECTORY }}/myapp
 
   deploy:
     runs-on: ubuntu-latest
