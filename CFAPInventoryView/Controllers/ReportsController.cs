@@ -74,10 +74,12 @@ namespace CFAPInventoryView.Controllers
             catch (DbException ex)
             {
                 _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "ERROR: There was an issue retrieving information from the database. If the issue persists, please contact and administrator.");
             }
             catch (Exception ex)
             {
                 _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "ERROR: Something bad happened. If the issue persists, please contact and administrator.");
             }
             return View(viewModel);
         }

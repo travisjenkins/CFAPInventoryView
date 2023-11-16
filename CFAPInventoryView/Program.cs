@@ -16,15 +16,8 @@ using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-string connectionString = string.Empty;
-if (!builder.Environment.IsDevelopment())
-{
-    connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING") ?? throw new InvalidOperationException("Connection string 'AZURE_SQL_CONNECTIONSTRING' not found.");
-}
-else
-{
-    connectionString = builder.Configuration.GetConnectionString("CFAPInventory") ?? throw new InvalidOperationException("Connection string 'CFAPInventory' not found.");
-}
+var connectionString = builder.Configuration.GetConnectionString("CFAPInventory") ?? throw new InvalidOperationException("Connection string 'CFAPInventory' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -116,25 +109,29 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
  * This policy is applied to the Login, Register, and ResetPassword pages
  */
 // TODO:  Test rate limiting thoroughly before release
-//RateLimitOptions? myOptions;
-//if (!builder.Environment.IsDevelopment())
-//{
-//    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_PERMIT_LIMIT").Value, out int permitLimit)) { }
-//    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_WINDOW").Value, out int window)) { }
-//    if (int.TryParse(builder.Configuration.GetSection("RATELIMIT_POLICY_QUEUELIMIT").Value, out int queueLimit)) { }
-//    myOptions = new()
-//    {
-//        PolicyName = builder.Configuration.GetSection("RATELIMIT_POLICY_NAME").Value,
-//        PermitLimit = permitLimit,
-//        Window = window,
-//        QueueLimit = queueLimit
-//    };
-//}
-//else
-//{
-//    myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
-//}
-var myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
+RateLimitOptions? myOptions;
+if (!builder.Environment.IsDevelopment())
+{
+    string? policyName = Environment.GetEnvironmentVariable("RATELIMIT_POLICY_NAME");
+    if (int.TryParse(Environment.GetEnvironmentVariable("RATELIMIT_POLICY_PERMIT_LIMIT"), out int permitLimit)) { }
+    if (int.TryParse(Environment.GetEnvironmentVariable("RATELIMIT_POLICY_WINDOW"), out int window)) { }
+    if (int.TryParse(Environment.GetEnvironmentVariable("RATELIMIT_POLICY_QUEUELIMIT"), out int queueLimit)) { }
+    if (permitLimit == 0 || window == 0 || queueLimit == 0)
+    {
+        throw new InvalidOperationException("Unable to retrieve environment variables for rate limiter.");
+    }
+    myOptions = new()
+    {
+        PolicyName = policyName,
+        PermitLimit = permitLimit,
+        Window = window,
+        QueueLimit = queueLimit
+    };
+}
+else
+{
+    myOptions = builder.Configuration.GetSection("RateLimitOptions").Get<RateLimitOptions>();
+}
 
 if (myOptions is not null)
 {
@@ -213,7 +210,7 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
-    //app.UseRateLimiter();
+    app.UseRateLimiter();
 }
 
 app.UseHttpsRedirection();

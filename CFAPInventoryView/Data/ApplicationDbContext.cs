@@ -16,7 +16,7 @@ namespace CFAPInventoryView.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Seed();
+            //builder.Seed();
         }
 
         public DbSet<AgeGroup> AgeGroups { get; set; }
@@ -33,6 +33,5 @@ namespace CFAPInventoryView.Data
         public DbSet<CategoryBasket> CategoryBaskets { get; set; }
         public DbSet<ProductTransaction> ProductTransactions { get; set; }
         public DbSet<BasketTransaction> BasketTransactions { get; set; }
-        
     }
 }
