@@ -19,9 +19,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.SortOrder)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Active)
-                </th>
                 <th></th>
             </tr>
         </thead>
@@ -34,9 +31,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.SortOrder)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Active)
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.AgeGroupId">Edit</a> |

@@ -15,17 +15,19 @@ namespace CFAPInventoryView.Controllers
     public class EthnicitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<EthnicitiesController> _logger;
 
-        public EthnicitiesController(ApplicationDbContext context)
+        public EthnicitiesController(ApplicationDbContext context, ILogger<EthnicitiesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Ethnicities
         public async Task<IActionResult> Index()
         {
             return _context.Ethnicities != null ?
-                        View(await _context.Ethnicities.AsNoTracking().Where(e => e.Active).OrderBy(e => e.Description).ToListAsync()) :
+                        View(await _context.Ethnicities.AsNoTracking().OrderBy(e => e.Description).ToListAsync()) :
                         Problem("Entity set 'Ethnicities' is null.");
         }
 
@@ -37,7 +39,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var ethnicity = await _context.Ethnicities
+            var ethnicity = await _context.Ethnicities.AsNoTracking()
                 .FirstOrDefaultAsync(m => m.EthnicityId == id);
             if (ethnicity == null)
             {
@@ -59,15 +61,22 @@ namespace CFAPInventoryView.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Description")] Ethnicity ethnicity)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ethnicity.EthnicityId = Guid.NewGuid();
-                ethnicity.Active = true;
-                ethnicity.LastUpdateId = User.Identity?.Name;
-                ethnicity.LastUpdateDateTime = DateTime.Now;
-                _context.Add(ethnicity);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    ethnicity.EthnicityId = Guid.NewGuid();
+                    ethnicity.LastUpdateId = User.Identity?.Name;
+                    ethnicity.LastUpdateDateTime = DateTime.Now;
+                    _context.Add(ethnicity);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "There was an issue creating the ethnicity. If the issue continues please contact an administrator.");
             }
             return View(ethnicity);
         }
@@ -92,7 +101,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("EthnicityId,Description,Active")] Ethnicity ethnicity)
+        public async Task<IActionResult> Edit(Guid id, [Bind("EthnicityId,Description")] Ethnicity ethnicity)
         {
             if (id != ethnicity.EthnicityId)
             {
@@ -107,8 +116,9 @@ namespace CFAPInventoryView.Controllers
                     ethnicity.LastUpdateDateTime = DateTime.Now;
                     _context.Update(ethnicity);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException ex)
                 {
                     if (!EthnicityExists(ethnicity.EthnicityId))
                     {
@@ -116,10 +126,10 @@ namespace CFAPInventoryView.Controllers
                     }
                     else
                     {
-                        throw;
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue updating the ethnicity. If the issue continues please contact an administrator.");
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(ethnicity);
         }
@@ -132,7 +142,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var ethnicity = await _context.Ethnicities
+            var ethnicity = await _context.Ethnicities.AsNoTracking()
                 .FirstOrDefaultAsync(m => m.EthnicityId == id);
             if (ethnicity == null)
             {

@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "iBelong Basket Shopping List";
+#pragma warning disable CS8602
+#pragma warning disable CS8604
 }
 
 <h1>Delete</h1>
@@ -30,6 +32,12 @@
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SafeStockLevel)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SafeStockLevel)

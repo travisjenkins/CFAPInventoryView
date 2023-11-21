@@ -1,66 +1,83 @@
-﻿@model IEnumerable<CFAPInventoryView.Data.Models.Product>
+﻿@model RestockViewModel
 
 @{
     ViewData["Title"] = "Restock";
+#pragma warning disable CS8602
 }
 
-@if (Model is not null && Model.ElementAtOrDefault(0) is not null)
+@if (Model is not null)
 {
-    <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
-        <div class="col-lg-3">@Html.DisplayNameFor(model => model.Name)</div>
-        <div class="col-lg-4">@Html.DisplayNameFor(model => model.Description)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Quantity)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.SafeStockLevel)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Price)</div>
-        <div class="col-lg-2"></div>
-    </div>
-
-    int count = 0;
-    @foreach (var item in Model)
+    if (Model.Categories.ElementAtOrDefault(0) is not null)
     {
-        count++;
-        string alternatingRowColorClass = string.Empty;
-        if (count % 2 == 0)
-        {
-            alternatingRowColorClass = "medium-row-color";
-        }
-        <div class="row text-start text-lg-center @alternatingRowColorClass">
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Name):</div>
-                <div action="col text-start">@Html.DisplayFor(modelItem => item.Name)</div>
-            </div>
-            <div class="col-lg-3 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Name)</div>
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Description):</div>
-                <div action="col text-start">@Html.DisplayFor(modelItem => item.Description)</div>
-            </div>
-            <div class="col-lg-4 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Description)</div>
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Quantity):</div>
-                <div action="col text-start">@Html.DisplayFor(modelItem => item.Quantity)</div>
-            </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Quantity)</div>
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.SafeStockLevel):</div>
-                <div action="col text-start">@Html.DisplayFor(modelItem => item.SafeStockLevel)</div>
-            </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.SafeStockLevel)</div>
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Price):</div>
-                <div action="col text-start">@Html.DisplayFor(modelItem => item.Price)</div>
-            </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Price)</div>
-            <div class="col-lg-2 text-center">
-                <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-            </div>
+        <h3 class="mt-3 mb-1 text-center">@nameof(CFAPInventoryView.Data.ApplicationDbContext.Categories)</h3>
+        <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+            <div class="col-lg-6">@Html.DisplayNameFor(model => model.Categories.ElementAtOrDefault(0).Name)</div>
+            <div class="col-lg-6">@Html.DisplayNameFor(model => model.Categories.ElementAtOrDefault(0).QuantityNeeded)</div>
         </div>
-        @if (count != Model.Count())
+
+        int count = 0;
+        @foreach (var item in Model.Categories)
         {
-            <hr />
+            count++;
+            string alternatingRowColorClass = string.Empty;
+            if (count % 2 == 0)
+            {
+                alternatingRowColorClass = "medium-row-color";
+            }
+            <div class="row text-start text-lg-center @alternatingRowColorClass">
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@Html.DisplayNameFor(model => item.Name):</div>
+                    <div action="col text-start">@Html.DisplayFor(modelItem => item.Name)</div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Name)</div>
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@Html.DisplayNameFor(model => item.QuantityNeeded):</div>
+                    <div action="col text-start">@Html.DisplayFor(modelItem => item.QuantityNeeded)</div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.QuantityNeeded)</div>
+            </div>
+            @if (count != Model.Categories.Count())
+            {
+                <hr />
+            }
         }
     }
+    if (Model.OptionalCategories.ElementAtOrDefault(0) is not null)
+    {
+        <h3 class="mt-5 mb-1 text-center">@nameof(CFAPInventoryView.Data.ApplicationDbContext.OptionalCategories).SplitCamelAndPascalCase()</h3>
+        <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+            <div class="col-lg-6">@Html.DisplayNameFor(model => model.OptionalCategories.ElementAtOrDefault(0).Name)</div>
+            <div class="col-lg-6">@Html.DisplayNameFor(model => model.OptionalCategories.ElementAtOrDefault(0).QuantityNeeded)</div>
+        </div>
+
+        int count = 0;
+        @foreach (var item in Model.OptionalCategories)
+        {
+            count++;
+            string alternatingRowColorClass = string.Empty;
+            if (count % 2 == 0)
+            {
+                alternatingRowColorClass = "medium-row-color";
+            }
+            <div class="row text-start text-lg-center @alternatingRowColorClass">
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@Html.DisplayNameFor(model => item.Name):</div>
+                    <div action="col text-start">@Html.DisplayFor(modelItem => item.Name)</div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Name)</div>
+                <div class="row row-cols-2 d-lg-none">
+                    <div class="col text-end fw-bold">@Html.DisplayNameFor(model => item.QuantityNeeded):</div>
+                    <div action="col text-start">@Html.DisplayFor(modelItem => item.QuantityNeeded)</div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.QuantityNeeded)</div>
+            </div>
+            @if (count != Model.Categories.Count())
+            {
+                <hr />
+            }
+        }
+    }
+    
 }
 else
 {

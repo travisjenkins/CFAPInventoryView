@@ -15,17 +15,19 @@ namespace CFAPInventoryView.Controllers
     public class AgeGroupsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<AgeGroupsController> _logger;
 
-        public AgeGroupsController(ApplicationDbContext context)
+        public AgeGroupsController(ApplicationDbContext context, ILogger<AgeGroupsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: AgeGroups
         public async Task<IActionResult> Index()
         {
             return _context.AgeGroups != null ?
-                        View(await _context.AgeGroups.AsNoTracking().Where(a => a.Active).OrderBy(ag => ag.SortOrder).ToListAsync()) :
+                        View(await _context.AgeGroups.AsNoTracking().OrderBy(ag => ag.SortOrder).ToListAsync()) :
                         Problem("Entity set 'AgeGroups' is null.");
         }
 
@@ -37,7 +39,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var ageGroup = await _context.AgeGroups
+            var ageGroup = await _context.AgeGroups.AsNoTracking()
                 .FirstOrDefaultAsync(m => m.AgeGroupId == id);
             if (ageGroup == null)
             {
@@ -59,15 +61,22 @@ namespace CFAPInventoryView.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Description,SortOrder")] AgeGroup ageGroup)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ageGroup.AgeGroupId = Guid.NewGuid();
-                ageGroup.Active = true;
-                ageGroup.LastUpdateId = User.Identity?.Name;
-                ageGroup.LastUpdateDateTime = DateTime.Now;
-                _context.Add(ageGroup);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    ageGroup.AgeGroupId = Guid.NewGuid();
+                    ageGroup.LastUpdateId = User.Identity?.Name;
+                    ageGroup.LastUpdateDateTime = DateTime.Now;
+                    _context.Add(ageGroup);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "There was an issue creating the age group.  If the issue persists, please contact an administrator.");
             }
             return View(ageGroup);
         }
@@ -92,7 +101,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AgeGroupId,Description,SortOrder,Active")] AgeGroup ageGroup)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AgeGroupId,Description,SortOrder")] AgeGroup ageGroup)
         {
             if (id != ageGroup.AgeGroupId)
             {
@@ -107,8 +116,9 @@ namespace CFAPInventoryView.Controllers
                     ageGroup.LastUpdateDateTime = DateTime.Now;
                     _context.Update(ageGroup);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException ex)
                 {
                     if (!AgeGroupExists(ageGroup.AgeGroupId))
                     {
@@ -116,10 +126,10 @@ namespace CFAPInventoryView.Controllers
                     }
                     else
                     {
-                        throw;
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue updating the age group.  If the issue persists, please contact an administrator.");
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(ageGroup);
         }
@@ -132,7 +142,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var ageGroup = await _context.AgeGroups
+            var ageGroup = await _context.AgeGroups.AsNoTracking()
                 .FirstOrDefaultAsync(m => m.AgeGroupId == id);
             if (ageGroup == null)
             {

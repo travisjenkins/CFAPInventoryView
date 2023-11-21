@@ -18,8 +18,6 @@ namespace CFAPInventoryView.Data.Models
 
         public Guid? ExcludeCategoryId { get; set; }
 
-        public bool Active { get; set; }
-
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }
 

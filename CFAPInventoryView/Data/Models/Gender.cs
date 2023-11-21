@@ -12,8 +12,6 @@ namespace CFAPInventoryView.Data.Models
         [StringLength(50)]
         public string? Description { get; set; }
 
-        public bool Active { get; set; }
-
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }
 

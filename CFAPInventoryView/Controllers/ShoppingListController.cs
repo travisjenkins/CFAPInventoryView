@@ -25,19 +25,21 @@ namespace CFAPInventoryView.Controllers
         {
             return _context.CategoryBaskets != null ?
                         View(await _context.Baskets.AsNoTracking()
-                                                   .Where(b => b.IsShoppingListItem && b.Active)
+                                                   .Where(b => b.IsShoppingListItem)
                                                    .Include(b => b.AgeGroup)
                                                    .Include(b => b.Ethnicity)
                                                    .Include(b => b.Gender)
-                                                   .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                   .Include(b => b.CategoryBaskets)
                                                         .ThenInclude(cb => cb.Category)
-                                                   .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                   .Include(b => b.CategoryBaskets)
                                                         .ThenInclude(cb => cb.OptionalCategory)
-                                                   .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                   .Include(b => b.CategoryBaskets)
                                                         .ThenInclude(cb => cb.ExcludeCategory)
                                                    .DefaultIfEmpty()
+#pragma warning disable 8602
                                                    .OrderBy(b => b.AgeGroup.Description)
                                                    .ThenBy(b => b.DateAssembled)
+#pragma warning restore 8602
                                                    .ToListAsync()) :
                         Problem("There are no shopping lists in the database.");
         }
@@ -54,13 +56,12 @@ namespace CFAPInventoryView.Controllers
                                                .Include(b => b.AgeGroup)
                                                .Include(b => b.Ethnicity)
                                                .Include(b => b.Gender)
-                                               .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                               .Include(b => b.CategoryBaskets)
                                                     .ThenInclude(cb => cb.Category)
-                                                .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                .Include(b => b.CategoryBaskets)
                                                     .ThenInclude(cb => cb.OptionalCategory)
-                                                .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                .Include(b => b.CategoryBaskets)
                                                     .ThenInclude(cb => cb.ExcludeCategory)
-                                                .DefaultIfEmpty()
                                                .FirstOrDefaultAsync(b => b.BasketId == id);
             if (basket == null)
             {
@@ -71,9 +72,9 @@ namespace CFAPInventoryView.Controllers
         }
 
         // GET: ShoppingList/Create
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(Guid? AgeGroupId)
         {
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context);
+            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, AgeGroupId);
             ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context);
             ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context);
 
@@ -82,9 +83,9 @@ namespace CFAPInventoryView.Controllers
              * Create a new basket and initialize the CategoryBaskets property with an empty list (since the basket does not exist yet)
              */
             Basket basket = new();
-            ViewData["Categories"] = await PopulateAssignedCategories("Category", basket);
-            ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket);
-            ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket);
+            ViewData["Categories"] = await PopulateAssignedCategories("Category", basket, AgeGroupId);
+            ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket, AgeGroupId);
+            ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket, AgeGroupId);
             return View();
         }
 
@@ -92,41 +93,51 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel")] Basket basket, List<Guid>? assignedCategories, List<Guid>? assignedOptionalCategories, List<Guid>? assignedExcludeCategories)
+        public async Task<IActionResult> Create([Bind("AgeGroupId,EthnicityId,GenderId,DateAssembled,SafeStockLevel")] Basket basket, 
+                                                List<Guid>? assignedCategories, 
+                                                List<Guid>? assignedOptionalCategories, 
+                                                List<Guid>? assignedExcludeCategories)
         {
-            if (ModelState.IsValid)
+            if (basket.SafeStockLevel is not null && basket.SafeStockLevel > 0)
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    basket.BasketId = Guid.NewGuid();
-                    basket.IsShoppingListItem = true;
-                    basket.Active = true;
-                    basket.LastUpdateId = User.Identity?.Name;
-                    basket.LastUpdateDateTime = DateTime.Now;
-                    _context.Add(basket);
-                    await _context.SaveChangesAsync();
-                    await AddBasketCategories(basket.BasketId, assignedCategories, assignedOptionalCategories, assignedExcludeCategories);
-                    return RedirectToAction(nameof(Index));
+                    try
+                    {
+                        basket.BasketId = Guid.NewGuid();
+                        basket.IsShoppingListItem = true;
+                        basket.Quantity = 0;
+                        basket.LastUpdateId = User.Identity?.Name;
+                        basket.LastUpdateDateTime = DateTime.Now;
+                        _context.Add(basket);
+                        await _context.SaveChangesAsync();
+                        await AddBasketCategories(basket.BasketId, assignedCategories, assignedOptionalCategories, assignedExcludeCategories);
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue creating the iBelong Basket shopping list. If the issue continues please contact an administrator.");
+                    }
                 }
-                catch (DbUpdateException ex)
-                {
-                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
-                    ModelState.AddModelError(string.Empty, "There was an issue assigning the categories to the basket. If the issue continues please contact an administrator.");
-                }
+            }
+            else
+            {
+                ModelState.AddModelError(nameof(Basket.SafeStockLevel), "You must provide a safe stock level for this type of basket.");
             }
             // Something failed. Redisplay the page with user provided values.
             ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
             ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
             ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
-            ViewData["Categories"] = await PopulateAssignedCategories("Category", basket);
-            ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket);
-            ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket);
+            ViewData["Categories"] = await PopulateAssignedCategories("Category", basket, basket.AgeGroupId);
+            ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket, basket.AgeGroupId);
+            ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket, basket.AgeGroupId);
 
             return View(basket);
         }
 
         // GET: ShoppingList/Edit/1
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid? id, Guid? AgeGroupId)
         {
             if (id == null || _context.Baskets == null)
             {
@@ -136,21 +147,29 @@ namespace CFAPInventoryView.Controllers
             var basket = await _context.Baskets.Include(b => b.AgeGroup)
                                                .Include(b => b.Ethnicity)
                                                .Include(b => b.Gender)
-                                               .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
-                                               .DefaultIfEmpty()
+                                               .Include(b => b.CategoryBaskets)
                                                .FirstOrDefaultAsync(b => b.BasketId == id);
             if (basket == null)
             {
                 return NotFound();
             }
 
-            ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
             ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
             ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
-            ViewData["Categories"] = await PopulateAssignedCategories("Category", basket);
-            ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket);
-            ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket);
-
+            if (AgeGroupId.HasValue)
+            {
+                ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, AgeGroupId);
+                ViewData["Categories"] = await PopulateAssignedCategories("Category", basket, AgeGroupId);
+                ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket, AgeGroupId);
+                ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket, AgeGroupId);
+            }
+            else
+            {
+                ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
+                ViewData["Categories"] = await PopulateAssignedCategories("Category", basket, basket.AgeGroupId);
+                ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket, basket.AgeGroupId);
+                ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket, basket.AgeGroupId);
+            }
             return View(basket);
         }
 
@@ -158,91 +177,106 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BasketId,AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel,Active")] Basket basket, List<Guid>? assignedCategories, List<Guid>? assignedOptionalCategories, List<Guid>? assignedExcludeCategories)
+        public async Task<IActionResult> Edit(Guid id, 
+                                              [Bind("BasketId,AgeGroupId,EthnicityId,GenderId,DateAssembled,Quantity,SafeStockLevel")] Basket basket, 
+                                              List<Guid>? assignedCategories, 
+                                              List<Guid>? assignedOptionalCategories, 
+                                              List<Guid>? assignedExcludeCategories)
         {
             if (id != basket.BasketId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (basket.SafeStockLevel is not null && basket.SafeStockLevel > 0)
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    basket.IsShoppingListItem = true;
-                    basket.LastUpdateId = User.Identity?.Name;
-                    basket.LastUpdateDateTime = DateTime.Now;
-                    _context.Update(basket);
-                    await _context.SaveChangesAsync();
+                    try
+                    {
+                        basket.IsShoppingListItem = true;
+                        basket.LastUpdateId = User.Identity?.Name;
+                        basket.LastUpdateDateTime = DateTime.Now;
+                        _context.Update(basket);
+                        await _context.SaveChangesAsync();
 
-                    if (assignedCategories is null && assignedOptionalCategories is null && assignedExcludeCategories is null)
-                    {
-                        await DeleteCategoriesForBasket(id);
-                    }
-                    else
-                    {
-                        // 1. Get current Categories, OptionalCategories, and ExcludeCategories from DB
-                        var currentAssignedCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.CategoryId != null).ToListAsync();
-                        var currentAssignedOptionalCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.OptionalCategoryId != null).ToListAsync();
-                        var currentAssignedExcludeCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.ExcludeCategoryId != null).ToListAsync();
-                        
-                        // 2. Get the Ids
-                        var currentAssignedCategoryIds = currentAssignedCategories.Select(cb => cb.CategoryId).ToList();
-                        var currentAssignedOptionalCategoryIds = currentAssignedOptionalCategories.Select(cb => cb.OptionalCategoryId).ToList();
-                        var currentAssignedExcludeCategoryIds = currentAssignedExcludeCategories.Select( cb => cb.ExcludeCategoryId).ToList();
-                        
-                        // 3. Get the Ids to add
-                        var categoryIdsToAdd = assignedCategories?.Where(id => !currentAssignedCategoryIds.Contains(id)).ToList();
-                        var optionalCategoryIdsToAdd = assignedOptionalCategories?.Where(id => !currentAssignedOptionalCategoryIds.Contains(id)).ToList();
-                        var excludeCategoryIdsToAdd = assignedExcludeCategories?.Where(id => !currentAssignedExcludeCategoryIds.Contains(id)).ToList();
+                        if (assignedCategories is null && assignedOptionalCategories is null && assignedExcludeCategories is null)
+                        {
+                            await DeleteCategoriesForBasket(id);
+                        }
+                        else
+                        {
+                            // 1. Get current Categories, OptionalCategories, and ExcludeCategories from DB
+                            var currentAssignedCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.CategoryId != null).ToListAsync();
+                            var currentAssignedOptionalCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.OptionalCategoryId != null).ToListAsync();
+                            var currentAssignedExcludeCategories = await _context.CategoryBaskets.Where(cb => cb.BasketId == id && cb.ExcludeCategoryId != null).ToListAsync();
 
-                        // 4. Get the Ids to delete
-                        var categoriesToDelete = currentAssignedCategoryIds.Where(cb => !assignedCategories.Contains((Guid)cb)).ToList();
-                        var optionalCategoriesToDelete = currentAssignedOptionalCategoryIds.Where(cb => !assignedOptionalCategories.Contains((Guid)cb)).ToList();
-                        var excludeCategoriesToDelete = currentAssignedExcludeCategoryIds.Where(cb => !assignedExcludeCategories.Contains((Guid)cb)).ToList();
-                        
-                        // 5. Delete
-                        if (categoriesToDelete?.Count > 0 || optionalCategoriesToDelete?.Count > 0 || excludeCategoriesToDelete?.Count > 0)
-                        {
-                            await DeleteCategoriesForBasket(
-                                                        id,
-                                                        currentAssignedCategories,
-                                                        currentAssignedOptionalCategories,
-                                                        currentAssignedExcludeCategories,
-                                                        categoriesToDelete,
-                                                        optionalCategoriesToDelete,
-                                                        excludeCategoriesToDelete
-                                                        );
+                            // 2. Get the Ids
+                            var currentAssignedCategoryIds = currentAssignedCategories.Select(cb => cb.CategoryId).ToList();
+                            var currentAssignedOptionalCategoryIds = currentAssignedOptionalCategories.Select(cb => cb.OptionalCategoryId).ToList();
+                            var currentAssignedExcludeCategoryIds = currentAssignedExcludeCategories.Select(cb => cb.ExcludeCategoryId).ToList();
+
+                            // 3. Get the Ids to add
+                            var categoryIdsToAdd = assignedCategories?.Where(id => !currentAssignedCategoryIds.Contains(id)).ToList();
+                            var optionalCategoryIdsToAdd = assignedOptionalCategories?.Where(id => !currentAssignedOptionalCategoryIds.Contains(id)).ToList();
+                            var excludeCategoryIdsToAdd = assignedExcludeCategories?.Where(id => !currentAssignedExcludeCategoryIds.Contains(id)).ToList();
+
+                            // 4. Get the Ids to delete
+#pragma warning disable 8629
+#pragma warning disable 8602
+                            var categoriesToDelete = currentAssignedCategoryIds.Where(cb => !assignedCategories.Contains((Guid)cb)).ToList();
+                            var optionalCategoriesToDelete = currentAssignedOptionalCategoryIds.Where(cb => !assignedOptionalCategories.Contains((Guid)cb)).ToList();
+                            var excludeCategoriesToDelete = currentAssignedExcludeCategoryIds.Where(cb => !assignedExcludeCategories.Contains((Guid)cb)).ToList();
+#pragma warning restore 8602
+#pragma warning restore 8629
+
+                            // 5. Delete
+                            if (categoriesToDelete?.Count > 0 || optionalCategoriesToDelete?.Count > 0 || excludeCategoriesToDelete?.Count > 0)
+                            {
+                                await DeleteCategoriesForBasket(
+                                                            id,
+                                                            currentAssignedCategories,
+                                                            currentAssignedOptionalCategories,
+                                                            currentAssignedExcludeCategories,
+                                                            categoriesToDelete,
+                                                            optionalCategoriesToDelete,
+                                                            excludeCategoriesToDelete
+                                                            );
+                            }
+
+                            // 6. Add
+                            if (categoryIdsToAdd?.Count > 0 || optionalCategoryIdsToAdd?.Count > 0 || excludeCategoryIdsToAdd?.Count > 0)
+                            {
+                                await AddBasketCategories(id, categoryIdsToAdd, optionalCategoryIdsToAdd, excludeCategoryIdsToAdd);
+                            }
                         }
-                        
-                        // 6. Add
-                        if (categoryIdsToAdd?.Count > 0 || optionalCategoryIdsToAdd?.Count > 0 || excludeCategoryIdsToAdd?.Count > 0)
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (DbUpdateException ex)
+                    {
+                        if (!BasketExists(basket.BasketId))
                         {
-                            await AddBasketCategories(id, categoryIdsToAdd, optionalCategoryIdsToAdd, excludeCategoryIdsToAdd);
+                            return NotFound();
+                        }
+                        else
+                        {
+                            _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                            ModelState.AddModelError(string.Empty, "There was an issue updating the iBelong Basket shopping list. If the issue continues please contact an administrator.");
                         }
                     }
-                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    if (!BasketExists(basket.BasketId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
-                        ModelState.AddModelError(string.Empty, "There was an issue assigning the categories to the basket. If the issue continues please contact an administrator.");
-                    }
-                }
+            }
+            else
+            {
+                ModelState.AddModelError(nameof(Basket.SafeStockLevel), "You must provide a safe stock level for this basket setup's inventory tracking.");
             }
             // Something failed. Redisplay the page with user provided values.
             ViewData["AgeGroupsSelectList"] = await SelectListBuilder.GetAgeGroupsSelectListAsync(_context, basket.AgeGroupId);
             ViewData["EthnicitiesSelectList"] = await SelectListBuilder.GetEthnicitiesSelectListAsync(_context, basket.EthnicityId);
             ViewData["GendersSelectList"] = await SelectListBuilder.GetGendersSelectListAsync(_context, basket.GenderId);
-            ViewData["Categories"] = await PopulateAssignedCategories("Category", basket);
-            ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket);
-            ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket);
+            ViewData["Categories"] = await PopulateAssignedCategories("Category", basket, basket.AgeGroupId);
+            ViewData["OptionalCategories"] = await PopulateAssignedCategories("Optional", basket, basket.AgeGroupId);
+            ViewData["ExcludeCategories"] = await PopulateAssignedCategories("Exclude", basket, basket.AgeGroupId);
 
             return View(basket);
         }
@@ -259,14 +293,18 @@ namespace CFAPInventoryView.Controllers
                                                .Include(b => b.AgeGroup)
                                                .Include(b => b.Ethnicity)
                                                .Include(b => b.Gender)
-                                               .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+#pragma warning disable 8604
+                                               .Include(b => b.CategoryBaskets)
                                                     .ThenInclude(cb => cb.Category)
-                                                .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                .Include(b => b.CategoryBaskets)
                                                     .ThenInclude(cb => cb.OptionalCategory)
-                                                .Include(b => b.CategoryBaskets.Where(cb => cb.Active))
+                                                .Include(b => b.CategoryBaskets)
                                                     .ThenInclude(cb => cb.ExcludeCategory)
+#pragma warning restore 8604
                                                 .DefaultIfEmpty()
+#pragma warning disable 8602
                                                .FirstOrDefaultAsync(b => b.BasketId == id);
+#pragma warning restore 8602
             if (basket == null)
             {
                 return NotFound();
@@ -299,7 +337,7 @@ namespace CFAPInventoryView.Controllers
             return (_context.Baskets?.Any(e => e.BasketId == id)).GetValueOrDefault();
         }
 
-        private async Task<List<AssignedCategoryViewModel>> PopulateAssignedCategories(string categoryType, Basket basket)
+        private async Task<List<AssignedCategoryViewModel>> PopulateAssignedCategories(string categoryType, Basket basket, Guid? selectedAgeGroupId = null)
         {
             List<AssignedCategoryViewModel> assignedCategoryViewModels = new();
             // Check if CategoryBaskets is null, if so create a new list (the line below is called a compound assignment statement)
@@ -307,57 +345,72 @@ namespace CFAPInventoryView.Controllers
             switch (categoryType)
             {
                 case "Category":
-                    var allCategories = await _context.Categories.AsNoTracking().Where(c => c.Active).OrderBy(c => c.Name).ToListAsync();
-                    if (allCategories is not null)
-                    {
-                        var basketCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.CategoryId));
-                        foreach (var category in allCategories)
-                        {
-                            assignedCategoryViewModels.Add(new AssignedCategoryViewModel
-                            {
-                                CategoryId = category.CategoryId,
-                                Name = category.Name,
-                                Assigned = basketCategories.Contains(category.CategoryId)
-                            });
-                        }
-                    }
+                    await AddCategoriesToViewModel(basket, selectedAgeGroupId, assignedCategoryViewModels);
                     break;
                 case "Optional":
-                    var allOptionalCategories = await _context.OptionalCategories.AsNoTracking().Where(c => c.Active).OrderBy(c => c.Name).ToListAsync();
-                    if (allOptionalCategories is not null)
-                    {
-                        var basketOptionalCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.OptionalCategoryId));
-                        foreach (var category in allOptionalCategories)
-                        {
-                            assignedCategoryViewModels.Add(new AssignedCategoryViewModel
-                            {
-                                CategoryId = category.OptionalCategoryId,
-                                Name = category.Name,
-                                Assigned = basketOptionalCategories.Contains(category.OptionalCategoryId)
-                            });
-                        }
-                    }
+                    await AddOptionalCategoriesToViewModel(basket, selectedAgeGroupId, assignedCategoryViewModels);
                     break;
                 case "Exclude":
-                    var allExcludeCategories = await _context.ExcludeCategories.AsNoTracking().Where(c => c.Active).OrderBy(c => c.Name).ToListAsync();
-                    if (allExcludeCategories is not null)
-                    {
-                        var basketExcludeCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.ExcludeCategoryId));
-                        foreach (var category in allExcludeCategories)
-                        {
-                            assignedCategoryViewModels.Add(new AssignedCategoryViewModel
-                            {
-                                CategoryId = category.ExcludeCategoryId,
-                                Name = category.Name,
-                                Assigned = basketExcludeCategories.Contains(category.ExcludeCategoryId)
-                            });
-                        }
-                    }
+                    await AddExcludeCategoriesToViewModel(basket, selectedAgeGroupId, assignedCategoryViewModels);
                     break;
                 default:
                     break;
             }
             return assignedCategoryViewModels;
+        }
+
+        private async Task AddExcludeCategoriesToViewModel(Basket basket, Guid? selectedAgeGroupId, List<AssignedCategoryViewModel> assignedCategoryViewModels)
+        {
+            List<ExcludeCategory> allExcludeCategories = await HelperMethods.GetExcludeCategoriesForAgeGroup(_context, selectedAgeGroupId);
+            if (allExcludeCategories is not null && allExcludeCategories.Count > 0)
+            {
+                var basketExcludeCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.ExcludeCategoryId));
+                foreach (var category in allExcludeCategories)
+                {
+                    assignedCategoryViewModels.Add(new AssignedCategoryViewModel
+                    {
+                        CategoryId = category.ExcludeCategoryId,
+                        Name = category.Name,
+                        Assigned = basketExcludeCategories.Contains(category.ExcludeCategoryId)
+                    });
+                }
+            }
+        }
+
+        private async Task AddOptionalCategoriesToViewModel(Basket basket, Guid? selectedAgeGroupId, List<AssignedCategoryViewModel> assignedCategoryViewModels)
+        {
+            List<OptionalCategory> allOptionalCategories = await HelperMethods.GetOptionalCategoriesForAgeGroup(_context, selectedAgeGroupId);
+            if (allOptionalCategories is not null && allOptionalCategories.Count > 0)
+            {
+                var basketOptionalCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.OptionalCategoryId));
+                foreach (var category in allOptionalCategories)
+                {
+                    assignedCategoryViewModels.Add(new AssignedCategoryViewModel
+                    {
+                        CategoryId = category.OptionalCategoryId,
+                        Name = category.Name,
+                        Assigned = basketOptionalCategories.Contains(category.OptionalCategoryId)
+                    });
+                }
+            }
+        }
+
+        private async Task AddCategoriesToViewModel(Basket basket, Guid? selectedAgeGroupId, List<AssignedCategoryViewModel> assignedCategoryViewModels)
+        {
+            List<Category> allCategories = await HelperMethods.GetCategoriesForAgeGroup(_context, selectedAgeGroupId);
+            if (allCategories is not null && allCategories.Count > 0)
+            {
+                var basketCategories = new HashSet<Guid?>(basket.CategoryBaskets.Select(c => c.CategoryId));
+                foreach (var category in allCategories)
+                {
+                    assignedCategoryViewModels.Add(new AssignedCategoryViewModel
+                    {
+                        CategoryId = category.CategoryId,
+                        Name = category.Name,
+                        Assigned = basketCategories.Contains(category.CategoryId)
+                    });
+                }
+            }
         }
 
         private async Task AddBasketCategories(Guid basketId, List<Guid>? assignedCategories, List<Guid>? assignedOptionalCategories, List<Guid>? assignedExcludeCategories)
@@ -397,7 +450,6 @@ namespace CFAPInventoryView.Controllers
                                 CategoryBasketId = Guid.NewGuid(),
                                 BasketId = basketId,
                                 CategoryId = categoryId,
-                                Active = true,
                                 LastUpdateId = User.Identity?.Name,
                                 LastUpdateDateTime = DateTime.Now
                             };
@@ -415,7 +467,6 @@ namespace CFAPInventoryView.Controllers
                                 CategoryBasketId = Guid.NewGuid(),
                                 BasketId = basketId,
                                 OptionalCategoryId = categoryId,
-                                Active = true,
                                 LastUpdateId = User.Identity?.Name,
                                 LastUpdateDateTime = DateTime.Now
                             };
@@ -433,7 +484,6 @@ namespace CFAPInventoryView.Controllers
                                 CategoryBasketId = Guid.NewGuid(),
                                 BasketId = basketId,
                                 ExcludeCategoryId = categoryId,
-                                Active = true,
                                 LastUpdateId = User.Identity?.Name,
                                 LastUpdateDateTime = DateTime.Now
                             };

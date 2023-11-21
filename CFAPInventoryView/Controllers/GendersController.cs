@@ -15,17 +15,19 @@ namespace CFAPInventoryView.Controllers
     public class GendersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<GendersController> _logger;
 
-        public GendersController(ApplicationDbContext context)
+        public GendersController(ApplicationDbContext context, ILogger<GendersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Genders
         public async Task<IActionResult> Index()
         {
             return _context.Genders != null ?
-                        View(await _context.Genders.AsNoTracking().Where(g => g.Active).OrderBy(g => g.Description).ToListAsync()) :
+                        View(await _context.Genders.AsNoTracking().OrderBy(g => g.Description).ToListAsync()) :
                         Problem("Entity set 'Genders' is null.");
         }
 
@@ -37,7 +39,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var gender = await _context.Genders
+            var gender = await _context.Genders.AsNoTracking()
                 .FirstOrDefaultAsync(m => m.GenderId == id);
             if (gender == null)
             {
@@ -59,16 +61,24 @@ namespace CFAPInventoryView.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Description")] Gender gender)
         {
-            if (ModelState.IsValid)
+            try
             {
-                gender.GenderId = Guid.NewGuid();
-                gender.Active = true;
-                gender.LastUpdateId = User.Identity?.Name;
-                gender.LastUpdateDateTime = DateTime.Now;
-                _context.Add(gender);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    gender.GenderId = Guid.NewGuid();
+                    gender.LastUpdateId = User.Identity?.Name;
+                    gender.LastUpdateDateTime = DateTime.Now;
+                    _context.Add(gender);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "There was an issue creating the gender. If the issue continues please contact an administrator.");
+            }
+            
             return View(gender);
         }
 
@@ -92,7 +102,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("GenderId,Description,Active")] Gender gender)
+        public async Task<IActionResult> Edit(Guid id, [Bind("GenderId,Description")] Gender gender)
         {
             if (id != gender.GenderId)
             {
@@ -108,7 +118,7 @@ namespace CFAPInventoryView.Controllers
                     _context.Update(gender);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException ex)
                 {
                     if (!GenderExists(gender.GenderId))
                     {
@@ -116,7 +126,8 @@ namespace CFAPInventoryView.Controllers
                     }
                     else
                     {
-                        throw;
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue updating the gender. If the issue continues please contact an administrator.");
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -132,7 +143,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var gender = await _context.Genders
+            var gender = await _context.Genders.AsNoTracking()
                 .FirstOrDefaultAsync(m => m.GenderId == id);
             if (gender == null)
             {

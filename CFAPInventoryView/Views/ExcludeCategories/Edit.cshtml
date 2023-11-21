@@ -2,6 +2,12 @@
 
 @{
     ViewData["Title"] = "Exclude Category";
+
+    List<AssignedAgeGroupViewModel>? assignedAgeGroups = null;
+    if (ViewBag.AssignedAgeGroupsList is not null)
+    {
+        assignedAgeGroups = ViewBag.AssignedAgeGroupsList as List<AssignedAgeGroupViewModel>;
+    }
 }
 
 <h1>Edit</h1>
@@ -17,12 +23,22 @@
                 <label asp-for="Name" class="control-label"></label>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group form-check form-switch mb-3">
-                <input class="form-check-input" asp-for="Active" role="switch" />
-                <label class="form-check-label">
-                    @Html.DisplayNameFor(model => model.Active)
-                </label>
-            </div>
+            @if (assignedAgeGroups is not null)
+            {
+                <div class="border border-1 mb-3 p-2">
+                    <h6>Select all age groups this category applies to:</h6>
+                    <hr />
+                    @foreach (var assignedAgeGroup in assignedAgeGroups)
+                    {
+                        <div class="form-group form-check form-switch mb-3">
+                            <input type="checkbox" name="selectedAgeGroupIds" class="form-check-input" role="switch" value="@assignedAgeGroup.AgeGroupId" @(assignedAgeGroup.Assigned ? "checked='true'" : "") />
+                            <label class="form-check-label">
+                                @Html.DisplayFor(modelItem => assignedAgeGroup.Description)
+                            </label>
+                        </div>
+                    }
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-outline-primary" />
             </div>

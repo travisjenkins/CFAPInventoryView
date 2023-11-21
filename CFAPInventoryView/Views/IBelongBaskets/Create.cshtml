@@ -8,17 +8,35 @@
 
 <hr />
 <div class="row mb-3">
+    <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" method="get">
+                    <div class="form-floating mb-3">
+                        <select asp-for="AgeGroupId" class="form-select" asp-items="ViewBag.AgeGroupsSelectList" onchange="this.form.submit()">
+                            <option value="@null">Select...</option>
+                        </select>
+                        <label asp-for="AgeGroupId"></label>
+                        <span asp-validation-for="AgeGroupId" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row">
             <div class="col-md-4">
                 <div class="form-floating mb-3">
+                    <input asp-for="BasketNumber" class="form-control" aria-required="true" placeholder="basket number" />
+                    <label asp-for="BasketNumber" class="control-label"></label>
+                    <span asp-validation-for="BasketNumber" class="text-danger"></span>
+                </div>
+                @* <div class="form-floating mb-3">
                     <select asp-for="AgeGroupId" class="form-select" asp-items="ViewBag.AgeGroupsSelectList" aria-required="true">
                         <option value="@null">Select...</option>
                     </select>
                     <label asp-for="AgeGroupId"></label>
                     <span asp-validation-for="AgeGroupId" class="text-danger"></span>
-                </div>
+                </div> *@
                 <div class="form-floating mb-3">
                     <select asp-for="EthnicityId" class="form-select" asp-items="ViewBag.EthnicitiesSelectList" aria-required="true">
                         <option value="@null">Select...</option>
@@ -38,20 +56,10 @@
                     <label asp-for="DateAssembled" class="control-label"></label>
                     <span asp-validation-for="DateAssembled" class="text-danger"></span>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Quantity" class="form-control" min="1" max="50" aria-required="true" placeholder="quantity" />
-                    <label asp-for="Quantity" class="control-label"></label>
-                    <span asp-validation-for="Quantity" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="SafeStockLevel" class="form-control" min="1" max="50" aria-required="true" placeholder="safe stock level" />
-                    <label asp-for="SafeStockLevel" class="control-label"></label>
-                    <span asp-validation-for="SafeStockLevel" class="text-danger"></span>
-                </div>
             </div>
         </div>
         <div class="row">
-            <h4><label asp-for="ProductBaskets" class="control-label"></label></h4>
+            <h4><label asp-for="SupplyBaskets" class="control-label"></label></h4>
             <hr />
             <div class="col-md-4">
                 <div class="form-floating mb-3">
@@ -62,7 +70,7 @@
             <div class="row mt-2">   
             @{
                 int count = 0;
-                List<AssignedProductViewModel>? assignedProducts = ViewBag.AssignedProductsList as List<AssignedProductViewModel>;
+                List<AssignedSupplyViewModel>? assignedProducts = ViewBag.AssignedProductsList as List<AssignedSupplyViewModel>;
                 if (assignedProducts is not null)
                 {
                     @foreach (var product in assignedProducts)
@@ -73,7 +81,7 @@
                         }
                         @:<div class="col-md-3 mb-2 filter-elms">
                             <div class="form-check form-switch">
-                                <input type="checkbox" role="switch" class="form-check-input" name="assignedProducts" value="@product.ProductId" @(product.Assigned ? "checked='true'" : "") />
+                                <input type="checkbox" role="switch" class="form-check-input" name="assignedProducts" value="@product.SupplyId" @(product.Assigned ? "checked='true'" : "") />
                                 <label class="form-check-label">@product.Name</label>
                             </div>
                         @:</div>

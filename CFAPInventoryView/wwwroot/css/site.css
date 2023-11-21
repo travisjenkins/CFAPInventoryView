@@ -52,6 +52,10 @@ body {
     width: 18rem;
 }
 
+.home-title {
+    color: #6d6e71;
+}
+
 /* Reports Page
 ----------------------------------------------------------- */
 @media (min-width: 768px) {

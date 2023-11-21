@@ -20,6 +20,12 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Last Name")]
         public string? LastName { get; set; }
 
+        [Display(Name = "Name")]
+        public string? FullName
+        {
+            get => $"{FirstName} {LastName}";
+        }
+
         [PersonalData]
         [Required]
         [Display(Name = "Address")]
@@ -43,8 +49,8 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Zip Code")]
         public string? ZipCode { get; set; }
 
-        [Display(Name = "Products Donated")]
-        public virtual ICollection<ProductTransaction> ProductTransactions { get; set; } = new List<ProductTransaction>();
+        [Display(Name = "Supplies Donated")]
+        public virtual ICollection<SupplyTransaction> SupplyTransactions { get; set; } = new List<SupplyTransaction>();
 
         [Display(Name = "Baskets Donated")]
         public virtual ICollection<BasketTransaction> BasketTransactions { get; set; } = new List<BasketTransaction>();
@@ -57,13 +63,13 @@ namespace CFAPInventoryView.Data.Models
             get
             {
                 decimal total = 0;
-                if (ProductTransactions.Count > 0)
+                if (SupplyTransactions.Count > 0)
                 {
-                    foreach (var transaction in ProductTransactions)
+                    foreach (var transaction in SupplyTransactions)
                     {
-                        if (transaction.Product is not null)
+                        if (transaction.Supply is not null)
                         {
-                            total += transaction.Product.Price;
+                            total += transaction.Supply.Price;
                         }
                     }
                 }
@@ -80,8 +86,6 @@ namespace CFAPInventoryView.Data.Models
                 return total;
             } 
         }
-
-        public bool Active { get; set; }
 
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }

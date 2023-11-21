@@ -15,17 +15,23 @@ namespace CFAPInventoryView.Controllers
     public class OptionalCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<OptionalCategoriesController> _logger;
 
-        public OptionalCategoriesController(ApplicationDbContext context)
+        public OptionalCategoriesController(ApplicationDbContext context, ILogger<OptionalCategoriesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: OptionalCategories
         public async Task<IActionResult> Index()
         {
             return _context.OptionalCategories != null ?
-                        View(await _context.OptionalCategories.AsNoTracking().Where(oc => oc.Active).OrderBy(oc => oc.Name).ToListAsync()) :
+                        View(await _context.OptionalCategories.AsNoTracking()
+                                                              .Include(oc => oc.AgeGroups)
+                                                                .ThenInclude(agc => agc.AgeGroup)
+                                                              .OrderBy(oc => oc.Name)
+                                                              .ToListAsync()) :
                         Problem("Entity set 'OptionalCategories' is null.");
         }
 
@@ -37,8 +43,10 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var optionalCategory = await _context.OptionalCategories
-                .FirstOrDefaultAsync(m => m.OptionalCategoryId == id);
+            var optionalCategory = await _context.OptionalCategories.AsNoTracking()
+                                                                    .Include(c => c.AgeGroups)
+                                                                      .ThenInclude(agc => agc.AgeGroup)
+                                                                    .FirstOrDefaultAsync(m => m.OptionalCategoryId == id);
             if (optionalCategory == null)
             {
                 return NotFound();
@@ -48,8 +56,10 @@ namespace CFAPInventoryView.Controllers
         }
 
         // GET: OptionalCategories/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            OptionalCategory optionalCategory = new();
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, optionalCategory);
             return View();
         }
 
@@ -57,22 +67,31 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name")] OptionalCategory optionalCategory)
+        public async Task<IActionResult> Create([Bind("Name,Quantity,SafeStockLevel")] OptionalCategory optionalCategory, List<Guid>? selectedAgeGroupIds)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (!await _context.OptionalCategories.AnyAsync(c => c.Name == optionalCategory.Name))
+                if (ModelState.IsValid)
                 {
-                    optionalCategory.OptionalCategoryId = Guid.NewGuid();
-                    optionalCategory.Active = true;
-                    optionalCategory.LastUpdateId = User.Identity?.Name;
-                    optionalCategory.LastUpdateDateTime = DateTime.Now;
-                    _context.Add(optionalCategory);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (!await _context.OptionalCategories.AnyAsync(c => c.Name == optionalCategory.Name))
+                    {
+                        optionalCategory.OptionalCategoryId = Guid.NewGuid();
+                        optionalCategory.LastUpdateId = User.Identity?.Name;
+                        optionalCategory.LastUpdateDateTime = DateTime.Now;
+                        _context.Add(optionalCategory);
+                        await _context.SaveChangesAsync();
+                        await HelperMethods.AddAgeGroupsToCategory(_context, optionalCategory.OptionalCategoryId, selectedAgeGroupIds, nameof(OptionalCategory));
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ModelState.AddModelError(nameof(optionalCategory.Name), $"The category ({optionalCategory.Name}) already exists in the database.");
                 }
-                ModelState.AddModelError(nameof(optionalCategory.Name), $"The category ({optionalCategory.Name}) already exists in the database.");
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "There was an issue creating the optional category. If the issue continues please contact an administrator.");
+            }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, optionalCategory);
             return View(optionalCategory);
         }
 
@@ -84,11 +103,14 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var optionalCategory = await _context.OptionalCategories.FindAsync(id);
+            var optionalCategory = await _context.OptionalCategories.Include(c => c.AgeGroups)
+                                                                        .ThenInclude(agc => agc.AgeGroup)
+                                                                    .FirstOrDefaultAsync(c => c.OptionalCategoryId == id);
             if (optionalCategory == null)
             {
                 return NotFound();
             }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, optionalCategory);
             return View(optionalCategory);
         }
 
@@ -96,7 +118,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("OptionalCategoryId,Name,Active")] OptionalCategory optionalCategory)
+        public async Task<IActionResult> Edit(Guid id, [Bind("OptionalCategoryId,Name,Quantity,SafeStockLevel")] OptionalCategory optionalCategory, List<Guid>? selectedAgeGroupIds)
         {
             if (id != optionalCategory.OptionalCategoryId)
             {
@@ -105,30 +127,28 @@ namespace CFAPInventoryView.Controllers
 
             if (ModelState.IsValid)
             {
-                if (!await _context.OptionalCategories.AnyAsync(c => c.Name == optionalCategory.Name))
+                try
                 {
-                    try
-                    {
-                        optionalCategory.LastUpdateId = User.Identity?.Name;
-                        optionalCategory.LastUpdateDateTime = DateTime.Now;
-                        _context.Update(optionalCategory);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!OptionalCategoryExists(optionalCategory.OptionalCategoryId))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
+                    optionalCategory.LastUpdateId = User.Identity?.Name;
+                    optionalCategory.LastUpdateDateTime = DateTime.Now;
+                    _context.Update(optionalCategory);
+                    await HelperMethods.EditAgeGroupsForCategory(_context, id, selectedAgeGroupIds, nameof(OptionalCategory));
                     return RedirectToAction(nameof(Index));
                 }
-                ModelState.AddModelError(nameof(optionalCategory.Name), $"The category ({optionalCategory.Name}) already exists in the database.");
+                catch (DbUpdateException ex)
+                {
+                    if (!OptionalCategoryExists(optionalCategory.OptionalCategoryId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue updating the optional category. If the issue continues please contact an administrator.");
+                    }
+                }
             }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, optionalCategory);
             return View(optionalCategory);
         }
 
@@ -140,8 +160,10 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var optionalCategory = await _context.OptionalCategories
-                .FirstOrDefaultAsync(m => m.OptionalCategoryId == id);
+            var optionalCategory = await _context.OptionalCategories.AsNoTracking()
+                                                                    .Include(c => c.AgeGroups)
+                                                                      .ThenInclude(agc => agc.AgeGroup)
+                                                                    .FirstOrDefaultAsync(m => m.OptionalCategoryId == id);
             if (optionalCategory == null)
             {
                 return NotFound();

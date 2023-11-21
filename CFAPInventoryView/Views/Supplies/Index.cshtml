@@ -1,0 +1,86 @@
+﻿@model IEnumerable<CFAPInventoryView.Data.Models.Supply>
+
+@{
+    ViewData["Title"] = "Supplies";
+}
+
+<p class="text-center text-lg-start">
+    <a asp-action="Create">Create New</a>
+</p>
+
+@if (Model is not null && Model.ElementAtOrDefault(0) is not null)
+{
+    <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.Name)</div>
+        <div class="col-lg-3">@Html.DisplayNameFor(model => model.Description)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Expires)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.ExpirationDate)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.PurchaseDate)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Quantity)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.TotalPrice)</div>
+        <div class="col-lg-1"></div>
+    </div>
+
+    int count = 0;
+    @foreach (var item in Model)
+    {
+        count++;
+        string alternatingRowColorClass = string.Empty;
+        if (count % 2 == 0)
+        {
+            alternatingRowColorClass = "medium-row-color";
+        }
+        <div class="row text-start text-lg-center @alternatingRowColorClass">
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Name):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Name)</div>
+            </div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Name)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Description):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Description)</div>
+            </div>
+            <div class="col-lg-3 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Description)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Expires):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Expires)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Expires)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ExpirationDate):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.ExpirationDate)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ExpirationDate)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.PurchaseDate):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.PurchaseDate)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.PurchaseDate)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Quantity):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Quantity)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Quantity)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.TotalPrice):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.TotalPrice)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.TotalPrice)</div>
+            <div class="col-lg-1 text-center">
+                <a asp-action="Edit" asp-route-id="@item.SupplyId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SupplyId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SupplyId">Delete</a>
+            </div>
+        </div>
+        @if (count != Model.Count())
+        {
+            <hr />
+        }
+    }
+}
+else
+{
+    <div class="text-center py-2 border border-2 border-secondary rounded text-secondary">
+        <p class="pt-2 fs-4">There are no @ViewData["Title"] in your database.</p>
+    </div>
+}

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<CFAPInventoryView.Data.Models.SupplyTransaction>
+
+@{
+    ViewData["Title"] = "Supply Transactions";
+}
+
+<p class="text-center text-lg-start">
+    <a asp-action="Create">Create New</a>
+</p>
+
+@if (Model is not null && Model.ElementAtOrDefault(0) is not null)
+{
+    <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Supply.Name)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Supply.Price)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.DateDistributed)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.DistributedBy)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Recipient.FullName)</div>
+        <div class="col-lg-1"></div>
+    </div>
+
+    int count = 0;
+    foreach (var item in Model)
+    {
+        count++;
+        string alternatingRowColorClass = string.Empty;
+        if (count % 2 == 0)
+        {
+            alternatingRowColorClass = "medium-row-color";
+        }
+        <div class="row text-start text-lg-center @alternatingRowColorClass">
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Supply.Name)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Supply.Name)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Supply.Name)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Supply.Price)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Supply.Price)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Supply.Price)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DateDistributed)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.DateDistributed)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DateDistributed)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DistributedBy)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.DistributedBy)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DistributedBy)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Recipient.FullName)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Recipient.FullName)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Recipient.FullName)</div>
+            <div class="col-lg-1 text-center">
+                <a asp-action="Edit" asp-route-id="@item.SupplyTransactionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SupplyTransactionId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SupplyTransactionId">Delete</a>
+            </div>
+        </div>
+        @if (count != Model.Count())
+        {
+            <hr />
+        }
+    }
+}
+else
+{
+    <div class="text-center py-2 border border-2 border-secondary rounded text-secondary">
+        <p class="pt-2 fs-4">There are no @ViewData["Title"] in your database.</p>
+    </div>
+}

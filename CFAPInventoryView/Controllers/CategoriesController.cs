@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using CFAPInventoryView.Data;
 using CFAPInventoryView.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using CFAPInventoryView.Models;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace CFAPInventoryView.Controllers
 {
@@ -15,17 +17,23 @@ namespace CFAPInventoryView.Controllers
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<CategoriesController> _logger;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, ILogger<CategoriesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Categories
         public async Task<IActionResult> Index()
         {
             return _context.Categories != null ?
-                        View(await _context.Categories.Where(c => c.Active).OrderBy(c => c.Name).ToListAsync()) :
+                        View(await _context.Categories.AsNoTracking()
+                                                      .Include(c => c.AgeGroups)
+                                                        .ThenInclude(agc => agc.AgeGroup)
+                                                      .OrderBy(c => c.Name)
+                                                      .ToListAsync()) :
                         Problem("Entity set 'Categories' is null.");
         }
 
@@ -37,8 +45,10 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.CategoryId == id);
+            var category = await _context.Categories.AsNoTracking()
+                                                    .Include(c => c.AgeGroups)
+                                                      .ThenInclude(agc => agc.AgeGroup)
+                                                    .FirstOrDefaultAsync(m => m.CategoryId == id);
             if (category == null)
             {
                 return NotFound();
@@ -48,8 +58,10 @@ namespace CFAPInventoryView.Controllers
         }
 
         // GET: Categories/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            Category category = new();
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, category);
             return View();
         }
 
@@ -57,22 +69,31 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name")] Category category)
+        public async Task<IActionResult> Create([Bind("Name,Quantity,SafeStockLevel")] Category category, List<Guid>? selectedAgeGroupIds)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (!await _context.Categories.AnyAsync(c => c.Name == category.Name))
+                if (ModelState.IsValid)
                 {
-                    category.CategoryId = Guid.NewGuid();
-                    category.Active = true;
-                    category.LastUpdateId = User.Identity?.Name;
-                    category.LastUpdateDateTime = DateTime.Now;
-                    _context.Add(category);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (!await _context.Categories.AnyAsync(c => c.Name == category.Name))
+                    {
+                        category.CategoryId = Guid.NewGuid();
+                        category.LastUpdateId = User.Identity?.Name;
+                        category.LastUpdateDateTime = DateTime.Now;
+                        _context.Add(category);
+                        await _context.SaveChangesAsync();
+                        await HelperMethods.AddAgeGroupsToCategory(_context, category.CategoryId, selectedAgeGroupIds, nameof(Category));
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ModelState.AddModelError(nameof(category.Name), $"The category ({category.Name}) already exists in the database.");
                 }
-                ModelState.AddModelError(nameof(category.Name), $"The category ({category.Name}) already exists in the database.");
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "There was an issue creating the category. If the issue continues please contact an administrator.");
+            }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, category);
             return View(category);
         }
 
@@ -84,11 +105,14 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories.Include(c => c.AgeGroups)
+                                                        .ThenInclude(agc => agc.AgeGroup)
+                                                    .FirstOrDefaultAsync(c => c.CategoryId == id);
             if (category == null)
             {
                 return NotFound();
             }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, category);
             return View(category);
         }
 
@@ -96,7 +120,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CategoryId,Name,Active")] Category category)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CategoryId,Name,Quantity,SafeStockLevel")] Category category, List<Guid>? selectedAgeGroupIds)
         {
             if (id != category.CategoryId)
             {
@@ -105,30 +129,28 @@ namespace CFAPInventoryView.Controllers
 
             if (ModelState.IsValid)
             {
-                if (!await _context.Categories.AnyAsync(c => c.Name == category.Name))
+                try
                 {
-                    try
-                    {
-                        category.LastUpdateId = User.Identity?.Name;
-                        category.LastUpdateDateTime = DateTime.Now;
-                        _context.Update(category);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!CategoryExists(category.CategoryId))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
+                    category.LastUpdateId = User.Identity?.Name;
+                    category.LastUpdateDateTime = DateTime.Now;
+                    _context.Update(category);
+                    await HelperMethods.EditAgeGroupsForCategory(_context, id, selectedAgeGroupIds, nameof(Category));
                     return RedirectToAction(nameof(Index));
                 }
-                ModelState.AddModelError(nameof(category.Name), $"The category ({category.Name}) already exists in the database.");
+                catch (DbUpdateException ex)
+                {
+                    if (!CategoryExists(category.CategoryId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue updating the category. If the issue continues please contact an administrator.");
+                    }
+                }
             }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, category);
             return View(category);
         }
 
@@ -140,8 +162,10 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.CategoryId == id);
+            var category = await _context.Categories.AsNoTracking()
+                                                    .Include(c => c.AgeGroups)
+                                                      .ThenInclude(agc => agc.AgeGroup)
+                                                    .FirstOrDefaultAsync(m => m.CategoryId == id);
             if (category == null)
             {
                 return NotFound();

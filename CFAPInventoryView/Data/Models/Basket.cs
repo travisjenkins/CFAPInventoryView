@@ -10,6 +10,15 @@ namespace CFAPInventoryView.Data.Models
         [ScaffoldColumn(false)]
         public Guid BasketId { get; set; }
 
+        [Range(1, 1000)]
+        [Display(Name = "Basket #")]
+        public int? BasketNumber { get; set; }
+
+        public string BasketDisplayName
+        {
+            get => $"Basket:  #{BasketNumber}, Age Group:  {AgeGroup?.Description}, Ethnicity:  {Ethnicity?.Description}, Gender:  {Gender?.Description}";
+        }
+
         [Required]
         [Display(Name = "Age Group")]
         public Guid AgeGroupId { get; set; }
@@ -28,14 +37,28 @@ namespace CFAPInventoryView.Data.Models
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yy}")]
         public DateTime DateAssembled { get; set; } = DateTime.Today;
 
-        [Required]
-        [Range(1, 1000)]
-        public int Quantity { get; set; }
+        [Range(0, 1000)]
+        public int? Quantity { get; set; }
 
-        [Required]
+        [Display(Name = "Needed")]
+        public int QuantityNeeded
+        {
+            get
+            {
+                if (IsShoppingListItem && SafeStockLevel.HasValue && Quantity.HasValue)
+                {
+                    if (SafeStockLevel.Value - Quantity.Value >= 0)
+                    {
+                        return SafeStockLevel.Value - Quantity.Value;
+                    }
+                }
+                return 0;
+            }
+        }
+
         [Range(1, 1000)]
         [Display(Name = "Safe Stock Level")]
-        public int SafeStockLevel { get; set; }
+        public int? SafeStockLevel { get; set; }
 
         [ScaffoldColumn(false)]
         public bool IsShoppingListItem { get; set; }
@@ -47,14 +70,14 @@ namespace CFAPInventoryView.Data.Models
         {
             get
             {
-                if (ProductBaskets is not null && ProductBaskets.Count > 0)
+                if (SupplyBaskets is not null && SupplyBaskets.Count > 0)
                 {
                     decimal totalPrice = 0;
-                    foreach (var item in ProductBaskets)
+                    foreach (var item in SupplyBaskets)
                     {
-                        if (item.Product is not null)
+                        if (item.Supply is not null)
                         {
-                            totalPrice += item.Product.Price;
+                            totalPrice += item.Supply.Price;
                         }
                     }
                     return totalPrice;
@@ -62,8 +85,6 @@ namespace CFAPInventoryView.Data.Models
                 return 0;
             }
         }
-
-        public bool Active { get; set; }
 
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }
@@ -79,10 +100,10 @@ namespace CFAPInventoryView.Data.Models
 
         public virtual Gender? Gender { get; set; }
 
-        [Display(Name = "Products")]
-        public virtual ICollection<ProductBasket>? ProductBaskets { get; set; }
+        [Display(Name = "Supplies")]
+        public virtual ICollection<SupplyBasket> SupplyBaskets { get; set; } = new List<SupplyBasket>();
 
         [Display(Name = "Categories")]
-        public virtual ICollection<CategoryBasket>? CategoryBaskets { get; set; }
+        public virtual ICollection<CategoryBasket> CategoryBaskets { get; set; } = new List<CategoryBasket>();
     }
 }

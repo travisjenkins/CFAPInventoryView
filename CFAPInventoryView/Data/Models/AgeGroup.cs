@@ -17,8 +17,6 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Sort")]
         public int SortOrder { get; set; }
 
-        public bool Active { get; set; }
-
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }
 

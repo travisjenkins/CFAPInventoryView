@@ -1,0 +1,49 @@
+﻿@model CFAPInventoryView.Data.Models.BasketTransaction
+
+@{
+    ViewData["Title"] = "Basket Transaction";
+}
+
+<h1>Create</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mb-3">
+                <select asp-for="BasketId" class="form-control" asp-items="ViewBag.BasketsSelectList" aria-required="true">
+                    <option value="@null">Select...</option>
+                </select>
+                <label asp-for="BasketId" class="control-label"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="RecipientId" class="form-control" asp-items="ViewBag.RecipientsSelectList" aria-required="true">
+                    <option value="@null">Select...</option>
+                </select>
+                <label asp-for="RecipientId" class="control-label"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="DateDistributed" class="form-control" placeholder="date distributed" aria-required="true" />
+                <label asp-for="DateDistributed" class="control-label"></label>
+                <span asp-validation-for="DateDistributed" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="DistributedBy" class="form-control" placeholder="distributed by" aria-required="true" />
+                <label asp-for="DistributedBy" class="control-label"></label>
+                <span asp-validation-for="DistributedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-outline-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CFAPInventoryView.Data;
 using CFAPInventoryView.Data.Models;
+using CFAPInventoryView.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CFAPInventoryView.Controllers
 {
+    [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole},{HelperMethods.MemberRole}")]
     public class DonorsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<DonorsController> _logger;
 
-        public DonorsController(ApplicationDbContext context)
+        public DonorsController(ApplicationDbContext context, ILogger<DonorsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Donors
@@ -24,8 +29,8 @@ namespace CFAPInventoryView.Controllers
         {   
             return _context.Donors != null ? 
                           View(await _context.Donors.AsNoTracking()
-                                                    .Include(d => d.ProductTransactions)
-                                                        .ThenInclude(pt => pt.Product)
+                                                    .Include(d => d.SupplyTransactions)
+                                                        .ThenInclude(pt => pt.Supply)
                                                     .Include(d => d.BasketTransactions)
                                                         .ThenInclude(bt => bt.Basket)
                                                     .DefaultIfEmpty()
@@ -42,12 +47,14 @@ namespace CFAPInventoryView.Controllers
             }
 
             var donor = await _context.Donors.AsNoTracking()
-                                             .Include(d => d.ProductTransactions)
-                                                .ThenInclude(pt => pt.Product)
+                                             .Include(d => d.SupplyTransactions)
+                                                .ThenInclude(pt => pt.Supply)
                                              .Include(d => d.BasketTransactions)
                                                 .ThenInclude(bt => bt.Basket)
                                              .DefaultIfEmpty()
+#pragma warning disable 8602
                                              .FirstOrDefaultAsync(m => m.DonorId == id);
+#pragma warning restore 8602
             if (donor == null)
             {
                 return NotFound();
@@ -59,6 +66,7 @@ namespace CFAPInventoryView.Controllers
         // GET: Donors/Create
         public IActionResult Create()
         {
+            ViewData["StatesSelectList"] = SelectListBuilder.GetStatesSelectList();
             return View();
         }
 
@@ -69,13 +77,28 @@ namespace CFAPInventoryView.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FirstName,LastName,Address1,Address2,City,State,ZipCode")] Donor donor)
         {
-            if (ModelState.IsValid)
+            try
             {
-                donor.DonorId = Guid.NewGuid();
-                _context.Add(donor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    donor.DonorId = Guid.NewGuid();
+                    donor.State = HelperMethods.JustTheStateName(donor.State);
+                    donor.LastUpdateId = User.Identity?.Name;
+                    donor.LastUpdateDateTime = DateTime.Now;
+                    _context.Add(donor);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "There was an issue creating the donor. If the issue continues please contact an administrator.");
+            }
+            
+            var selectList = SelectListBuilder.GetStatesSelectList(donor.State);
+            ViewData["StatesSelectList"] = selectList;
+            donor.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
             return View(donor);
         }
 
@@ -92,6 +115,9 @@ namespace CFAPInventoryView.Controllers
             {
                 return NotFound();
             }
+            var selectList = SelectListBuilder.GetStatesSelectList(donor.State);
+            ViewData["StatesSelectList"] = selectList;
+            donor.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
             return View(donor);
         }
 
@@ -111,10 +137,14 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
+                    donor.State = HelperMethods.JustTheStateName(donor.State);
+                    donor.LastUpdateId = User.Identity?.Name;
+                    donor.LastUpdateDateTime = DateTime.Now;
                     _context.Update(donor);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateException ex)
                 {
                     if (!DonorExists(donor.DonorId))
                     {
@@ -122,11 +152,14 @@ namespace CFAPInventoryView.Controllers
                     }
                     else
                     {
-                        throw;
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue updating the donor. If the issue continues please contact an administrator.");
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
+            var selectList = SelectListBuilder.GetStatesSelectList(donor.State);
+            ViewData["StatesSelectList"] = selectList;
+            donor.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
             return View(donor);
         }
 
@@ -139,12 +172,14 @@ namespace CFAPInventoryView.Controllers
             }
 
             var donor = await _context.Donors.AsNoTracking()
-                                             .Include(d => d.ProductTransactions)
-                                                .ThenInclude(pt => pt.Product)
+                                             .Include(d => d.SupplyTransactions)
+                                                .ThenInclude(pt => pt.Supply)
                                              .Include(d => d.BasketTransactions)
                                                 .ThenInclude(bt => bt.Basket)
                                              .DefaultIfEmpty()
+#pragma warning disable 8602
                                              .FirstOrDefaultAsync(m => m.DonorId == id);
+#pragma warning restore 8602
             if (donor == null)
             {
                 return NotFound();
@@ -154,6 +189,7 @@ namespace CFAPInventoryView.Controllers
         }
 
         // POST: Donors/Delete/5
+        [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

@@ -17,7 +17,13 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Active)
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SafeStockLevel)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AgeGroups)
                 </th>
                 <th></th>
             </tr>
@@ -26,13 +32,26 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
+                    <td class="align-middle">
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Active)
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
-                    <td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.SafeStockLevel)
+                    </td>
+                    <td class="align-middle">
+                        @foreach (var ageGroupCategory in item.AgeGroups)
+                        {
+                            <ul>
+                                <li>
+                                    @Html.DisplayFor(modelItem => ageGroupCategory.AgeGroup.Description)
+                                </li>
+                            </ul>
+                        }
+                    </td>
+                    <td class="align-middle">
                         <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>

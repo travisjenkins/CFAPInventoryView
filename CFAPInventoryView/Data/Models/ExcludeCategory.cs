@@ -12,7 +12,9 @@ namespace CFAPInventoryView.Data.Models
         [StringLength(150)]
         public string? Name { get; set; }
 
-        public bool Active { get; set; }
+        [Required]
+        [Range(0, 1000)]
+        public int Quantity { get; set; }
 
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }
@@ -20,5 +22,7 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Last Modified")]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yy, h:mm tt}")]
         public DateTime LastUpdateDateTime { get; set; }
+
+        public ICollection<AgeGroupCategory> AgeGroups { get; set; } = new List<AgeGroupCategory>();
     }
 }

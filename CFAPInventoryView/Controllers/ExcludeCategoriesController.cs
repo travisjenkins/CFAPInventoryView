@@ -15,17 +15,23 @@ namespace CFAPInventoryView.Controllers
     public class ExcludeCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<ExcludeCategoriesController> _logger;
 
-        public ExcludeCategoriesController(ApplicationDbContext context)
+        public ExcludeCategoriesController(ApplicationDbContext context, ILogger<ExcludeCategoriesController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: ExcludeCategories
         public async Task<IActionResult> Index()
         {
             return _context.ExcludeCategories != null ?
-                        View(await _context.ExcludeCategories.Where(ec => ec.Active).OrderBy(ec => ec.Name).ToListAsync()) :
+                        View(await _context.ExcludeCategories.AsNoTracking()
+                                                             .Include(ec => ec.AgeGroups)
+                                                               .ThenInclude(agc => agc.AgeGroup)
+                                                             .OrderBy(ec => ec.Name)
+                                                             .ToListAsync()) :
                         Problem("Entity set 'ExcludeCategories' is null.");
         }
 
@@ -37,8 +43,10 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var excludeCategory = await _context.ExcludeCategories
-                .FirstOrDefaultAsync(m => m.ExcludeCategoryId == id);
+            var excludeCategory = await _context.ExcludeCategories.AsNoTracking()
+                                                                  .Include(ec => ec.AgeGroups)
+                                                                    .ThenInclude(agc => agc.AgeGroup)
+                                                                  .FirstOrDefaultAsync(ec => ec.ExcludeCategoryId == id);
             if (excludeCategory == null)
             {
                 return NotFound();
@@ -48,8 +56,10 @@ namespace CFAPInventoryView.Controllers
         }
 
         // GET: ExcludeCategories/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ExcludeCategory category = new();
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, category);
             return View();
         }
 
@@ -57,22 +67,31 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name")] ExcludeCategory excludeCategory)
+        public async Task<IActionResult> Create([Bind("Name")] ExcludeCategory excludeCategory, List<Guid>? selectedAgeGroupIds)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (!await _context.ExcludeCategories.AnyAsync(c => c.Name == excludeCategory.Name))
+                if (ModelState.IsValid)
                 {
-                    excludeCategory.ExcludeCategoryId = Guid.NewGuid();
-                    excludeCategory.Active = true;
-                    excludeCategory.LastUpdateId = User.Identity?.Name;
-                    excludeCategory.LastUpdateDateTime = DateTime.Now;
-                    _context.Add(excludeCategory);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (!await _context.ExcludeCategories.AnyAsync(c => c.Name == excludeCategory.Name))
+                    {
+                        excludeCategory.ExcludeCategoryId = Guid.NewGuid();
+                        excludeCategory.LastUpdateId = User.Identity?.Name;
+                        excludeCategory.LastUpdateDateTime = DateTime.Now;
+                        _context.Add(excludeCategory);
+                        await _context.SaveChangesAsync();
+                        await HelperMethods.AddAgeGroupsToCategory(_context, excludeCategory.ExcludeCategoryId, selectedAgeGroupIds, nameof(ExcludeCategory));
+                        return RedirectToAction(nameof(Index));
+                    }
+                    ModelState.AddModelError(nameof(excludeCategory.Name), $"The exclude category ({excludeCategory.Name}) already exists in the database.");
                 }
-                ModelState.AddModelError(nameof(excludeCategory.Name), $"The exclude category ({excludeCategory.Name}) already exists in the database.");
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                ModelState.AddModelError(string.Empty, "There was an issue creating the exclude category. If the issue continues please contact an administrator.");
+            }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, excludeCategory);
             return View(excludeCategory);
         }
 
@@ -84,11 +103,14 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var excludeCategory = await _context.ExcludeCategories.FindAsync(id);
+            var excludeCategory = await _context.ExcludeCategories.Include(c => c.AgeGroups)
+                                                                     .ThenInclude(agc => agc.AgeGroup)
+                                                                  .FirstOrDefaultAsync(c => c.ExcludeCategoryId == id);
             if (excludeCategory == null)
             {
                 return NotFound();
             }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, excludeCategory);
             return View(excludeCategory);
         }
 
@@ -96,7 +118,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ExcludeCategoryId,Name,Active")] ExcludeCategory excludeCategory)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ExcludeCategoryId,Name")] ExcludeCategory excludeCategory, List<Guid>? selectedAgeGroupIds)
         {
             if (id != excludeCategory.ExcludeCategoryId)
             {
@@ -105,30 +127,29 @@ namespace CFAPInventoryView.Controllers
 
             if (ModelState.IsValid)
             {
-                if (!await _context.ExcludeCategories.AnyAsync(c => c.Name == excludeCategory.Name))
+
+                try
                 {
-                    try
-                    {
-                        excludeCategory.LastUpdateId = User.Identity?.Name;
-                        excludeCategory.LastUpdateDateTime = DateTime.Now;
-                        _context.Update(excludeCategory);
-                        await _context.SaveChangesAsync();
-                    }
-                    catch (DbUpdateConcurrencyException)
-                    {
-                        if (!ExcludeCategoryExists(excludeCategory.ExcludeCategoryId))
-                        {
-                            return NotFound();
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
+                    excludeCategory.LastUpdateId = User.Identity?.Name;
+                    excludeCategory.LastUpdateDateTime = DateTime.Now;
+                    _context.Update(excludeCategory);
+                    await HelperMethods.EditAgeGroupsForCategory(_context, id, selectedAgeGroupIds, nameof(ExcludeCategory));
                     return RedirectToAction(nameof(Index));
                 }
-                ModelState.AddModelError(nameof(excludeCategory.Name), $"The exclude category ({excludeCategory.Name}) already exists in the database.");
+                catch (DbUpdateException ex)
+                {
+                    if (!ExcludeCategoryExists(excludeCategory.ExcludeCategoryId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                        ModelState.AddModelError(string.Empty, "There was an issue updating the exclude category. If the issue continues please contact an administrator.");
+                    }
+                }
             }
+            ViewData["AssignedAgeGroupsList"] = await HelperMethods.PopulateAssignedAgeGroups(_context, excludeCategory);
             return View(excludeCategory);
         }
 
@@ -140,8 +161,10 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var excludeCategory = await _context.ExcludeCategories
-                .FirstOrDefaultAsync(m => m.ExcludeCategoryId == id);
+            var excludeCategory = await _context.ExcludeCategories.AsNoTracking()
+                                                                  .Include(c => c.AgeGroups)
+                                                                    .ThenInclude(agc => agc.AgeGroup)
+                                                                  .FirstOrDefaultAsync(m => m.ExcludeCategoryId == id);
             if (excludeCategory == null)
             {
                 return NotFound();

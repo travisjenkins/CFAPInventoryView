@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "iBelong Basket";
+#pragma warning disable CS8602
 }
 
 <h1>Details</h1>
@@ -9,6 +10,12 @@
 <div>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BasketNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BasketNumber)
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AgeGroupId)
         </dt>
@@ -28,21 +35,15 @@
             @Html.DisplayFor(model => model.Gender.Description)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SafeStockLevel)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductBaskets)
+            @Html.DisplayNameFor(model => model.SupplyBaskets)
         </dt>
         <dd class="col-sm-10">
             @{
-                if (Model.ProductBaskets is not null)
+                if (Model.SupplyBaskets is not null)
                 {
-                    foreach (var item in Model.ProductBaskets)
+                    foreach (var item in Model.SupplyBaskets)
                     {
-                        <div>@Html.DisplayFor(modelItem => item.Product.Name)</div>
+                        <div>@Html.DisplayFor(modelItem => item.Supply.Name)</div>
                     }
                 }
             }

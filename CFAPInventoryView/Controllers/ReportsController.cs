@@ -30,11 +30,11 @@ namespace CFAPInventoryView.Controllers
             try
             {
                 // Products
-                viewModel.TotalProducts = await _context.Products.AsNoTracking().Where(p => p.Active).CountAsync();
-                viewModel.TotalItemsThatExpire = await _context.Products.AsNoTracking().Where(p => p.Expires).CountAsync();
+                viewModel.TotalProducts = await _context.Supplies.AsNoTracking().CountAsync();
+                viewModel.TotalItemsThatExpire = await _context.Supplies.AsNoTracking().Where(p => p.Expires).CountAsync();
 
                 decimal totalInventoryPrice = 0;
-                var products = await _context.Products.AsNoTracking().Where(p => p.Active).ToListAsync();
+                var products = await _context.Supplies.AsNoTracking().ToListAsync();
                 if (products is not null && products.Count > 0)
                 {
                     long temp = 0;
@@ -55,7 +55,9 @@ namespace CFAPInventoryView.Controllers
                 viewModel.TotaliBelongBaskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).CountAsync();
 
                 decimal totalIBelongBasketPrice = 0;
-                var baskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem && b.Active).Include(b => b.ProductBaskets.Where(pb => pb.Active)).DefaultIfEmpty().ToListAsync();
+#pragma warning disable 8604
+                var baskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.SupplyBaskets).DefaultIfEmpty().ToListAsync();
+#pragma warning restore 8604
                 if (baskets is not null && baskets.Count > 0)
                 {
                     long temp = 0;
@@ -86,12 +88,16 @@ namespace CFAPInventoryView.Controllers
 
         public async Task<IActionResult> Restock()
         {
-            return View(await _context.Products.AsNoTracking().Where(p => p.Active && p.Quantity < p.SafeStockLevel).OrderBy(p => p.Quantity).ToListAsync());
+            RestockViewModel viewModel = new()
+            {
+                Categories = await _context.Categories.AsNoTracking().Where(c => c.Quantity <= c.SafeStockLevel).OrderBy(c => c.Quantity).ToListAsync(),
+                OptionalCategories = await _context.OptionalCategories.AsNoTracking().Where(c => c.Quantity <= c.SafeStockLevel).OrderBy(c => c.Quantity).ToListAsync()
+            };
+            return View(viewModel);
         }
-
         public async Task<IActionResult> ExpiresSoon()
         {
-            return View(await _context.Products.AsNoTracking().Where(p => p.Active && p.Expires && p.ExpirationDate <= DateTime.Now.AddDays(7)).OrderByDescending(p => p.ExpirationDate).ToListAsync());
+            return View(await _context.Supplies.AsNoTracking().Where(p => p.Expires && p.ExpirationDate <= DateTime.Now.AddDays(7)).OrderBy(p => p.ExpirationDate).ToListAsync());
         }
     }
 }

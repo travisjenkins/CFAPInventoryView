@@ -33,14 +33,28 @@
                                     Settings
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="nabarDropdownMenuLink">
-                                    <li><a class="dropdown-item text-dark" asp-controller="AppRoles" asp-action="Index">Manage Roles</a></li>
-                                    <li><a class="dropdown-item text-dark" asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
                                     <li><a class="dropdown-item text-dark" asp-controller="AgeGroups" asp-action="Index">Age Groups</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="Categories" asp-action="Index">Categories</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="ExcludeCategories" asp-action="Index">Categories (Exclude)</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="OptionalCategories" asp-action="Index">Categories (Optional)</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="Donors" asp-action="Index">Donors</a></li>
                                     <li><a class="dropdown-item text-dark" asp-controller="Ethnicities" asp-action="Index">Ethnicities</a></li>
                                     <li><a class="dropdown-item text-dark" asp-controller="Genders" asp-action="Index">Genders</a></li>
-                                    <li><a class="dropdown-item text-dark" asp-controller="Categories" asp-action="Index">Categories</a></li>
-                                    <li><a class="dropdown-item text-dark" asp-controller="OptionalCategories" asp-action="Index">Optional Categories</a></li>
-                                    <li><a class="dropdown-item text-dark" asp-controller="ExcludeCategories" asp-action="Index">Exclude Categories</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="AppRoles" asp-action="Index">Manage Roles</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="Parents" asp-action="Index">Parents (Foster/Adoption)</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else if (User.IsInRole(HelperMethods.MemberRole))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Contacts
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="nabarDropdownMenuLink">
+                                    <li><a class="dropdown-item text-dark" asp-controller="Donors" asp-action="Index">Donors</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="Parents" asp-action="Index">Parents (Foster/Adoption)</a></li>
                                 </ul>
                             </li>
                         }

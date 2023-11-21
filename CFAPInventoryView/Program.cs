@@ -62,7 +62,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromHours(1); // default is 14 days
+    options.ExpireTimeSpan = TimeSpan.FromHours(12); // default is 14 days
     options.LoginPath = "/Identity/Account/Login";
     options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
     options.SlidingExpiration = false; // default is true
