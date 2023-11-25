@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using CFAPInventoryView.Data;
 using CFAPInventoryView.Data.Models;
 using CFAPInventoryView.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CFAPInventoryView.Controllers
 {
+    [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole},{HelperMethods.MemberRole}")]
     public class SupplyTransactionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -54,8 +56,8 @@ namespace CFAPInventoryView.Controllers
         // GET: SupplyTransactions/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context);
-            ViewData["ProductsSelectList"] = await SelectListBuilder.GetSuppliesSelectListAsync(_context);
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
+            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
             return View();
         }
 
@@ -88,8 +90,8 @@ namespace CFAPInventoryView.Controllers
                 }
             }
             ModelState.AddModelError(string.Empty, $"A supply with Id {supplyTransaction.SupplyId} could not be located in the database.");
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context, supplyTransaction.RecipientId);
-            ViewData["ProductsSelectList"] = await SelectListBuilder.GetSuppliesSelectListAsync(_context, supplyTransaction.SupplyId);
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
+            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
             return View(supplyTransaction);
         }
 
@@ -106,8 +108,8 @@ namespace CFAPInventoryView.Controllers
             {
                 return NotFound();
             }
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context, productTransaction.RecipientId);
-            ViewData["ProductsSelectList"] = await SelectListBuilder.GetSuppliesSelectListAsync(_context, productTransaction.SupplyId);
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
+            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
             return View(productTransaction);
         }
 
@@ -145,8 +147,8 @@ namespace CFAPInventoryView.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context, supplyTransaction.RecipientId);
-            ViewData["ProductsSelectList"] = await SelectListBuilder.GetSuppliesSelectListAsync(_context, supplyTransaction.SupplyId);
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
+            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
             return View(supplyTransaction);
         }
 
@@ -171,6 +173,7 @@ namespace CFAPInventoryView.Controllers
         }
 
         // POST: SupplyTransactions/Delete/5
+        [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {

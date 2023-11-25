@@ -29,24 +29,24 @@ namespace CFAPInventoryView.Controllers
             StatisticsViewModel viewModel = new();
             try
             {
-                // Products
-                viewModel.TotalProducts = await _context.Supplies.AsNoTracking().CountAsync();
+                // Supplies
+                viewModel.TotalSupplies = await _context.Supplies.AsNoTracking().CountAsync();
                 viewModel.TotalItemsThatExpire = await _context.Supplies.AsNoTracking().Where(p => p.Expires).CountAsync();
 
                 decimal totalInventoryPrice = 0;
-                var products = await _context.Supplies.AsNoTracking().ToListAsync();
-                if (products is not null && products.Count > 0)
+                var supplies = await _context.Supplies.AsNoTracking().ToListAsync();
+                if (supplies is not null && supplies.Count > 0)
                 {
                     long temp = 0;
-                    foreach (var product in products)
+                    foreach (var supply in supplies)
                     {
-                        totalInventoryPrice += product.Price * product.Quantity;
+                        totalInventoryPrice += supply.Price * supply.Quantity;
                         //if (product.DurationOnShelf.HasValue)
                         //{
                         //    temp += product.DurationOnShelf.Value / products.Count;
                         //}
                     }
-                    viewModel.TotalProductDurationOnShelf = new TimeSpan(temp);
+                    viewModel.TotalSupplyDurationOnShelf = new TimeSpan(temp);
                 }
                 viewModel.TotalInventoryPrice = totalInventoryPrice;
 
@@ -56,14 +56,14 @@ namespace CFAPInventoryView.Controllers
 
                 decimal totalIBelongBasketPrice = 0;
 #pragma warning disable 8604
-                var baskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.SupplyBaskets).DefaultIfEmpty().ToListAsync();
+                var baskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.SupplyBaskets).ThenInclude(sb => sb.Supply).ToListAsync();
 #pragma warning restore 8604
                 if (baskets is not null && baskets.Count > 0)
                 {
                     long temp = 0;
                     foreach (var basket in baskets)
                     {
-                        //totalIBelongBasketPrice += basket.TotalPrice;
+                        totalIBelongBasketPrice += basket.TotalPrice;
                         //if (basket.DurationOnShelf.HasValue)
                         //{
                         //    temp += basket.DurationOnShelf.Value / baskets.Count;
