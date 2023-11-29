@@ -134,10 +134,14 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
-                bool emailIsConfirmed = await _userManager.IsEmailConfirmedAsync(await _userManager.FindByEmailAsync(Input.Email));
-                if (!emailIsConfirmed)
+                var userCheck = await _userManager.FindByEmailAsync(Input.Email);
+                if (userCheck is not null)
                 {
-                    ModelState.AddModelError(string.Empty, "Email is unconfirmed, please confirm your email address before attempting to log in.");
+                    bool emailIsConfirmed = await _userManager.IsEmailConfirmedAsync(await _userManager.FindByEmailAsync(Input.Email));
+                    if (!emailIsConfirmed)
+                    {
+                        ModelState.AddModelError(string.Empty, "Email is unconfirmed, please confirm your email address before attempting to log in.");
+                    }
                 }
                 if (result.IsLockedOut)
                 {

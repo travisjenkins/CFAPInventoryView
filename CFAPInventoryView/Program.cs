@@ -230,7 +230,8 @@ app.MapRazorPages();
  * Manager: Can approve/deny member access
  * Member: Can add items to inventory
  */
-using (var scope = app.Services.CreateScope())
+using var scope = app.Services.CreateScope();
+try
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var roles = new[] { HelperMethods.AdministratorRole, HelperMethods.ManagerRole, HelperMethods.MemberRole, HelperMethods.RegisteredUser };
@@ -239,6 +240,15 @@ using (var scope = app.Services.CreateScope())
         if (!await roleManager.RoleExistsAsync(role))
             await roleManager.CreateAsync(new IdentityRole(role));
     }
+}
+catch (Exception ex)
+{
+    var logger = app.Services.GetService<ILoggerFactory>()?.CreateLogger<Program>();
+    logger?.LogError($"ERROR:  {ex.Message}, Stack Trace:  {ex.StackTrace}");
+}
+finally
+{
+    scope.Dispose();
 }
 
 app.Run();
