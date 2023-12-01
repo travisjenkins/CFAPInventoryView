@@ -16,7 +16,15 @@ using System.Threading.RateLimiting;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("CFAPInventory") ?? throw new InvalidOperationException("Connection string 'CFAPInventory' not found.");
+string connectionString = string.Empty;
+if (builder.Environment.IsDevelopment()) 
+{
+    connectionString = builder.Configuration.GetConnectionString("CFAPInventory") ?? throw new InvalidOperationException("Connection string 'CFAPInventory' not found.");
+}
+else 
+{
+    connectionString = Environment.GetEnvironmentVariable("SQL_CONNECTION_STR_DOCKER") ?? throw new InvalidOperationException("Connection string 'SQL_CONNECTION_STR_DOCKER' not found.");
+}
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -230,15 +238,25 @@ app.MapRazorPages();
  * Manager: Can approve/deny member access
  * Member: Can add items to inventory
  */
-using (var scope = app.Services.CreateScope())
-{
+ using var scope = app.Services.CreateScope();
+ try
+ {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var roles = new[] { HelperMethods.AdministratorRole, HelperMethods.ManagerRole, HelperMethods.MemberRole, HelperMethods.RegisteredUser };
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
-            await roleManager.CreateAsync(new IdentityRole(role));
-    }
-}
+            await roleManager.CreateAsync(new IdentityRole(role));    
+    }  
+ }
+ catch (Exception ex)
+ {
+    var logger = app.Services.GetService<ILoggerFactory>()?.CreateLogger<Program>();
+    logger?.LogError($"ERROR:  {ex.Message}, Stack Trace:  {ex.StackTrace}");
+ }
+ finally
+ {
+    scope.Dispose();
+ }
 
 app.Run();

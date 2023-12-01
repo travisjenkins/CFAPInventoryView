@@ -1,4 +1,5 @@
-﻿using CFAPInventoryView.Data.Extensions;
+﻿using System.Configuration;
+using CFAPInventoryView.Data.Extensions;
 using CFAPInventoryView.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +14,11 @@ namespace CFAPInventoryView.Data
         }
 
         // Overriding this method is necessary to seed data into the database when created
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-            builder.Seed();
-        }
+        // protected override void OnModelCreating(ModelBuilder builder)
+        // {
+        //     base.OnModelCreating(builder);
+        //     builder.Seed();
+        // }
 
         public DbSet<AgeGroup> AgeGroups { get; set; }
         public DbSet<Ethnicity> Ethnicities { get; set; }

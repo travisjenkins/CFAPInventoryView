@@ -1,0 +1,64 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker compose reference guide at
+# https://docs.docker.com/compose/compose-file/
+version: "3.8"
+
+services:
+    webapp:
+      # All environment variables are loaded from the .env files
+      # https://docs.docker.com/compose/compose-file/05-services/#env_file
+      env_file: ./cfapinventoryview.env
+      build:
+        context: .
+        target: final
+      # Setup for starting a container with https support using docker compose.
+      # Follow the instructions for the specifis OS you are running on (i.e., Windows or macOS).
+      # https://learn.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-7.0
+      volumes:
+       - ~/.aspnet/https:/https:ro
+      networks:
+        - frontend
+        - backend
+      ports:
+        - 8080:80
+        - 8443:443
+      # Set the webapp to depend on the dabase to be up and healthy before
+      # being created. 'service_healthy' waits for the defined health check
+      # on the db to pass before the webapp is created.
+      depends_on:
+        sqldb:
+          condition: service_healthy
+
+    sqldb:
+      env_file: ./mssql-server.env
+      build:
+        context: .
+        target: sqlserver
+      volumes:
+        - sqldb_data:/var/opt/mssql/
+      # Set the test to use to ensure that the database is up and running
+      # https://docs.docker.com/compose/compose-file/05-services/#healthcheck
+      healthcheck:
+        test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $$MSSQL_SA_PASSWORD -Q 'SELECT 1' || exit 1"]
+        interval: 10s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+      networks:
+        backend:
+          aliases:
+            - database
+      ports:
+        - 1433:1433
+
+# Setup a volume to persist the database data; otherwise the data is lost
+# when docker compose down is called.
+# https://docs.docker.com/compose/compose-file/07-volumes/
+volumes:
+    sqldb_data:
+
+# Setup separate networks for the front and backends.
+# https://docs.docker.com/compose/compose-file/06-networks/
+networks:
+  frontend:
+  backend:
