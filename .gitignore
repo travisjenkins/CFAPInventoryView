@@ -11,10 +11,6 @@
 *.sln.docstates
 *.env
 *.DS_Store
-db_password.txt
-sendgrid_api_key.txt
-sql_connection_str.txt
-kestrel_cert_password.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
