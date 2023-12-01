@@ -29,7 +29,7 @@ Team members and Capstone instructors/participants.
 
 - [Git](https://github.com/git-guides/install-git) is already installed and configured.
 - [Docker](https://docs.docker.com/get-docker/) is already installed and configured. Additional Docker command [info](./README.Docker.md).
-- (*Optional*) You already have Visual Studio or VS Code installed.
+- *(Optional)* You already have Visual Studio or VS Code installed.
 
 ### Steps:
 
@@ -44,6 +44,7 @@ Team members and Capstone instructors/participants.
 5. Open your preferred shell to the folder where you copied the repository.
 6. Run the following command:  `docker compose up --build`
 7. When the setup completes and the containers are running, the site will be available at:  https://localhost:8443
-8. When you are finished, you can tear down the containers with the following command:  `docker compose down`
+8. When you are done running the site, click in the terminal window used to launch the project and press Ctrl+C.  This will gracefully stop the containers, or you can force it by pressing Ctrl+C again *(not recommended, unless absolutely necessary)*.
+9. When you are finished, you can tear down the containers with the following command:  `docker compose down`
 
-*NOTE:  The images and persistent storage volume will remain in Docker.  If you add additional records that you want to keep through the site, you will want to leave the storage volume and can delete the images.  Otherwise, you can delete both images and the storage volume for cleanup when you are finished.*
+*NOTE:  The images and persistent storage volume will remain in Docker.  If you add additional records that you want to keep through the site, you will want to leave the storage volume and can delete the images.  Otherwise, you can delete both images and the storage volume through the Docker GUI for cleanup when you are finished.*
