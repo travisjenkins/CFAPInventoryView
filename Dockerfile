@@ -35,7 +35,7 @@ WORKDIR /source/CFAPInventoryView
 # Build the application.
 # Leverage a cache mount to /root/.nuget/packages so that subsequent builds don't have to re-download packages.
 # If TARGETARCH is "amd64", replace it with "x64" - "x64" is .NET's canonical name for this and "amd64" doesn't
-#   work in .NET 6.0.
+# work in .NET 6.0.
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
     dotnet publish -a ${TARGETARCH/amd64/x64} --use-current-runtime --self-contained false -o /app
 
@@ -61,7 +61,7 @@ ENV \
     DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     LC_ALL=en_US.UTF-8 \
     LANG=en_US.UTF-8 
-# Add required libraries for globalization and set sensitive environment variables from filesystem
+# Add required libraries for globalization
 RUN apk add --no-cache \
     icu-data-full \
     icu-libs
