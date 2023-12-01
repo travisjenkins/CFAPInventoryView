@@ -46,4 +46,4 @@ Team members and Capstone instructors/participants.
 7. When the setup completes and the containers are running, the site will be available at:  https://localhost:8443
 8. When you are finished, you can tear down the containers with the following command:  `docker compose down`
 
-*NOTE:  The images and persistent storage volume will still be available in Docker.  If you added additional records through the site, that you want to keep, you will want to leave the storage volume and can delete the images.  Otherwise, you can delete both images and the storage volume for cleanup when you are finished.*
+*NOTE:  The images and persistent storage volume will remain in Docker.  If you add additional records that you want to keep through the site, you will want to leave the storage volume and can delete the images.  Otherwise, you can delete both images and the storage volume for cleanup when you are finished.*
