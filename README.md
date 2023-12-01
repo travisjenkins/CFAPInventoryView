@@ -29,7 +29,7 @@ Team members and Capstone instructors/participants.
 
 - [Git](https://github.com/git-guides/install-git) is already installed and configured.
 - [Docker](https://docs.docker.com/get-docker/) is already installed and configured. Additional Docker command [info](./README.Docker.md).
-- *(Optional)* You already have Visual Studio or VS Code installed.
+- *(Optional)* You already have [Visual Studio](https://visualstudio.microsoft.com/downloads/) or [VS Code](https://code.visualstudio.com/download) installed and configured.
 
 ### Steps:
 
