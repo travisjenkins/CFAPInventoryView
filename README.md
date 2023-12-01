@@ -34,11 +34,11 @@ Team members and Capstone instructors/participants.
 ### Steps:
 
 1. Clone the repository:
-  - [Clone with preferred shell](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-  - [Clone with Visual Studio](https://learn.microsoft.com/en-us/visualstudio/version-control/git-clone-repository?view=vs-2022)
-  - [Clone with VS Code](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=create-repo-command-palette%2Cinitialize-repo-activity-bar%2Ccreate-branch-command-palette%2Ccommit-changes-command-palette%2Cpush-command-palette)
+    - [Clone with preferred shell](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+    - [Clone with Visual Studio](https://learn.microsoft.com/en-us/visualstudio/version-control/git-clone-repository?view=vs-2022)
+    - [Clone with VS Code](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=create-repo-command-palette%2Cinitialize-repo-activity-bar%2Ccreate-branch-command-palette%2Ccommit-changes-command-palette%2Cpush-command-palette)
 2. Ensure you have already created a local certificate for [Hosting ASP.NET Core images with Docker Compose over HTTPS](https://learn.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-7.0").  If you don't remember the password you used then start by verifying the certificate is located at the required path with the same name listed on the site, then launch the site with Docker following the steps provided here and using the default values provided.  If that doesn't work, try creating another certificate with the repository name instead of the default aspnetapp.pfx shown on the site (i.e., cfapinventoryview.pfx) and modifying the required variables listed in the steps below.  (I didn't know the password and just ran the steps here with the password I created in the file, and it worked)
-  - If necessary from the step above, modify the cfapinventoryview.env file's ASPNETCORE_Kestrel__Certificates__Default__Password variable to match the password you used for your certificate.  If you changed the certificate name you will also need to update the ASPNETCORE_Kestrel__Certificates__Default__Path variable to match the name of the certificate you created.
+    - If necessary from the step above, modify the cfapinventoryview.env file's ASPNETCORE_Kestrel__Certificates__Default__Password variable to match the password you used for your certificate.  If you changed the certificate name you will also need to update the ASPNETCORE_Kestrel__Certificates__Default__Path variable to match the name of the certificate you created.
 3. Obtain the required .env files [located here](https://mailmissouri-my.sharepoint.com/:f:/g/personal/tjmxf_umsystem_edu/EilDUU-lfZNKk3zPOGMImuEB4Q2TGN3c15Ta9ylyGTbn1w). *Only accessible by team members and Professor Gillian Maurer.*
 4. Start Docker, if not already started
 5. Open your preferred shell to the folder where you copied the repository.
