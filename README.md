@@ -1,6 +1,6 @@
 # CFAPInventoryView
 
-### This containerized ASP.NET Core MVC web app with a MSSQL Express database backend was created for the Columbia Foster and Adoption Program to track their product and iBelong Basket inventory status.
+### This containerized ASP.NET Core v7 MVC web app with a MSSQL Express database backend was created for the Columbia Foster and Adoption Program to track their product and iBelong Basket inventory status.
 
 <p>This is a University of Missouri - Columbia (Mizzou) Capstone project for the following members:</p>
 <ol>
