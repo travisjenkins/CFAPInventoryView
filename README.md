@@ -29,7 +29,7 @@ Team members and Capstone instructors/participants.
 
 - [Git](https://github.com/git-guides/install-git) is already installed and configured.
 - [Docker](https://docs.docker.com/get-docker/) is already installed and configured.
-- You have already created a local certificate for [Hosting ASP.NET Core images with Docker Compose over HTTPS](https://learn.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-7.0").
+- You have already created a local certificate for [Hosting ASP.NET Core images with Docker Compose over HTTPS](https://learn.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-7.0").  If you don't remember the password you used then start by verifying the certificate is located at the required path with the same name listed on the site, then launch the site with Docker following the directions below and using the default values provided.  If that doesn't work, try creating another certificate with the repository name instead of the default aspnetapp.pfx shown on the site (i.e., cfapinventoryview.pfx).
 
 ### Steps:
 
@@ -37,5 +37,8 @@ Team members and Capstone instructors/participants.
   - [Clone with preferred shell](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
   - [Clone with Visual Studio](https://learn.microsoft.com/en-us/visualstudio/version-control/git-clone-repository?view=vs-2022)
   - [Clone with VS Code](https://learn.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=create-repo-command-palette%2Cinitialize-repo-activity-bar%2Ccreate-branch-command-palette%2Ccommit-changes-command-palette%2Cpush-command-palette)
+- If necessary from the assumptions section above, modify the cfapinventoryview.env file's ASPNETCORE_Kestrel__Certificates__Default__Password variable to match the password you used for your certificate.  If you changed the certificate name you will also need to update the ASPNETCORE_Kestrel__Certificates__Default__Path variable to match the name of the certificate you created.
 - Start Docker, if not already started
 - Open your preferred shell to the folder where you copied the repository.
+- Run the following command:  `docker compose up --build`
+- When the setup completes and the containers are running, the site will be available at:  https://localhost:8443
