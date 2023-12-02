@@ -21,6 +21,13 @@
                 <label asp-for="Description" class="control-label"></label>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3">
+                <select asp-for="StorageLocationId" class="form-select" asp-items="ViewBag.StorageLocationsSelectList">
+                    <option value="@null">Select...</option>
+                </select>
+                <label asp-for="StorageLocationId"></label>
+                <span asp-validation-for="StorageLocationId" class="text-danger"></span>
+            </div>
             <div class="form-group form-check form-switch mb-3">
                 <input class="form-check-input" asp-for="Expires" role="switch" />
                 <label class="form-check-label">

@@ -13,6 +13,7 @@
     <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
         <div class="col-lg-2">@Html.DisplayNameFor(model => model.Name)</div>
         <div class="col-lg-3">@Html.DisplayNameFor(model => model.Description)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.StorageLocationId)</div>
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.Expires)</div>
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.ExpirationDate)</div>
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.PurchaseDate)</div>
@@ -41,6 +42,11 @@
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.Description)</div>
             </div>
             <div class="col-lg-3 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Description)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.StorageLocationId):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.StorageLocation.Name)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.StorageLocation.Name)</div>
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Expires):</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.Expires)</div>

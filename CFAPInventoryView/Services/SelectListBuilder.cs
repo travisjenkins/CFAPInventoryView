@@ -79,6 +79,13 @@ namespace CFAPInventoryView.Services
             return new SelectList(query, nameof(Supply.SupplyId), nameof(Supply.Name), selectedOption);
         }
 
+        public static async Task<SelectList?> GetStorageLocationsSelectListAsync(ApplicationDbContext context, object? selectedOption = null)
+        {
+            var query = await context.StorageLocations.OrderBy(s => s.Name).ToListAsync();
+            if (query is null) return null;
+            return new SelectList(query, nameof(StorageLocation.StorageLocationId), nameof(StorageLocation.Name), selectedOption);
+        }
+
         public static IEnumerable<SelectListItem>? GetStatesSelectList(string? stateName = null)
         {
             IEnumerable<SelectListItem>? query = null;

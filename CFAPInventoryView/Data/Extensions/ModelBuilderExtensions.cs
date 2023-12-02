@@ -1243,6 +1243,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 9.97m,
                         Quantity = 1,
                         CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1256,6 +1257,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 6.77m,
                         Quantity = 1,
                         CategoryId = new Guid("d11d87e7-126c-4a3c-8125-b6a656d64fcc"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1269,6 +1271,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 8.78m,
                         Quantity = 1,
                         CategoryId = new Guid("a809dfba-5e21-491e-ab19-5374a141fe88"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1282,6 +1285,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 18.76m,
                         Quantity = 1,
                         CategoryId = new Guid("65ea10fe-b443-4233-a48a-d8bd7896d244"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1295,6 +1299,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 6.77m,
                         Quantity = 1,
                         CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1308,6 +1313,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 10.58m,
                         Quantity = 1,
                         CategoryId = new Guid("2fb04be4-3b23-42eb-9534-20d767654667"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1321,6 +1327,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 11.95m,
                         Quantity = 1,
                         CategoryId = new Guid("61da1441-6b0e-4d1a-88a2-ec632d01906d"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1334,6 +1341,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 7.78m,
                         Quantity = 1,
                         CategoryId = new Guid("bf225467-4b08-4da0-a1e5-2ef0ff6e2f96"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1347,6 +1355,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 11.38m,
                         Quantity = 1,
                         CategoryId = new Guid("cdfc6b7f-31fb-4bd1-a246-6b8efc241dff"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1360,6 +1369,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 23.47m,
                         Quantity = 1,
                         CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1373,6 +1383,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 14.97m,
                         Quantity = 1,
                         CategoryId = new Guid("7ac8c99f-aaca-4883-ab1f-fb94fbaa9fca"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1386,6 +1397,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 14.5m,
                         Quantity = 1,
                         CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1399,6 +1411,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 7.28m,
                         Quantity = 1,
                         CategoryId = new Guid("c50504d5-a7ec-4aab-acae-0ed0a39d1578"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1412,6 +1425,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 4.00m,
                         Quantity = 1,
                         CategoryId = new Guid("f27211ee-28cb-42a1-b487-51aa7456ccd3"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     },
@@ -1425,6 +1439,7 @@ namespace CFAPInventoryView.Data.Extensions
                         Price = 9.97m,
                         Quantity = 1,
                         CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                        StorageLocationId = new Guid("1cae190d-dd77-4499-88cf-54c343a67b9f"),
                         LastUpdateId = "travis@mailsac.com",
                         LastUpdateDateTime = DateTime.Now
                     }

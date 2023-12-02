@@ -32,6 +32,7 @@ namespace CFAPInventoryView.Controllers
                                                     .Include(p => p.Category)
                                                     .Include(p => p.OptionalCategory)
                                                     .Include(p => p.ExcludeCategory)
+                                                    .Include(p => p.StorageLocation)
                                                     .OrderBy(p => p.PurchaseDate)
                                                     .ThenByDescending(p => p.Price)
                                                     .ToListAsync()) :
@@ -50,6 +51,7 @@ namespace CFAPInventoryView.Controllers
                                                  .Include(p => p.Category)
                                                  .Include(p => p.OptionalCategory)
                                                  .Include(p => p.ExcludeCategory)
+                                                 .Include(p => p.StorageLocation)
                                                  .FirstOrDefaultAsync(m => m.SupplyId == id);
             if (supply == null)
             {
@@ -65,6 +67,7 @@ namespace CFAPInventoryView.Controllers
             ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context);
             ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context);
             ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context);
+            ViewData["StorageLocationsSelectList"] = await SelectListBuilder.GetStorageLocationsSelectListAsync(_context);
             return View();
         }
 
@@ -72,7 +75,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name,Description,Expires,ExpirationDate,PurchaseDate,Quantity,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId")] Supply supply)
+        public async Task<IActionResult> Create([Bind("Name,Description,StorageLocationId,Expires,ExpirationDate,PurchaseDate,Quantity,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId")] Supply supply)
         {
             if (ModelState.IsValid)
             {
@@ -99,6 +102,7 @@ namespace CFAPInventoryView.Controllers
             ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context, supply.CategoryId);
             ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context, supply.OptionalCategoryId);
             ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context, supply.ExcludeCategoryId);
+            ViewData["StorageLocationsSelectList"] = await SelectListBuilder.GetStorageLocationsSelectListAsync(_context, supply.StorageLocationId);
             return View(supply);
         }
 
@@ -118,6 +122,7 @@ namespace CFAPInventoryView.Controllers
             ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context, supply.CategoryId);
             ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context, supply.OptionalCategoryId);
             ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context, supply.ExcludeCategoryId);
+            ViewData["StorageLocationsSelectList"] = await SelectListBuilder.GetStorageLocationsSelectListAsync(_context, supply.StorageLocationId);
             return View(supply);
         }
 
@@ -125,7 +130,7 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("SupplyId,Name,Description,Expires,ExpirationDate,PurchaseDate,Quantity,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId")] Supply supply)
+        public async Task<IActionResult> Edit(Guid id, [Bind("SupplyId,Name,Description,StorageLocationId,Expires,ExpirationDate,PurchaseDate,Quantity,Price,Barcode,CategoryId,OptionalCategoryId,ExcludeCategoryId")] Supply supply)
         {
             if (id != supply.SupplyId)
             {
@@ -163,6 +168,7 @@ namespace CFAPInventoryView.Controllers
             ViewData["CategoriesSelectList"] = await SelectListBuilder.GetCategoriesSelectListAsync(_context, supply.CategoryId);
             ViewData["OptionalCategoriesSelectList"] = await SelectListBuilder.GetOptionalCategoriesSelectListAsync(_context, supply.OptionalCategoryId);
             ViewData["ExcludeCategoriesSelectList"] = await SelectListBuilder.GetExcludeCategoriesSelectListAsync(_context, supply.ExcludeCategoryId);
+            ViewData["StorageLocationsSelectList"] = await SelectListBuilder.GetStorageLocationsSelectListAsync(_context, supply.StorageLocationId);
             return View(supply);
         }
 
@@ -178,6 +184,7 @@ namespace CFAPInventoryView.Controllers
                                                  .Include(p => p.Category)
                                                  .Include(p => p.OptionalCategory)
                                                  .Include(p => p.ExcludeCategory)
+                                                 .Include(p => p.StorageLocation)
                                                  .FirstOrDefaultAsync(m => m.SupplyId == id);
             if (supply == null)
             {
