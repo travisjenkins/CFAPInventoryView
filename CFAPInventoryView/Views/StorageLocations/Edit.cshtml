@@ -1,0 +1,48 @@
+﻿@model CFAPInventoryView.Data.Models.StorageLocation
+
+@{
+    ViewData["Title"] = "Storage Location";
+}
+
+<h1>Edit</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StorageLocationId" />
+            <div class="form-floating mb-3">
+                <input asp-for="Name" class="form-control" aria-required="true" placeholder="name" />
+                <label asp-for="Name" class="control-label"></label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Shelf" class="form-control" aria-required="false" placeholder="shelf" />
+                <label asp-for="Shelf" class="control-label"></label>
+                <span asp-validation-for="Shelf" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Row" class="form-control" aria-required="false" placeholder="row" />
+                <label asp-for="Row" class="control-label"></label>
+                <span asp-validation-for="Row" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Column" class="form-control" aria-required="false" placeholder="column" />
+                <label asp-for="Column" class="control-label"></label>
+                <span asp-validation-for="Column" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-outline-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

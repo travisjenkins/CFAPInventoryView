@@ -64,7 +64,9 @@ namespace CFAPInventoryView.Controllers
         // GET: BasketTransactions/Create
         public async Task<IActionResult> Create()
         {
+#pragma warning disable CS8602
             ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View();
         }
@@ -110,7 +112,9 @@ namespace CFAPInventoryView.Controllers
             {
                 ModelState.AddModelError(string.Empty, $"No basket found with Id {transaction.BasketId}.");
             }
+#pragma warning disable CS8602
             ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
         }
@@ -128,7 +132,9 @@ namespace CFAPInventoryView.Controllers
             {
                 return NotFound();
             }
+#pragma warning disable CS8602
             ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
         }
@@ -167,7 +173,9 @@ namespace CFAPInventoryView.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+#pragma warning disable CS8602
             ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
         }

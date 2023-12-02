@@ -43,18 +43,7 @@
                                     <li><a class="dropdown-item text-dark" asp-controller="AppRoles" asp-action="Index">Manage Roles</a></li>
                                     <li><a class="dropdown-item text-dark" asp-controller="UserManagement" asp-action="Index">Manage Users</a></li>
                                     <li><a class="dropdown-item text-dark" asp-controller="Recipients" asp-action="Index">Recipients</a></li>
-                                </ul>
-                            </li>
-                        }
-                        else if (User.IsInRole(HelperMethods.MemberRole))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Contacts
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="nabarDropdownMenuLink">
-                                    <li><a class="dropdown-item text-dark" asp-controller="Donors" asp-action="Index">Donors</a></li>
-                                    <li><a class="dropdown-item text-dark" asp-controller="Parents" asp-action="Index">Parents (Foster/Adoption)</a></li>
+                                    <li><a class="dropdown-item text-dark" asp-controller="StorageLocations" asp-action="Index">Storage Locations</a></li>
                                 </ul>
                             </li>
                         }
