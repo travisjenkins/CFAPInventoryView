@@ -234,9 +234,9 @@ app.MapRazorPages();
 
 /* Add the authorization roles if they are not already in the database
  * These are the roles available to control access to restricted resources
- * Admin: full control (can promote members to new roles)
- * Manager: Can approve/deny member access
- * Member: Can add items to inventory
+ * Admin: full control
+ * Manager: Can approve/deny member access, lock/unlock user accounts, promote users up to the Manager role
+ * Member: Can add supplies and iBelong baskets to inventory and complete transactions
  */
  using var scope = app.Services.CreateScope();
  try

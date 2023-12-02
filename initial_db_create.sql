@@ -1,4 +1,4 @@
-﻿IF NOT EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'[CFAPInventory]')
+﻿IF DB_ID('CFAPInventory') IS NULL
 BEGIN
     CREATE DATABASE [CFAPInventory];
 END
@@ -227,6 +227,19 @@ BEGIN
         [Value] nvarchar(max) NULL,
         CONSTRAINT [PK_AspNetUserTokens] PRIMARY KEY ([UserId], [LoginProvider], [Name]),
         CONSTRAINT [FK_AspNetUserTokens_AspNetUsers_UserId] FOREIGN KEY ([UserId]) REFERENCES [AspNetUsers] ([Id]) ON DELETE CASCADE
+    );
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'StorageLocations')
+BEGIN
+    CREATE TABLE [StorageLocations] (
+        [StorageLocationId] uniqueidentifier NOT NULL,
+        [Name] nvarchar(100) NOT NULL,
+        [Shelf] nvarchar(100) NULL,
+        [Row] int NULL,
+        [Column] int NULL,
+        CONSTRAINT [PK_StorageLocations] PRIMARY KEY ([StorageLocationId])
     );
 END
 GO
