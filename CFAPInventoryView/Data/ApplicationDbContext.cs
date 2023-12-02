@@ -26,6 +26,7 @@ namespace CFAPInventoryView.Data
         public DbSet<OptionalCategory> OptionalCategories { get; set; }
         public DbSet<ExcludeCategory> ExcludeCategories { get; set; }
         public DbSet<AgeGroupCategory> AgeGroupCategories { get; set; }
+        public DbSet<StorageLocation> StorageLocations { get; set; }
         public DbSet<Supply> Supplies { get; set; }
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<Donor> Donors { get; set; }
