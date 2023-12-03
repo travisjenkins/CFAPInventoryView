@@ -98,13 +98,13 @@ namespace CFAPInventoryView.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("BasketNumber,AgeGroupId,EthnicityId,GenderId,DateAssembled,StorageLocationId")] Basket basket, List<Guid>? assignedProducts)
+        public async Task<IActionResult> Create([Bind("BasketNumber,AgeGroupId,EthnicityId,GenderId,DateAssembled,StorageLocationId")] Basket basket, List<Guid>? assignedSupplies)
         {
             if (!basket.BasketNumber.HasValue)
                 ModelState.AddModelError(nameof(Basket.BasketNumber), "The basket number field is required.");
             else if (!basket.StorageLocationId.HasValue)
                 ModelState.AddModelError(nameof(Basket.StorageLocationId), "The storage location field is required.");
-            else if (assignedProducts is null || assignedProducts.Count == 0)
+            else if (assignedSupplies is null || assignedSupplies.Count == 0)
                 ModelState.AddModelError(nameof(Basket.SupplyBaskets), "You must assign at least one supply to create the basket.");
             else
             {
@@ -123,7 +123,7 @@ namespace CFAPInventoryView.Controllers
                             shoppingList.Quantity += 1;
                             _context.Update(shoppingList);
                             await _context.SaveChangesAsync();
-                            await AddSuppliesToBasket(basket.BasketId, assignedProducts);
+                            await AddSuppliesToBasket(basket.BasketId, assignedSupplies);
                             return RedirectToAction(nameof(Index));
                         }
                         catch (DbUpdateException ex)
