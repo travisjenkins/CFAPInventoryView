@@ -226,9 +226,16 @@ app.MapRazorPages();
 
 /* Add the authorization roles if they are not already in the database
  * These are the roles available to control access to restricted resources
- * Admin: full control (can promote members to new roles)
- * Manager: Can approve/deny member access
- * Member: Can add items to inventory
+ * 1.  Administrator: Full site permissions
+ * 2.  Manager:  Same as Administrator, except:
+ *          a.	Can only promote members up to their level (Manager).
+ *          b.	Cannot delete user accounts.
+ * 3.  Member:
+ *          a.	Can view/add/update Donors and Recipients, but not delete them.
+ *          b.	Can view/add/update iBelong Shopping Lists & Baskets, but not delete them.
+ *          c.	Can view/add/update Supplies, but not delete them.
+ *          d.	Can view/add/update Basket & Supply Transactions, but not delete them.
+ * 4.  Registered User:  Can only view the home, privacy, register, login, and forgot password pages.
  */
 using var scope = app.Services.CreateScope();
 try
