@@ -23,6 +23,10 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Exclude Category")]
         public Guid? ExcludeCategoryId { get; set; }
 
+        [Required]
+        [Display(Name = "Storage Location")]
+        public Guid StorageLocationId { get; set; }
+
         public string? Description { get; set; }
 
         [Required]
@@ -76,5 +80,8 @@ namespace CFAPInventoryView.Data.Models
 
         [Display(Name = "Exclude Category")]
         public virtual ExcludeCategory? ExcludeCategory { get; set; }
+
+        [Display(Name = "Storage Location")]
+        public virtual StorageLocation StorageLocation { get; set; } = null!;
     }
 }

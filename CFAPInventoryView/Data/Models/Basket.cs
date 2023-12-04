@@ -31,6 +31,9 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Gender")]
         public Guid GenderId { get; set; }
 
+        [Display(Name = "Storage Location")]
+        public Guid? StorageLocationId { get; set; }
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date Assembled")]
@@ -99,6 +102,8 @@ namespace CFAPInventoryView.Data.Models
         public virtual Ethnicity? Ethnicity { get; set; }
 
         public virtual Gender? Gender { get; set; }
+
+        public virtual StorageLocation? StorageLocation { get; set; }
 
         [Display(Name = "Supplies")]
         public virtual ICollection<SupplyBasket> SupplyBaskets { get; set; } = new List<SupplyBasket>();

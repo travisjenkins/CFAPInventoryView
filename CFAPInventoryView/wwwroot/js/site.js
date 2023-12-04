@@ -73,3 +73,30 @@ function filterCategories(category) {
         }
     }
 }
+
+/*
+ *  Product & Basket Transactions -> Create & Edit pages ------------------------
+ */
+
+function filterDropdown(searchText, dropdownListId) {
+    let filter, ul, a, txtValue;
+    filter = searchText.toUpperCase();
+    ul = document.getElementById(dropdownListId);
+    a = ul.getElementsByTagName("a");
+
+    for (var i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+}
+
+function updateSelectedId(elmIdForIdUpdate, newIdValue, elmIdForTextUpdate, newTxtValue) {
+    let idElm = document.getElementById(elmIdForIdUpdate);
+    let txtElm = document.getElementById(elmIdForTextUpdate);
+    idElm.value = newIdValue;
+    txtElm.value = newTxtValue;
+}

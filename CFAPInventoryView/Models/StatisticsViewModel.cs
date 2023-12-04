@@ -6,8 +6,8 @@ namespace CFAPInventoryView.Models
     public class StatisticsViewModel
     {
         // Products
-        [Display(Name = "Total Products")]
-        public int TotalProducts { get; set; }
+        [Display(Name = "Total Supplies")]
+        public int TotalSupplies { get; set; }
 
         [DataType(DataType.Currency)]
         [Precision(13, 4)]
@@ -19,7 +19,7 @@ namespace CFAPInventoryView.Models
 
         [Display(Name = "Average Duration on Shelf")]
         [DisplayFormat(DataFormatString = "{0:dd\\.hh\\:mm\\:ss}")]
-        public TimeSpan TotalProductDurationOnShelf { get; set; }
+        public TimeSpan TotalSupplyDurationOnShelf { get; set; }
 
         // iBelong Baskets
         [Display(Name = "Total Shopping Lists")]

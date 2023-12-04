@@ -64,8 +64,10 @@ namespace CFAPInventoryView.Controllers
         // GET: BasketTransactions/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["BasketsSelectList"] = await SelectListBuilder.GetBasketsSelectListAsync(_context);
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context);
+#pragma warning disable CS8602
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View();
         }
 
@@ -110,8 +112,10 @@ namespace CFAPInventoryView.Controllers
             {
                 ModelState.AddModelError(string.Empty, $"No basket found with Id {transaction.BasketId}.");
             }
-            ViewData["BasketsSelectList"] = await SelectListBuilder.GetBasketsSelectListAsync(_context, transaction.BasketId);
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context, transaction.RecipientId);
+#pragma warning disable CS8602
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
         }
 
@@ -128,8 +132,10 @@ namespace CFAPInventoryView.Controllers
             {
                 return NotFound();
             }
-            ViewData["BasketsSelectList"] = await SelectListBuilder.GetBasketsSelectListAsync(_context, transaction.BasketId);
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context, transaction.RecipientId);
+#pragma warning disable CS8602
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
         }
 
@@ -167,8 +173,10 @@ namespace CFAPInventoryView.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BasketsSelectList"] = await SelectListBuilder.GetBasketsSelectListAsync(_context, transaction.BasketId);
-            ViewData["RecipientsSelectList"] = await SelectListBuilder.GetRecipientsSelectListAsync(_context, transaction.RecipientId);
+#pragma warning disable CS8602
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+#pragma warning restore CS8602
+            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
         }
 
@@ -198,6 +206,7 @@ namespace CFAPInventoryView.Controllers
         }
 
         // POST: BasketTransactions/Delete/5
+        [Authorize(Roles = $"{HelperMethods.AdministratorRole},{HelperMethods.ManagerRole}")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {

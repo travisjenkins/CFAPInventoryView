@@ -234,29 +234,26 @@ app.MapRazorPages();
 
 /* Add the authorization roles if they are not already in the database
  * These are the roles available to control access to restricted resources
- * Admin: full control
- * Manager: Can approve/deny member access, lock/unlock user accounts, promote users up to the Manager role
- * Member: Can add supplies and iBelong baskets to inventory and complete transactions
+ * 1.  Administrator: Full site permissions
+ * 2.  Manager:  Same as Administrator, except:
+ *          a.	Can only promote members up to their level (Manager).
+ *          b.	Cannot delete user accounts.
+ * 3.  Member:
+ *          a.	Can view/add/update Donors and Recipients, but not delete them.
+ *          b.	Can view/add/update iBelong Shopping Lists & Baskets, but not delete them.
+ *          c.	Can view/add/update Supplies, but not delete them.
+ *          d.	Can view/add/update Basket & Supply Transactions, but not delete them.
+ * 4.  Registered User:  Can only view the home, privacy, register, login, and forgot password pages.
  */
- using var scope = app.Services.CreateScope();
- try
- {
+using (var scope = app.Services.CreateScope())
+{
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var roles = new[] { HelperMethods.AdministratorRole, HelperMethods.ManagerRole, HelperMethods.MemberRole, HelperMethods.RegisteredUser };
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
-            await roleManager.CreateAsync(new IdentityRole(role));    
-    }  
- }
- catch (Exception ex)
- {
-    var logger = app.Services.GetService<ILoggerFactory>()?.CreateLogger<Program>();
-    logger?.LogError($"ERROR:  {ex.Message}, Stack Trace:  {ex.StackTrace}");
- }
- finally
- {
-    scope.Dispose();
- }
+            await roleManager.CreateAsync(new IdentityRole(role));
+    }
+}
 
 app.Run();

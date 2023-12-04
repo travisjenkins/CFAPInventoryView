@@ -45,6 +45,56 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasKey("AgeGroupId");
 
                     b.ToTable("AgeGroups");
+
+                    b.HasData(
+                        new
+                        {
+                            AgeGroupId = new Guid("ed2da6d8-a312-489d-b7d0-253d75c6c820"),
+                            Description = "0-6 months",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3151),
+                            LastUpdateId = "travis@mailsac.com",
+                            SortOrder = 0
+                        },
+                        new
+                        {
+                            AgeGroupId = new Guid("e7581e8f-e2ac-4550-aac7-d4ff7fe778e1"),
+                            Description = "6-12 months",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3192),
+                            LastUpdateId = "travis@mailsac.com",
+                            SortOrder = 1
+                        },
+                        new
+                        {
+                            AgeGroupId = new Guid("39d9931f-e6a6-449d-aa69-d7aad053e298"),
+                            Description = "1-2",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3196),
+                            LastUpdateId = "travis@mailsac.com",
+                            SortOrder = 2
+                        },
+                        new
+                        {
+                            AgeGroupId = new Guid("75200021-5b2f-4079-96be-7e38a1ad1adb"),
+                            Description = "3-6",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3198),
+                            LastUpdateId = "travis@mailsac.com",
+                            SortOrder = 3
+                        },
+                        new
+                        {
+                            AgeGroupId = new Guid("f574f025-f5c3-4611-96d7-ad679e6b1467"),
+                            Description = "7-11",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3201),
+                            LastUpdateId = "travis@mailsac.com",
+                            SortOrder = 4
+                        },
+                        new
+                        {
+                            AgeGroupId = new Guid("290c1063-f288-46ef-8377-3113586b7c62"),
+                            Description = "12-18",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3203),
+                            LastUpdateId = "travis@mailsac.com",
+                            SortOrder = 5
+                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.AgeGroupCategory", b =>
@@ -213,6 +263,9 @@ namespace CFAPInventoryView.Data.Migrations
                     b.Property<int?>("SafeStockLevel")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("StorageLocationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("BasketId");
 
                     b.HasIndex("AgeGroupId");
@@ -220,6 +273,8 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasIndex("EthnicityId");
 
                     b.HasIndex("GenderId");
+
+                    b.HasIndex("StorageLocationId");
 
                     b.ToTable("Baskets");
                 });
@@ -288,6 +343,656 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = new Guid("a6760763-1106-426c-aeb9-05142aba7f57"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3613),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Maxi pads or tampons",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("07ebd8cf-f55b-47a9-bf52-072a1f89e16f"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3617),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Body wash or mild soap (unscented)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d24a4561-f64b-4371-943c-0d4ac6e9be57"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3620),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Hair brush or comb",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("c50504d5-a7ec-4aab-acae-0ed0a39d1578"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3623),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Infant toy (0-6 months)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("6eb9d0bb-c37f-4ba0-a911-0f76be2fb119"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3626),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Package of socks (size youth small)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("1db3a928-231f-48f2-acaf-16747cfdd4ad"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3628),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Deck of cards",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("c37a088f-7112-424b-a187-1b295d2b3cbc"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3631),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Deodorant (non-aerosol preferred)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3634),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby wipes",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("3186795c-ec04-4bf2-b31d-1d0caf80cb24"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3637),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Wide tooth comb",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("7fab58da-a415-40d1-8fd7-1dc1fcdbb729"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3640),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Package of socks (size woman's)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("2fb04be4-3b23-42eb-9534-20d767654667"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3643),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Footed sleeper",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("a8aae37c-e94b-4099-96a7-23bc27b9bdce"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3646),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Night light",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("e0f5c01d-a72a-4e59-abba-24c7309e9d37"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3649),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pillow case",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("4b223b2e-f4fe-4640-9dd0-2aa7f0263dee"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3652),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Sketch or composition book and pencils",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("e9800b98-0e56-4260-ae26-2e2939230c01"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3655),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Twin blanket",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("bf225467-4b08-4da0-a1e5-2ef0ff6e2f96"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3657),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Diaper cream",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("618dbc0d-a9b0-4be2-9a87-3442e309f746"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3660),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Black hair care products (sulfate-free shampoo, leave-in conditioner, SheaMoisture, Cantu or Dream Kids brands)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("2be28886-7e2e-41c6-886b-3a30ef4cf378"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3662),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby lotion",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("c4878700-862c-4748-a0f5-43b1ef4d0655"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3665),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Body lotion for sensitive skin (unscented)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("0c2c3738-e62e-4875-b786-46246636769b"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3668),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby blanket or sleep sack",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("620b66ed-e341-4a14-b89c-48fd30632d5d"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3671),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Bottles (for age 6+ months)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("44726539-9806-46a9-99b6-4bdb7dfd7363"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3673),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Large throw",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("1aa58da2-d195-4ffc-9bb7-51920ea8fde4"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3676),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Stuffed animal",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("f27211ee-28cb-42a1-b487-51aa7456ccd3"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3679),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Socks",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("067ac574-c50a-4f2c-b8d7-52877ea217d4"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3681),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Leak-proof water bottle",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("a809dfba-5e21-491e-ab19-5374a141fe88"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3717),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Board book",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("039c1f4e-7a2c-4b4a-9aee-53f4957a7b01"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3720),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby brush/comb",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("bf4a75e5-825c-4fed-a4c4-57ea77f21473"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3723),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Package of socks (size youth medium)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("51d50f02-b916-4824-a9f0-59008d6bb8f8"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3725),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Soft throw",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("bb8f1f6e-57d7-4537-8b66-59aa04728add"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3728),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Gentle body wash (unscented)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("fceef0f8-c4d3-4ba3-ba6b-5c3288d794b2"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3731),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Coloring book and washable crayons",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("0dda4f68-adc2-4136-b8cd-5efff84ae6ce"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3733),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Satin bonnet or hair scarf",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("cdfc6b7f-31fb-4bd1-a246-6b8efc241dff"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3737),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby lotion for sensitive skin",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d2d503a2-f55c-4f44-87e1-6c4464a5f16b"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3741),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Infant toy or stuffed animal (6+ months)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("802350c7-e12b-4ac2-a57e-6f394d67cc0c"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3743),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Nerf or stress ball",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("86921bfc-74e7-47f8-a3eb-72928e5e2a8c"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3746),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Shampoo/Conditioner 2-in-1",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("17d0900f-c48d-4059-8caa-7697af8efbe0"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3750),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Twin sheet set",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("027ea222-f944-41b8-8dea-7f922c43c8a3"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3753),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Body lotion",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("dd47744e-3eb3-4cdc-a697-8a707bf8ab3c"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3755),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Package of socks (size men's)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("b43b17b3-b34d-4efb-a07e-8c00e6e7aab0"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3758),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Crib sheet",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("b396c541-ffc3-4231-86fb-8cfed6eae3a4"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3760),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Gift card for diapers (Walmart/Target/Amazon)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d69feee3-f0ae-456b-b000-9b8fb301dad2"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3763),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Soft throw (crib/toddler sized)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("9441220a-15ea-40e5-b452-9d5406794978"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3766),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Hair brush",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("280a00c3-05b5-415e-876d-9e74d723b175"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3768),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Bar soap",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("b8409915-46fb-408b-9070-a1bc72240000"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3771),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby bottle (for ages 12+ months)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("65d5ca12-de4b-4f4b-b57b-a28f14f4fd42"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3774),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Toothbrush and toothpaste",
+                            Quantity = 2,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("7665e398-50b4-4e36-a8fc-a6368f192946"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3777),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Body wash or bar soap",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3779),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Package of diapers (size NB, 1, or 2)",
+                            Quantity = 3,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("2fcbd4e6-479f-4c55-858e-ac69aeab01b1"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3782),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Toddler toothbrush and toothpaste (fluoride-free)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("4edacb15-8c72-4361-911e-add9c1ef26af"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3785),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Water bottle",
+                            Quantity = 1,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("377311f0-f434-46c1-ac21-b05b82413e41"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3788),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Composition book and pens",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d8ac84a3-afff-485b-8949-b0c2c6272e85"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3790),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Flashlight",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d11d87e7-126c-4a3c-8125-b6a656d64fcc"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3793),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pacifier (newborn/up to 6 months)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d5f318f9-d031-416f-b61d-bff6eb3ddc21"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3796),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pillow",
+                            Quantity = 2,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("d0083f7a-cf78-4223-8328-c5fcac9a8639"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3798),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Body lotion (unscented: Jergens, Vaseline with Cocoa or Shea butter)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("4a7c2d02-c39a-48c9-9e81-c6198f87a2ed"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3801),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Head-to-toe body wash",
+                            Quantity = 2,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("18b0b2a3-3163-463d-b8a1-c6314aee6766"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3804),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Detangling comb",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("3c7975d7-283f-4876-bf2c-c6c4a885d6ca"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3807),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Aluminum-free deodorant",
+                            Quantity = 3,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("dfa15e75-56e9-4fd9-8abe-c7ce9c28a6d8"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3810),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Clear/invisible deodorant (non-aerosol preferred)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("483c2687-b6cc-4132-a386-c8351a3ce03c"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3813),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Towel and wash cloth",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("305f2292-4230-403c-8e78-ccab2b7faf66"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3816),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pacifier (for age 6+ months)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("b0a6921d-55fd-40ff-b7e4-cef32e093c21"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3818),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pillow (travel or child sized)",
+                            Quantity = 2,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("dce8a93b-66c4-4d10-a5c5-d72ae5add07f"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3821),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Package of socks (size youth large)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("65ea10fe-b443-4233-a48a-d8bd7896d244"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3824),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Swaddle wrap",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("e90c0353-dd59-4a87-9897-da2ba2070999"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3826),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Conditioner",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("70feab08-d33a-409b-af35-dee1c37fe46b"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3829),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Shampoo",
+                            Quantity = 1,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("726ccf14-58b8-4878-b3ea-e58504bb71b3"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3831),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Deodorant",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("badafee8-1c62-46be-98c9-e83c89f06322"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3834),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Package of socks",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("61da1441-6b0e-4d1a-88a2-ec632d01906d"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3836),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Gentle baby wash and shampoo (sulfate-free)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("c915d086-e1cb-4a9c-a8f4-ef7d6331eb1d"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3839),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Plastic hair pick",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("7ac8c99f-aaca-4883-ab1f-fb94fbaa9fca"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3841),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Anti-colic bottles",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            CategoryId = new Guid("b2488733-9e8d-47a5-b1a4-fe6ffe3da0d5"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3844),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Kids 3-in-1 soap (shampoo/conditioner/body wash)",
+                            Quantity = 2,
+                            SafeStockLevel = 3
+                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.CategoryBasket", b =>
@@ -392,6 +1097,22 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasKey("EthnicityId");
 
                     b.ToTable("Ethnicities");
+
+                    b.HasData(
+                        new
+                        {
+                            EthnicityId = new Guid("0040e5c2-0d7f-4db8-a7e8-28c5efa6cf4f"),
+                            Description = "Black/Mixed Race",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3355),
+                            LastUpdateId = "travis@mailsac.com"
+                        },
+                        new
+                        {
+                            EthnicityId = new Guid("b5c934b6-c7e0-493f-8726-c3fd5ff2141f"),
+                            Description = "White/Hispanic",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3360),
+                            LastUpdateId = "travis@mailsac.com"
+                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.ExcludeCategory", b =>
@@ -417,6 +1138,56 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasKey("ExcludeCategoryId");
 
                     b.ToTable("ExcludeCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            ExcludeCategoryId = new Guid("bb0c0779-5261-4d14-8a96-12ff3e0d8dff"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3413),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Items requiring batteries",
+                            Quantity = 0
+                        },
+                        new
+                        {
+                            ExcludeCategoryId = new Guid("9fe23dd1-3946-4456-8c5d-5808458eafd3"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3416),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Items with spiral binding",
+                            Quantity = 0
+                        },
+                        new
+                        {
+                            ExcludeCategoryId = new Guid("5cef1269-2589-4a6f-a150-5ed172d16a1a"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3419),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby food or formula",
+                            Quantity = 0
+                        },
+                        new
+                        {
+                            ExcludeCategoryId = new Guid("ebfef241-8abb-4b02-89a1-9a5d19893c11"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3421),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Used items",
+                            Quantity = 0
+                        },
+                        new
+                        {
+                            ExcludeCategoryId = new Guid("f77cbfaa-11cd-44e7-abb7-e3e0f030e212"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3424),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Sharp objects such as razors or manicure sets",
+                            Quantity = 0
+                        },
+                        new
+                        {
+                            ExcludeCategoryId = new Guid("695b89cf-9c4d-4ad4-af45-e9d0422d41ef"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3426),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Food or beverages",
+                            Quantity = 0
+                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Gender", b =>
@@ -439,6 +1210,29 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasKey("GenderId");
 
                     b.ToTable("Genders");
+
+                    b.HasData(
+                        new
+                        {
+                            GenderId = new Guid("78cc56f2-717b-45cb-b025-09c0cca68f27"),
+                            Description = "Girl",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3384),
+                            LastUpdateId = "travis@mailsac.com"
+                        },
+                        new
+                        {
+                            GenderId = new Guid("629f93b9-15d1-4aab-a0a6-9ab22e6ac159"),
+                            Description = "Boy",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3389),
+                            LastUpdateId = "travis@mailsac.com"
+                        },
+                        new
+                        {
+                            GenderId = new Guid("aedb28bc-17de-436e-8348-217802299584"),
+                            Description = "Neutral",
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3392),
+                            LastUpdateId = "travis@mailsac.com"
+                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.OptionalCategory", b =>
@@ -467,6 +1261,323 @@ namespace CFAPInventoryView.Data.Migrations
                     b.HasKey("OptionalCategoryId");
 
                     b.ToTable("OptionalCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            OptionalCategoryId = new Guid("a2197138-9321-473e-891f-1507671d43d7"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3485),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Satin bonnet or hair scarf",
+                            Quantity = 3,
+                            SafeStockLevel = 4
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("4a0e060b-e159-49af-9ecd-1790f8d7a0b3"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3490),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Adhesive bandages/band-aids",
+                            Quantity = 5,
+                            SafeStockLevel = 10
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("1d6ad3d8-d44c-4982-a912-24454286fead"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3493),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Small toy",
+                            Quantity = 5,
+                            SafeStockLevel = 5
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("741217d0-a963-489a-863d-2570bb91c4e5"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3495),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Hair gel",
+                            Quantity = 3,
+                            SafeStockLevel = 4
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("d9caf847-0312-4808-979b-25b5bffc4fb8"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3498),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Oil/cream moisturizer for curly hair",
+                            Quantity = 4,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("989a01f0-8f0e-468c-ab51-2c6501348672"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3501),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Small backpack",
+                            Quantity = 3,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("d0193bc7-1a7f-48a2-bee5-2d5402a2c66f"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3504),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Sleep sack",
+                            Quantity = 4,
+                            SafeStockLevel = 2
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("7c65fb61-080a-4ff7-9d27-37904280e926"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3507),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Wave brush or Denman brush",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("a698b945-513b-4379-a13c-398f31e47bb6"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3510),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Backpack or drawstring bag",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("18db181a-39c7-4ff6-aa5f-504c9fd42495"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3513),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby towel and washcloths",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("84f608e3-e046-4cfc-9525-56677374cce9"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3515),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Children's book",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("6c31ed18-3271-4434-af24-5697a341ed6e"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3518),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Nerf ball or fidget toy",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("337e6455-6bcb-4241-a3b8-58c7a6f2200c"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3521),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Themed adhesive band-aids",
+                            Quantity = 5,
+                            SafeStockLevel = 10
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("aa154101-bce0-4973-b9aa-7291f06b571c"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3524),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Infant nail clippers",
+                            Quantity = 5,
+                            SafeStockLevel = 10
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("02561934-85a8-4ef0-a890-82092b240fb4"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3527),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Burp cloths",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("678425c7-3b3e-4f23-b073-8268f4ce273a"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3529),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Aquaphor healing ointment",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("010a1cc4-259b-4198-a841-92a5b784787d"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3532),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Gift card (Walmart/Target)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("e58de252-2495-4a19-94b4-9641320fa900"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3534),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Soft bristle brush",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("743c8970-b53d-496c-9ee9-96c0be328f55"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3538),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Kids satin night cap/bonnet",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("86eecf1b-d8bb-4526-a9c1-9b3d511ec50f"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3540),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Coloring or sketch book, and colored pencils",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("b9a71948-1ac2-4e86-bda7-9dde074be330"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3543),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Hair accessories",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("b88a0b8b-0460-4fa6-b5cf-9f94261fd823"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3546),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Toiletry bag",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("373ffcaf-8c96-4dc5-b7fd-a5247e1a62cd"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3548),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Crib Sheet",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("bf55fcfc-ce99-436c-8127-aa6898af039f"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3551),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Diaper cream",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("811f6a9a-0845-4116-a3f6-b1c0cd3a5912"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3554),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Toy (e.g. chunky puzzle, baby doll, toy car)",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("de8bbea2-fffe-4073-9acc-b91c45a05a2c"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3556),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Chapstick",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("15423c38-cbd8-4b49-bbb8-ba74804189e2"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3560),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby brush/comb",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("6c1f919d-8b90-43f0-9bf4-c4d69ed6537d"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3562),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Body lotion",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("355cfdc5-4ef5-4ef1-b881-c5cede5d6270"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3565),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Hair lotion, oil, or gel",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("85bcb30f-f902-485d-a82f-c9544d435df5"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3567),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Face wipes or face wash",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("d03154ff-da79-4b02-b231-cd0d8494c2e5"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3570),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Thermometer",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("34f51fd8-5e64-46df-beb9-d3caad869f22"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3573),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Activity book and crayons/pencils",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("a31f289e-a7b7-4b51-ae96-d742a3dbf460"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3575),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Wave cap or satin hair tie",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("7e95c73e-2251-4680-b71a-ed86f3951efb"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3578),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Shower cap",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        },
+                        new
+                        {
+                            OptionalCategoryId = new Guid("2d024344-dd8e-49bb-a069-ef59a2625d34"),
+                            LastUpdateDateTime = new DateTime(2023, 12, 1, 21, 50, 54, 68, DateTimeKind.Local).AddTicks(3580),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Bulb aspirator",
+                            Quantity = 5,
+                            SafeStockLevel = 3
+                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Recipient", b =>
@@ -528,6 +1639,12 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.Property<int?>("Column")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("LastUpdateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastUpdateId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -595,6 +1712,9 @@ namespace CFAPInventoryView.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("StorageLocationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("SupplyId");
 
                     b.HasIndex("CategoryId");
@@ -603,7 +1723,206 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("OptionalCategoryId");
 
+                    b.HasIndex("StorageLocationId");
+
                     b.ToTable("Supplies");
+
+                    b.HasData(
+                        new
+                        {
+                            SupplyId = new Guid("a4913d87-9305-4a4f-981f-09b0a226f753"),
+                            CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                            Description = "Pampers baby-dry leakproof day & night diapers, size 1 (8-14 lb), 44 count, unisex.",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4004),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pampers Baby Dry Diapers Size 1 (8-14 lb), 44 Count",
+                            Price = 9.97m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(3998),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("3e2d5eee-ebfc-4a86-9c9c-18049eccaeed"),
+                            CategoryId = new Guid("d11d87e7-126c-4a3c-8125-b6a656d64fcc"),
+                            Description = "NUK newborn orthodontic pacifiers, girl, 0-2 months, 2-pack.",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4012),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Orthodontic Pacifiers (2 pk, girl, 0-2 month)",
+                            Price = 6.77m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4009),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("dd6d4bec-20f1-4149-8f14-2141bad77e9b"),
+                            CategoryId = new Guid("a809dfba-5e21-491e-ab19-5374a141fe88"),
+                            Description = "The Very Hungry Caterpillar, Board Book, English, 0-3 yrs, Infant-Toddler",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4019),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "The Very Hungry Caterpillar (board book)",
+                            Price = 8.78m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4016),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("d5b42185-f6f5-4d33-9c7d-392eadb5b1e6"),
+                            CategoryId = new Guid("65ea10fe-b443-4233-a48a-d8bd7896d244"),
+                            Description = "Gilquen baby organic cotton swaddle blankets for 0-3 months infant boys girls, adjustable newborn swaddles, 3-pack wrap set, twinkle & rainbow.",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4027),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby Cotton Swaddle Blankets (0-3 months, 3-pk)",
+                            Price = 18.76m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4023),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("9e0ef560-c184-46bb-9f57-45e295bf57b2"),
+                            CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
+                            Description = "Huggies natural care refreshing baby wipes, scented, (3 pk, 168 ct)",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4034),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Huggies Baby Wipes (scented, 3 pk, 168 ct)",
+                            Price = 6.77m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4031),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("06f703f4-dfbf-4fd0-b0a6-5c75bc8fe17a"),
+                            CategoryId = new Guid("2fb04be4-3b23-42eb-9534-20d767654667"),
+                            Description = "Koala baby girls' newborn blanket sleeper, 2 pack, take me home sleep n play pajamas (Newborn-6M)",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4041),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Koala Baby Footed Sleeper (girl, 2 pk, NB-6M)",
+                            Price = 10.58m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4038),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("16f0b155-8127-4eab-99e1-65473bc89952"),
+                            CategoryId = new Guid("61da1441-6b0e-4d1a-88a2-ec632d01906d"),
+                            Description = "Johnson's head-to-toe gentle baby wash & shampoo, tear-free, sulfate-free & hypoallergenic wash for baby's sensitive skin & hair, 27.1 fl. oz.",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4048),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Gentle Baby Wash & Shampoo (tear-free, sulfate-free, hypoallergenic, 27.1 fl oz)",
+                            Price = 11.95m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4045),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("1ec27cd4-58a3-49d3-8395-8d83536a4305"),
+                            CategoryId = new Guid("bf225467-4b08-4da0-a1e5-2ef0ff6e2f96"),
+                            Description = "Desitin maximum strength baby diaper rash cream with zinc oxide, 4 oz",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4055),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Desitin Diaper Cream (4 oz)",
+                            Price = 7.78m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4052),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("5aa553c8-f564-4755-9d2a-8e5a66f884d1"),
+                            CategoryId = new Guid("cdfc6b7f-31fb-4bd1-a246-6b8efc241dff"),
+                            Description = "Aveeno baby daily moisture body lotion for sensitive skin with natural colloidal oatmeal, suitable  for newborns, 18 FL oz",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4063),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Aveeno Baby Daily Moisture Body Lotion (sensitive skin, 18 FL oz)",
+                            Price = 11.38m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4060),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("331d83d3-04e4-41ca-9527-8ebcc1316090"),
+                            CategoryId = new Guid("d07d2c78-acbb-4d73-806d-1b5c67914554"),
+                            Description = "Pampers sensitive baby wipes, 8 flip-top packs, 672 wipes",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4069),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pampers Baby Wipes (sensitive, 8 pk, 672 wipes)",
+                            Price = 23.47m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4067),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("6d59f00f-d7d8-48e3-ab36-9d96de8b09d0"),
+                            CategoryId = new Guid("7ac8c99f-aaca-4883-ab1f-fb94fbaa9fca"),
+                            Description = "NUK smooth flow pro anti-colic baby bottle, 5 oz, blue, 3-pack",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4076),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Anti-colic Baby Bottles (blue, 3 pk, 5 oz)",
+                            Price = 14.97m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4074),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("7604aea7-96b0-4096-8bbb-bbef00fdc221"),
+                            CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                            Description = "Pampers swaddlers diapers, newborn (< 10 lb), 31 count, unisex",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4083),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pampers Diapers (NB, 31 count)",
+                            Price = 14.5m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4080),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("a864cd79-d226-441d-9f23-db77c2b9bd85"),
+                            CategoryId = new Guid("c50504d5-a7ec-4aab-acae-0ed0a39d1578"),
+                            Description = "Amerteer 4 pcs foot finder socks & wrist rattles - newborn toys for baby boy or girl - brain development infant toys - hand and foot rattles suitable for 0-3, 3-6, 6-12 month babies.",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4091),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Foot Finder Socks & Wrist Rattles (NB, toys, 4 pcs)",
+                            Price = 7.28m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4088),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("07979a90-bab9-47cf-befd-f0b16999ee00"),
+                            CategoryId = new Guid("f27211ee-28cb-42a1-b487-51aa7456ccd3"),
+                            Description = "Gerber baby boy and girl unisex terry bootie wiggle-proof socks, 4-pack, newborn, 0-6 months.",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4098),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Baby socks (unisex, 4 pk, newborn, 0-6 months)",
+                            Price = 4.00m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4095),
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            SupplyId = new Guid("3a13f50b-b57f-44ae-ba14-f65e4e27cd54"),
+                            CategoryId = new Guid("ec00957f-aa3b-4c34-8554-aa2aaf10335f"),
+                            Description = "Pampers baby-dry leakproof day & night diapers, size 2 (12-18 lb), 37 count, unisex.",
+                            Expires = false,
+                            LastUpdateDateTime = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4104),
+                            LastUpdateId = "travis@mailsac.com",
+                            Name = "Pampers Baby Dry Diapers Size 2 (12-18 lb), 37 Count",
+                            Price = 9.97m,
+                            PurchaseDate = new DateTime(2023, 11, 20, 15, 39, 33, 982, DateTimeKind.Local).AddTicks(4102),
+                            Quantity = 1
+                        });
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.SupplyBasket", b =>
@@ -851,11 +2170,17 @@ namespace CFAPInventoryView.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CFAPInventoryView.Data.Models.StorageLocation", "StorageLocation")
+                        .WithMany()
+                        .HasForeignKey("StorageLocationId");
+
                     b.Navigation("AgeGroup");
 
                     b.Navigation("Ethnicity");
 
                     b.Navigation("Gender");
+
+                    b.Navigation("StorageLocation");
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.BasketTransaction", b =>
@@ -922,11 +2247,19 @@ namespace CFAPInventoryView.Data.Migrations
                         .WithMany()
                         .HasForeignKey("OptionalCategoryId");
 
+                    b.HasOne("CFAPInventoryView.Data.Models.StorageLocation", "StorageLocation")
+                        .WithMany()
+                        .HasForeignKey("StorageLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
 
                     b.Navigation("ExcludeCategory");
 
                     b.Navigation("OptionalCategory");
+
+                    b.Navigation("StorageLocation");
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.SupplyBasket", b =>

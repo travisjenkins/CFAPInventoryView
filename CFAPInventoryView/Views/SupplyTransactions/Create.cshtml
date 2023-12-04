@@ -11,16 +11,54 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating mb-3">
-                <select asp-for="SupplyId" class="form-control" asp-items="ViewBag.ProductsSelectList" aria-required="true">
-                    <option value="@null">Select...</option>
-                </select>
-                <label asp-for="SupplyId" class="control-label"></label>
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Supplies</button>
+                    <ul class="dropdown-menu" id="ddlSupplies">
+                        <li><input type="text" class="form-control border-0" placeholder="Search..." onkeyup="filterDropdown(this.value, 'ddlSupplies')" /></li>
+                        <li><hr class="my-0" /></li>
+                        @if (ViewBag.SuppliesList is not null)
+                        {
+                            List<Supply>? supplies = ViewBag.SuppliesList as List<Supply>;
+                            if (supplies is not null && supplies.Count > 0)
+                            {
+                                foreach (var item in supplies)
+                                {
+                                    <li><a class="dropdown-item" data-supplyid="@item.SupplyId" onclick="updateSelectedId('SupplyId', this.dataset.supplyid, 'Supply_Name', this.textContent)">@item.Name</a></li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
             </div>
             <div class="form-floating mb-3">
-                <select asp-for="RecipientId" class="form-control" asp-items="ViewBag.RecipientsSelectList" aria-required="true">
-                    <option value="@null">Select...</option>
-                </select>
+                <input type="hidden" asp-for="SupplyId" />
+                <input class="form-control" asp-for="Supply.Name" disabled />
+                <label asp-for="SupplyId" class="control-label"></label>
+            </div>
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Recipients</button>
+                    <ul class="dropdown-menu" id="ddlRecipients">
+                        <li><input type="text" class="form-control border-0" placeholder="Search..." onkeyup="filterDropdown(this.value, 'ddlRecipients')" /></li>
+                        <li><hr class="my-0" /></li>
+                        @if (ViewBag.RecipientsList is not null)
+                        {
+                            List<Recipient>? recipients = ViewBag.RecipientsList as List<Recipient>;
+                            if (recipients is not null && recipients.Count > 0)
+                            {
+                                foreach (var item in recipients)
+                                {
+                                    <li><a class="dropdown-item" data-supplyid="@item.RecipientId" onclick="updateSelectedId('RecipientId', this.dataset.supplyid, 'Recipient_FullName', this.textContent)">@item.FullName</a></li>
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="hidden" asp-for="RecipientId" />
+                <input class="form-control" asp-for="Recipient.FullName" disabled />
                 <label asp-for="RecipientId" class="control-label"></label>
             </div>
             <div class="form-floating mb-3">

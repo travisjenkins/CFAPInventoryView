@@ -135,7 +135,7 @@ namespace CFAPInventoryView.Areas.Identity.Pages.Account
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
                 }
                 var userCheck = await _userManager.FindByEmailAsync(Input.Email);
-                if (userCheck is not null) 
+                if (userCheck is not null)
                 {
                     bool emailIsConfirmed = await _userManager.IsEmailConfirmedAsync(await _userManager.FindByEmailAsync(Input.Email));
                     if (!emailIsConfirmed)
