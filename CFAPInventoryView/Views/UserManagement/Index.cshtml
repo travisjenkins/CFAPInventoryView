@@ -10,13 +10,12 @@
 {
     <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
         <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.UserName).SplitCamelAndPascalCase()</div>
-        <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.RegisteredOn)</div>
-        <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastLogin)</div>
-        <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.TwoFactorEnabled).SplitCamelAndPascalCase()</div>
-        <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.AccessFailedCount).SplitCamelAndPascalCase()</div>
-        <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).IsLockedOut)</div>
-        <div class="col-lg">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).LockoutEndDate)</div>
-        <div class="col-lg"></div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.RegisteredOn)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastLogin)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.TwoFactorEnabled).SplitCamelAndPascalCase()</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.AccessFailedCount).SplitCamelAndPascalCase()</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).IsLockedOut)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).LockoutEndDate)</div>
     </div>
 
     int count = 0;
@@ -42,44 +41,47 @@
                         <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.RegisteredOn)</div>
                         <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.RegisteredOn)</div>
                     </div>
-                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.RegisteredOn)</div>
+                    <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.RegisteredOn)</div>
                     <div class="row row-cols-2 d-lg-none">
                         <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.LastLogin)</div>
                         <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.LastLogin)</div>
                     </div>
-                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.LastLogin)</div>
+                    <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.LastLogin)</div>
                     <div class="row row-cols-2 d-lg-none">
                         <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.TwoFactorEnabled).SplitCamelAndPascalCase()</div>
                         <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.TwoFactorEnabled)</div>
                     </div>
-                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.TwoFactorEnabled)</div>
+                    <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.TwoFactorEnabled)</div>
                     <div class="row row-cols-2 d-lg-none">
                         <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).ApplicationUser.AccessFailedCount).SplitCamelAndPascalCase()</div>
                         <div class="col text-start">@Html.DisplayFor(modelItem => item.ApplicationUser.AccessFailedCount)</div>
                     </div>
-                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.AccessFailedCount)</div>
+                    <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ApplicationUser.AccessFailedCount)</div>
                     <div class="row row-cols-2 d-lg-none">
                         <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).IsLockedOut)</div>
                         <div class="col text-start">@Html.DisplayFor(modelItem => item.IsLockedOut)</div>
                     </div>
-                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.IsLockedOut)</div>
+                    <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.IsLockedOut)</div>
                     <div class="row row-cols-2 d-lg-none">
                         <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ElementAtOrDefault(0).LockoutEndDate)</div>
                         <div class="col text-start">@Html.DisplayFor(modelItem => item.LockoutEndDate)</div>
                     </div>
-                    <div class="col-lg d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.LockoutEndDate)</div>
-                    <div class="col-lg text-center">
+                    <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.LockoutEndDate)</div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-lg d-flex justify-content-center text-center">
                         <form asp-action="LockUserAccount" method="post">
                             <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
-                            <button class="btn btn-link" type="submit">Lock</button>
+                            <button class="btn btn-group btn-link" type="submit">Lock</button>
                         </form>
                         <form asp-action="UnlockUserAccount" method="post">
                             <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
-                            <button class="btn btn-link link-danger" type="submit">Unlock</button>
+                            <button class="btn btn-group btn-link link-danger" type="submit">Unlock</button>
                         </form>
                         <form asp-action="Delete" method="get">
                             <input type="hidden" name="email" value="@item?.ApplicationUser?.Email" />
-                            <button class="btn btn-link" type="submit">Delete</button>
+                            <button class="btn btn-group btn-link" type="submit">Delete</button>
                         </form>
                     </div>
                 </div>
