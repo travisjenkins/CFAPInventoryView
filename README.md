@@ -6,7 +6,6 @@
 <ol>
   <li>Travis Jenkins</li>
   <li>Nathan Kammerich</li>
-  <li>Geno Dutzy</li>
   <li>Jeremiah Gantt</li>
   <li>Travis Kelley</li>
 </ol>
