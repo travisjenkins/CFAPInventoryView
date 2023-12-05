@@ -44,7 +44,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("AgeGroupId");
 
-                    b.ToTable("AgeGroups");
+                    b.ToTable("AgeGroups", (string)null);
 
                     b.HasData(
                         new
@@ -125,7 +125,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("OptionalCategoryId");
 
-                    b.ToTable("AgeGroupCategories");
+                    b.ToTable("AgeGroupCategories", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.ApplicationUser", b =>
@@ -276,7 +276,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("StorageLocationId");
 
-                    b.ToTable("Baskets");
+                    b.ToTable("Baskets", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.BasketTransaction", b =>
@@ -314,7 +314,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("RecipientId");
 
-                    b.ToTable("BasketTransactions");
+                    b.ToTable("BasketTransactions", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Category", b =>
@@ -342,7 +342,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -1029,7 +1029,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("OptionalCategoryId");
 
-                    b.ToTable("CategoryBaskets");
+                    b.ToTable("CategoryBaskets", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Donor", b =>
@@ -1074,7 +1074,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("DonorId");
 
-                    b.ToTable("Donors");
+                    b.ToTable("Donors", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Ethnicity", b =>
@@ -1096,7 +1096,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("EthnicityId");
 
-                    b.ToTable("Ethnicities");
+                    b.ToTable("Ethnicities", (string)null);
 
                     b.HasData(
                         new
@@ -1137,7 +1137,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("ExcludeCategoryId");
 
-                    b.ToTable("ExcludeCategories");
+                    b.ToTable("ExcludeCategories", (string)null);
 
                     b.HasData(
                         new
@@ -1209,7 +1209,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("GenderId");
 
-                    b.ToTable("Genders");
+                    b.ToTable("Genders", (string)null);
 
                     b.HasData(
                         new
@@ -1260,7 +1260,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("OptionalCategoryId");
 
-                    b.ToTable("OptionalCategories");
+                    b.ToTable("OptionalCategories", (string)null);
 
                     b.HasData(
                         new
@@ -1628,7 +1628,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("RecipientId");
 
-                    b.ToTable("Recipients");
+                    b.ToTable("Recipients", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.StorageLocation", b =>
@@ -1660,7 +1660,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasKey("StorageLocationId");
 
-                    b.ToTable("StorageLocations");
+                    b.ToTable("StorageLocations", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.Supply", b =>
@@ -1725,7 +1725,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("StorageLocationId");
 
-                    b.ToTable("Supplies");
+                    b.ToTable("Supplies", (string)null);
 
                     b.HasData(
                         new
@@ -1964,7 +1964,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("SupplyId");
 
-                    b.ToTable("SupplyBaskets");
+                    b.ToTable("SupplyBaskets", (string)null);
                 });
 
             modelBuilder.Entity("CFAPInventoryView.Data.Models.SupplyTransaction", b =>
@@ -2002,7 +2002,7 @@ namespace CFAPInventoryView.Data.Migrations
 
                     b.HasIndex("SupplyId");
 
-                    b.ToTable("SupplyTransactions");
+                    b.ToTable("SupplyTransactions", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

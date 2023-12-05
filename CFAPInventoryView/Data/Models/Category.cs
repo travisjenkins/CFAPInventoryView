@@ -28,7 +28,7 @@ namespace CFAPInventoryView.Data.Models
             {
                 if (SafeStockLevel - Quantity >= 0)
                 {
-                    return SafeStockLevel - Quantity;
+                    return (SafeStockLevel - Quantity) + 1;
                 }
                 return 0;
             }

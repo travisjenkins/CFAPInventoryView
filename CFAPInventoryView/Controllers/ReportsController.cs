@@ -35,16 +35,20 @@ namespace CFAPInventoryView.Controllers
 
                 decimal totalInventoryPrice = 0;
                 var supplies = await _context.Supplies.AsNoTracking().ToListAsync();
+                var supplyTransactions = await _context.SupplyTransactions.AsNoTracking().Include(st => st.Supply).ToListAsync();
                 if (supplies is not null && supplies.Count > 0)
                 {
                     long temp = 0;
                     foreach (var supply in supplies)
                     {
                         totalInventoryPrice += supply.Price * supply.Quantity;
-                        //if (product.DurationOnShelf.HasValue)
-                        //{
-                        //    temp += product.DurationOnShelf.Value / products.Count;
-                        //}
+                    }
+                    foreach (var transaction in supplyTransactions)
+                    {
+                        if (transaction.DurationOnShelf.HasValue && viewModel.TotalSupplies > 0)
+                        {
+                            temp += transaction.DurationOnShelf.Value / viewModel.TotalSupplies;
+                        }
                     }
                     viewModel.TotalSupplyDurationOnShelf = new TimeSpan(temp);
                 }
@@ -58,16 +62,20 @@ namespace CFAPInventoryView.Controllers
 #pragma warning disable 8604
                 var baskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.SupplyBaskets).ThenInclude(sb => sb.Supply).ToListAsync();
 #pragma warning restore 8604
+                var basketTransactions = await _context.BasketTransactions.AsNoTracking().Include(bt => bt.Basket).ToListAsync();
                 if (baskets is not null && baskets.Count > 0)
                 {
                     long temp = 0;
                     foreach (var basket in baskets)
                     {
                         totalIBelongBasketPrice += basket.TotalPrice;
-                        //if (basket.DurationOnShelf.HasValue)
-                        //{
-                        //    temp += basket.DurationOnShelf.Value / baskets.Count;
-                        //}
+                    }
+                    foreach (var transaction in basketTransactions)
+                    {
+                        if (transaction.DurationOnShelf.HasValue && viewModel.TotaliBelongBaskets > 0)
+                        {
+                            temp += transaction.DurationOnShelf.Value / viewModel.TotaliBelongBaskets;
+                        }
                     }
                     viewModel.TotalBasketDurationOnShelf = new TimeSpan(temp);
                 }
@@ -97,7 +105,7 @@ namespace CFAPInventoryView.Controllers
         }
         public async Task<IActionResult> ExpiresSoon()
         {
-            return View(await _context.Supplies.AsNoTracking().Where(p => p.Expires && p.ExpirationDate <= DateTime.Now.AddDays(7)).OrderBy(p => p.ExpirationDate).ToListAsync());
+            return View(await _context.Supplies.AsNoTracking().Include(s => s.StorageLocation).Where(p => p.Expires && p.ExpirationDate <= DateTime.Now.AddDays(7)).OrderBy(p => p.ExpirationDate).ToListAsync());
         }
     }
 }
