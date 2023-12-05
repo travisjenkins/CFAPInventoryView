@@ -41,9 +41,26 @@ Team members and Capstone instructors/participants.
 4. Follow this link to create/re-create a local certificate for [Hosting ASP.NET Core images with Docker Compose over HTTPS](https://learn.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-7.0"). Make sure you replace the `$CREDENTIAL_PLACEHOLDER$` portion of the command with the password provided in the cfapinventoryview.env file (downloaded in step 2 above, should be the one after the `ASPNETCORE_Kestrel__Certificates__Default_Password` key).
 5. Start Docker, if not already started
 6. Copy the .env files you downloaded from step 2 into the CFAPInventoryView folder _(same folder level as the compose.yaml file)_.
-7. Run the following command: `docker compose up --build`
-8. When the setup completes and the containers are running, the site will be available at: https://localhost:8443
-9. When you are done running the site, click in the terminal window used to launch the project and press Ctrl+C. This will gracefully stop the containers, or you can force it by pressing Ctrl+C again _(not recommended, unless absolutely necessary)_.
-10. When you are finished, you can tear down the containers with the following command: `docker compose down`
+7. Modify line endings in the import-data.sh script by:
+
+   - PowerShell:
+     - Ensure you are in the project directory
+     - Run the following command: `` ((Get-Content import-data.sh) -join "`n") + "`n" | Set-Content -NoNewline import-data.sh ``
+   - If you are using VS Code:
+     - Open the import-data.sh file
+     - Click on the **CRLF** button at the bottom right corner of the editor window
+     - Select **LF** from the dropdown menu
+     - Save the file
+   - Visual Studio
+     - Open the import-data.sh file
+     - Click on the **File** menu
+     - Select **Save As**
+     - In the **Advanced Save Options** dialog box, select Unix under Line endings
+     - Click on the **Save** button
+
+8. Run the following command: `docker compose up --build`
+9. When the setup completes and the containers are running, the site will be available at: https://localhost:8443
+10. When you are done running the site, click in the terminal window used to launch the project and press Ctrl+C. This will gracefully stop the containers, or you can force it by pressing Ctrl+C again _(not recommended, unless absolutely necessary)_.
+11. When you are finished, you can tear down the containers with the following command: `docker compose down`
 
 _NOTE: The images and persistent storage volume will remain in Docker. If you add additional records that you want to keep through the site, you will want to leave the storage volume and can delete the images. Otherwise, you can delete both images and the storage volume through the Docker GUI for cleanup when you are finished._
