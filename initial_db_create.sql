@@ -233,12 +233,14 @@ GO
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'StorageLocations')
 BEGIN
-    CREATE TABLE [StorageLocations] (
-        [StorageLocationId] uniqueidentifier NOT NULL,
-        [Name] nvarchar(100) NOT NULL,
-        [Shelf] nvarchar(100) NULL,
-        [Row] int NULL,
-        [Column] int NULL,
+    CREATE TABLE [dbo].[StorageLocations](
+	[StorageLocationId] uniqueidentifier NOT NULL,
+	[Name] nvarchar(100) NOT NULL,
+	[Shelf] nvarchar(100) NULL,
+	[Row] int NULL,
+	[Column] int NULL,
+	[LastUpdateId] nvarchar(max) NULL,
+	[LastUpdateDateTime] datetime2 NOT NULL,
         CONSTRAINT [PK_StorageLocations] PRIMARY KEY ([StorageLocationId])
     );
 END
