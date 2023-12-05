@@ -82,6 +82,6 @@ namespace CFAPInventoryView.Data.Models
         public virtual ExcludeCategory? ExcludeCategory { get; set; }
 
         [Display(Name = "Storage Location")]
-        public virtual StorageLocation StorageLocation { get; set; } = null!;
+        public virtual StorageLocation? StorageLocation { get; set; }
     }
 }
