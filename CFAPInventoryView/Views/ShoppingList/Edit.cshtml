@@ -7,6 +7,7 @@
 <h1>Edit</h1>
 
 <hr />
+<h1 class="d-lg-none">@ViewData["Title"]</h1>
 <div class="row mb-3">
     <div class="col-md-12">
         <div class="row">
@@ -28,13 +29,6 @@
             <input type="hidden" asp-for="Quantity" />
             <div class="row">
                 <div class="col-md-4">
-                    @* <div class="form-floating mb-3">
-                        <select asp-for="AgeGroupId" class="form-select" asp-items="ViewBag.AgeGroupsSelectList">
-                            <option value="@null">Select...</option>
-                        </select>
-                        <label asp-for="AgeGroupId"></label>
-                        <span asp-validation-for="AgeGroupId" class="text-danger"></span>
-                    </div> *@
                     <div class="form-floating mb-3">
                         <select asp-for="EthnicityId" class="form-select" asp-items="ViewBag.EthnicitiesSelectList">
                             <option value="@null">Select...</option>

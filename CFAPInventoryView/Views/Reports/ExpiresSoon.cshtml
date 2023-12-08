@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Expiring";
 }
+
+<h1 class="text-center d-lg-none">@ViewData["Title"]</h1>
+
 @if (Model is not null && Model.ElementAtOrDefault(0) is not null)
 {
     <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">

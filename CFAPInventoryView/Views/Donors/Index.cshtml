@@ -4,79 +4,87 @@
     ViewData["Title"] = "Donors";
 }
 
-<p>
+<h1 class="text-center d-lg-none">@ViewData["Title"]</h1>
+
+<p class="text-center text-lg-start">
     <a asp-action="Create">Create New</a>
 </p>
 
 @if (Model is not null && Model.ElementAtOrDefault(0) is not null)
 {
-    <table class="table table-striped text-center">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Address1)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Address2)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.City)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.State)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ZipCode)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TotalOfDonations)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address1)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address2)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.City)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.State)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ZipCode)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalOfDonations)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.DonorId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.DonorId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.DonorId">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.FirstName)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.LastName)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.Address1)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Address2)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.City)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.State)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.ZipCode)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.TotalOfDonations)</div>
+        <div class="col-lg-2"></div>
+    </div>
+
+    int count = 0;
+    foreach (var item in Model)
+    {
+        count++;
+        string alternatingRowColorClass = string.Empty;
+        if (count % 2 == 0)
+        {
+            alternatingRowColorClass = "medium-row-color";
+        }
+        <div class="row text-start text-lg-center @alternatingRowColorClass">
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.FirstName):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.FirstName)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.FirstName)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.LastName):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.LastName)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.LastName)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Address1):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Address1)</div>
+            </div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Address1)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Address2):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Address2)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Address2)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.City):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.City)</div>
+            </div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.City)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.State):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.State)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.State)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ZipCode):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.ZipCode)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ZipCode)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.TotalOfDonations):</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.TotalOfDonations)</div>
+            </div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.TotalOfDonations)</div>
+            <div class="col-lg-2 text-center">
+                <a asp-action="Edit" asp-route-id="@item.DonorId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DonorId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DonorId">Delete</a>
+            </div>
+        </div>
+        @if (count != Model.Count())
+        {
+            <hr />
+        }
+    }
 }
 else
 {
