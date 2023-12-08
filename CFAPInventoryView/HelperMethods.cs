@@ -20,6 +20,22 @@ namespace CFAPInventoryView
         public const string MemberRole = "Member";
         public const string RegisteredUser = "RegisteredUser";
 
+        public static async Task<List<Supply>?> GetAllAvailableSupplies(ApplicationDbContext context, Guid? selectedAgeGroupId = null)
+        {
+            // Get all categories that apply to the selected age group.
+            List<Category> allCategories = await HelperMethods.GetCategoriesForAgeGroup(context, selectedAgeGroupId);
+            var categoryIds = new HashSet<Guid>(allCategories.Select(c => c.CategoryId));
+            List<OptionalCategory> allOptionalCategories = await HelperMethods.GetOptionalCategoriesForAgeGroup(context, selectedAgeGroupId);
+            var optionalCategoryIds = new HashSet<Guid>(allOptionalCategories.Select(c => c.OptionalCategoryId));
+            // Get all supplies that are assigned to one of the categories that apply to the selected age group.
+            var allSupplies = await context.Supplies.AsNoTracking()
+                .Where(p => p.CategoryId != null && categoryIds.Contains((Guid)p.CategoryId) ||
+                            p.OptionalCategoryId != null && optionalCategoryIds.Contains((Guid)p.OptionalCategoryId))
+                .OrderBy(p => p.Name)
+                .ToListAsync();
+            return allSupplies;
+        }
+
         public static async Task<List<ExcludeCategory>> GetExcludeCategoriesForAgeGroup(ApplicationDbContext context, Guid? selectedAgeGroupId)
         {
             List<ExcludeCategory> allExcludeCategories = new();

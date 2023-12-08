@@ -8,10 +8,15 @@ namespace CFAPInventoryView.Data.Models
         [ScaffoldColumn(false)]
         public Guid BasketTransactionId { get; set; }
 
+        [Required]
+        [Display(Name = "Basket")]
         public Guid BasketId { get; set; }
 
+        [Required]
+        [Display(Name = "Recipient")]
         public Guid RecipientId { get; set; }
 
+        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date Distributed")]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yy}")]
@@ -30,6 +35,7 @@ namespace CFAPInventoryView.Data.Models
             }
         }
 
+        [Required]
         [Display(Name = "Distributed By")]
         public string? DistributedBy { get; set; }
 
@@ -40,7 +46,7 @@ namespace CFAPInventoryView.Data.Models
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yy, h:mm tt}")]
         public DateTime LastUpdateDateTime { get; set; }
 
-        public virtual Basket Basket { get; set; } = null!;
-        public virtual Recipient Recipient { get; set; } = null!;
+        public virtual Basket? Basket { get; set; }
+        public virtual Recipient? Recipient { get; set; }
     }
 }
