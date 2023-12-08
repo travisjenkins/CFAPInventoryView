@@ -35,7 +35,7 @@
             </div>
             <div class="form-floating mb-3">
                 <input type="hidden" asp-for="SupplyId" />
-                <input class="form-control" asp-for="Supply.Name" disabled />
+                <input class="form-control" asp-for="Supply.Name" value="@Model.Supply?.Name" disabled />
                 <label asp-for="SupplyId" class="control-label"></label>
             </div>
             <div class="form-group">
@@ -60,7 +60,7 @@
             </div>
             <div class="form-floating mb-3">
                 <input type="hidden" asp-for="RecipientId" />
-                <input class="form-control" asp-for="Recipient.FullName" disabled />
+                <input class="form-control" asp-for="Recipient.FullName" value="@Model.Recipient?.FullName" disabled />
                 <label asp-for="RecipientId" class="control-label"></label>
             </div>
             <div class="form-floating mb-3">

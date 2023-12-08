@@ -35,7 +35,7 @@
             </div>
             <div class="form-floating mb-3">
                 <input type="hidden" asp-for="BasketId" />
-                <input class="form-control" asp-for="Basket.BasketDisplayName" disabled />
+                <input class="form-control" asp-for="Basket.BasketDisplayName" value="@Model.Basket?.BasketDisplayName" disabled />
                 <label asp-for="BasketId" class="control-label"></label>
             </div>
             <div class="form-group">
@@ -60,7 +60,7 @@
             </div>
             <div class="form-floating mb-3">
                 <input type="hidden" asp-for="RecipientId" />
-                <input class="form-control" asp-for="Recipient.FullName" disabled />
+                <input class="form-control" asp-for="Recipient.FullName" value="@Model.Recipient?.FullName" disabled />
                 <label asp-for="RecipientId" class="control-label"></label>
             </div>
             <div class="form-floating mb-3">

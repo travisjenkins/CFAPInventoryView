@@ -47,7 +47,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var parents = await _context.Recipients.AsNoTracking()
+            var recipient = await _context.Recipients.AsNoTracking()
                                                  .Include(d => d.SupplyTransactions)
                                                     .ThenInclude(pt => pt.Supply)
                                                  .Include(d => d.BasketTransactions)
@@ -56,12 +56,12 @@ namespace CFAPInventoryView.Controllers
 #pragma warning disable 8602
                                                  .FirstOrDefaultAsync(m => m.RecipientId == id);
 #pragma warning restore 8602
-            if (parents == null)
+            if (recipient == null)
             {
                 return NotFound();
             }
 
-            return View(parents);
+            return View(recipient);
         }
 
         // GET: Recipients/Create
@@ -76,17 +76,17 @@ namespace CFAPInventoryView.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Address1,Address2,City,State,ZipCode,IsFosterParent,IsAdoptiveParent")] Recipient parent)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Address1,Address2,City,State,ZipCode,IsFosterParent,IsAdoptiveParent")] Recipient recipient)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    parent.RecipientId = Guid.NewGuid();
-                    parent.State = HelperMethods.JustTheStateName(parent.State);
-                    parent.LastUpdateId = User.Identity?.Name;
-                    parent.LastUpdateDateTime = DateTime.Now;
-                    _context.Add(parent);
+                    recipient.RecipientId = Guid.NewGuid();
+                    recipient.State = HelperMethods.JustTheStateName(recipient.State);
+                    recipient.LastUpdateId = User.Identity?.Name;
+                    recipient.LastUpdateDateTime = DateTime.Now;
+                    _context.Add(recipient);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -96,10 +96,10 @@ namespace CFAPInventoryView.Controllers
                 _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
                 ModelState.AddModelError(string.Empty, "There was an issue creating the recipient. If the issue continues please contact an administrator.");
             }
-            var selectList = SelectListBuilder.GetStatesSelectList(parent.State);
+            var selectList = SelectListBuilder.GetStatesSelectList(recipient.State);
             ViewData["StatesSelectList"] = selectList;
-            parent.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
-            return View(parent);
+            recipient.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
+            return View(recipient);
         }
 
         // GET: Recipients/Edit/5
@@ -110,15 +110,15 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var parent = await _context.Recipients.FindAsync(id);
-            if (parent == null)
+            var recipient = await _context.Recipients.FindAsync(id);
+            if (recipient == null)
             {
                 return NotFound();
             }
-            var selectList = SelectListBuilder.GetStatesSelectList(parent.State);
+            var selectList = SelectListBuilder.GetStatesSelectList(recipient.State);
             ViewData["StatesSelectList"] = selectList;
-            parent.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
-            return View(parent);
+            recipient.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
+            return View(recipient);
         }
 
         // POST: Recipients/Edit/5
@@ -126,9 +126,9 @@ namespace CFAPInventoryView.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ParentId,FirstName,LastName,Address1,Address2,City,State,ZipCode,IsFosterParent,IsAdoptiveParent")] Recipient parent)
+        public async Task<IActionResult> Edit(Guid id, [Bind("RecipientId,FirstName,LastName,Address1,Address2,City,State,ZipCode,IsFosterParent,IsAdoptiveParent")] Recipient recipient)
         {
-            if (id != parent.RecipientId)
+            if (id != recipient.RecipientId)
             {
                 return NotFound();
             }
@@ -137,15 +137,15 @@ namespace CFAPInventoryView.Controllers
             {
                 try
                 {
-                    parent.State = HelperMethods.JustTheStateName(parent.State);
-                    parent.LastUpdateId = User.Identity?.Name;
-                    parent.LastUpdateDateTime = DateTime.Now;
-                    _context.Update(parent);
+                    recipient.State = HelperMethods.JustTheStateName(recipient.State);
+                    recipient.LastUpdateId = User.Identity?.Name;
+                    recipient.LastUpdateDateTime = DateTime.Now;
+                    _context.Update(recipient);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateException ex)
                 {
-                    if (!ParentExists(parent.RecipientId))
+                    if (!RecipientExists(recipient.RecipientId))
                     {
                         return NotFound();
                     }
@@ -157,10 +157,10 @@ namespace CFAPInventoryView.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var selectList = SelectListBuilder.GetStatesSelectList(parent.State);
+            var selectList = SelectListBuilder.GetStatesSelectList(recipient.State);
             ViewData["StatesSelectList"] = selectList;
-            parent.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
-            return View(parent);
+            recipient.State = selectList?.FirstOrDefault(s => s.Selected)?.Value;
+            return View(recipient);
         }
 
         // GET: Recipients/Delete/5
@@ -171,7 +171,7 @@ namespace CFAPInventoryView.Controllers
                 return NotFound();
             }
 
-            var parent = await _context.Recipients.AsNoTracking()
+            var recipient = await _context.Recipients.AsNoTracking()
                                              .Include(d => d.SupplyTransactions)
                                                 .ThenInclude(pt => pt.Supply)
                                              .Include(d => d.BasketTransactions)
@@ -180,12 +180,12 @@ namespace CFAPInventoryView.Controllers
 #pragma warning disable 8602
                                              .FirstOrDefaultAsync(m => m.RecipientId == id);
 #pragma warning restore 8602
-            if (parent == null)
+            if (recipient == null)
             {
                 return NotFound();
             }
 
-            return View(parent);
+            return View(recipient);
         }
 
         // POST: Recipients/Delete/5
@@ -198,17 +198,23 @@ namespace CFAPInventoryView.Controllers
             {
                 return Problem("Entity set 'Recipients' is null.");
             }
-            var parent = await _context.Recipients.FindAsync(id);
-            if (parent != null)
+            var recipient = await _context.Recipients.FindAsync(id);
+            if (recipient != null)
             {
-                _context.Recipients.Remove(parent);
+                try
+                {
+                    _context.Recipients.Remove(recipient);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex) 
+                { 
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}"); 
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ParentExists(Guid id)
+        private bool RecipientExists(Guid id)
         {
           return (_context.Recipients?.Any(e => e.RecipientId == id)).GetValueOrDefault();
         }

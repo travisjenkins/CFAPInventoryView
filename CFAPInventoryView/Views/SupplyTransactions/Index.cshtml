@@ -13,12 +13,12 @@
 @if (Model is not null && Model.ElementAtOrDefault(0) is not null)
 {
     <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Supply.Name)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.DateDistributed)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.DistributedBy)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.Recipient)</div>
+        <div class="col-lg-3">@Html.DisplayNameFor(model => model.Supply)</div>
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.Supply.Price)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.DateDistributed)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.DistributedBy)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.Recipient.FullName)</div>
-        <div class="col-lg-1"></div>
+        <div class="col-lg-2"></div>
     </div>
 
     int count = 0;
@@ -32,32 +32,31 @@
         }
         <div class="row text-start text-lg-center @alternatingRowColorClass">
             <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Supply.Name)</div>
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DateDistributed)</div>
+                <div class="col text-start">@string.Format("{0:dd-MMM-yy}", item.DateDistributed)</div>
+            </div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@string.Format("{0:dd-MMM-yy}", item.DateDistributed)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DistributedBy)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.DistributedBy)</div>
+            </div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DistributedBy)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Recipient)</div>
+                <div class="col text-start">@Html.DisplayFor(modelItem => item.Recipient.FullName)</div>
+            </div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Recipient.FullName)</div>
+            <div class="row row-cols-2 d-lg-none">
+                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Supply)</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.Supply.Name)</div>
             </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Supply.Name)</div>
+            <div class="col-lg-3 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Supply.Name)</div>
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Supply.Price)</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.Supply.Price)</div>
             </div>
             <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Supply.Price)</div>
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DateDistributed)</div>
-                <div class="col text-start">@Html.DisplayFor(modelItem => item.DateDistributed)</div>
-            </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DateDistributed)</div>
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DistributedBy)</div>
-                <div class="col text-start">@Html.DisplayFor(modelItem => item.DistributedBy)</div>
-            </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DistributedBy)</div>
-            <div class="row row-cols-2 d-lg-none">
-                <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Recipient.FullName)</div>
-                <div class="col text-start">@Html.DisplayFor(modelItem => item.Recipient.FullName)</div>
-            </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Recipient.FullName)</div>
-            <div class="col-lg-1 text-center">
-                <a asp-action="Edit" asp-route-id="@item.SupplyTransactionId">Edit</a> |
+            <div class="col-lg-2 text-center">
                 <a asp-action="Details" asp-route-id="@item.SupplyTransactionId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.SupplyTransactionId">Delete</a>
             </div>

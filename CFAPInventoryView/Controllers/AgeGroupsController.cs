@@ -163,10 +163,16 @@ namespace CFAPInventoryView.Controllers
             var ageGroup = await _context.AgeGroups.FindAsync(id);
             if (ageGroup != null)
             {
-                _context.AgeGroups.Remove(ageGroup);
+                try
+                {
+                    _context.AgeGroups.Remove(ageGroup);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                }   
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

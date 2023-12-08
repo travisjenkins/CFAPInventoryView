@@ -14,7 +14,7 @@
             @Html.DisplayNameFor(model => model.DateDistributed)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateDistributed)
+            @string.Format("{0:dd-MMM-yy}", Model.DateDistributed)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DistributedBy)
@@ -37,6 +37,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.BasketTransactionId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

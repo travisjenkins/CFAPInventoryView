@@ -201,10 +201,16 @@ namespace CFAPInventoryView.Controllers
             var donor = await _context.Donors.FindAsync(id);
             if (donor != null)
             {
-                _context.Donors.Remove(donor);
+                try
+                {
+                    _context.Donors.Remove(donor);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex) 
+                { 
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}"); 
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

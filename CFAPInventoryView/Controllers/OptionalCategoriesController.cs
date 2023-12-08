@@ -183,10 +183,16 @@ namespace CFAPInventoryView.Controllers
             var optionalCategory = await _context.OptionalCategories.FindAsync(id);
             if (optionalCategory != null)
             {
-                _context.OptionalCategories.Remove(optionalCategory);
+                try
+                {
+                    _context.OptionalCategories.Remove(optionalCategory);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex) 
+                { 
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}"); 
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

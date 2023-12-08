@@ -185,10 +185,16 @@ namespace CFAPInventoryView.Controllers
             var category = await _context.Categories.FindAsync(id);
             if (category != null)
             {
-                _context.Categories.Remove(category);
+                try
+                {
+                    _context.Categories.Remove(category);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

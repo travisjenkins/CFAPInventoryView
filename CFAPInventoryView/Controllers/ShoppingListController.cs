@@ -325,10 +325,16 @@ namespace CFAPInventoryView.Controllers
             var basket = await _context.Baskets.FindAsync(id);
             if (basket != null)
             {
-                _context.Baskets.Remove(basket);
+                try
+                {
+                    _context.Baskets.Remove(basket);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                }
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
