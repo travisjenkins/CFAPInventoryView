@@ -29,6 +29,7 @@
         {
             alternatingRowColorClass = "medium-row-color";
         }
+        var ageGroupCategoriesSorted = item.AgeGroups.OrderBy(agc => agc.AgeGroup.SortOrder);
         <div class="row text-start text-lg-center @alternatingRowColorClass">
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Name):</div>
@@ -48,7 +49,7 @@
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.AgeGroups):</div>
                 <div class="col text-start">
-                    @foreach (var ageGroupCategory in item.AgeGroups)
+                    @foreach (var ageGroupCategory in ageGroupCategoriesSorted)
                     {
                         <ul class="list-unstyled">
                             <li>
@@ -59,7 +60,7 @@
                 </div>
             </div>
             <div class="col-lg-3 d-none d-lg-inline-block">
-                @foreach (var ageGroupCategory in item.AgeGroups)
+                @foreach (var ageGroupCategory in ageGroupCategoriesSorted)
                 {
                     <ul class="list-unstyled">
                         <li>
