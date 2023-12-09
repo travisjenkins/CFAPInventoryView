@@ -30,12 +30,12 @@ namespace CFAPInventoryView.Controllers
             try
             {
                 // Supplies
-                viewModel.TotalSupplies = await _context.Supplies.AsNoTracking().CountAsync();
-                viewModel.TotalItemsThatExpire = await _context.Supplies.AsNoTracking().Where(p => p.Expires).CountAsync();
-
                 decimal totalInventoryPrice = 0;
-                var supplies = await _context.Supplies.AsNoTracking().ToListAsync();
+                var supplies = await _context.Supplies.AsNoTracking().Where(s => s.Active).ToListAsync();
                 var supplyTransactions = await _context.SupplyTransactions.AsNoTracking().Include(st => st.Supply).ToListAsync();
+                viewModel.TotalSupplies = supplies.Count;
+                viewModel.TotalItemsThatExpire = supplies.Where(s => s.Expires).Count();
+                // Calculate total supply inventory price and average duration on shelf
                 if (supplies is not null && supplies.Count > 0)
                 {
                     long temp = 0;
@@ -43,6 +43,7 @@ namespace CFAPInventoryView.Controllers
                     {
                         totalInventoryPrice += supply.Price * supply.Quantity;
                     }
+                    viewModel.TotalInventoryPrice = totalInventoryPrice;
                     foreach (var transaction in supplyTransactions)
                     {
                         if (transaction.DurationOnShelf.HasValue && viewModel.TotalSupplies > 0)
@@ -50,19 +51,17 @@ namespace CFAPInventoryView.Controllers
                             temp += transaction.DurationOnShelf.Value / viewModel.TotalSupplies;
                         }
                     }
-                    viewModel.TotalSupplyDurationOnShelf = new TimeSpan(temp);
+                    viewModel.AverageSupplyDurationOnShelf = new TimeSpan(temp);
                 }
-                viewModel.TotalInventoryPrice = totalInventoryPrice;
 
                 // iBelong
-                viewModel.TotalShoppingListBaskets = await _context.Baskets.AsNoTracking().Where(b => b.IsShoppingListItem).CountAsync();
-                viewModel.TotaliBelongBaskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).CountAsync();
-
                 decimal totalIBelongBasketPrice = 0;
 #pragma warning disable 8604
-                var baskets = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.SupplyBaskets).ThenInclude(sb => sb.Supply).ToListAsync();
+                var baskets = await _context.Baskets.AsNoTracking().Where(b => b.Active && !b.IsShoppingListItem).Include(b => b.SupplyBaskets).ThenInclude(sb => sb.Supply).ToListAsync();
 #pragma warning restore 8604
                 var basketTransactions = await _context.BasketTransactions.AsNoTracking().Include(bt => bt.Basket).ToListAsync();
+                viewModel.TotalShoppingListBaskets = await _context.Baskets.AsNoTracking().Where(b => b.Active && b.IsShoppingListItem).CountAsync();
+                viewModel.TotaliBelongBaskets = baskets.Count;
                 if (baskets is not null && baskets.Count > 0)
                 {
                     long temp = 0;
@@ -77,7 +76,7 @@ namespace CFAPInventoryView.Controllers
                             temp += transaction.DurationOnShelf.Value / viewModel.TotaliBelongBaskets;
                         }
                     }
-                    viewModel.TotalBasketDurationOnShelf = new TimeSpan(temp);
+                    viewModel.AverageBasketDurationOnShelf = new TimeSpan(temp);
                 }
                 viewModel.TotaliBelongBasketPrice = totalIBelongBasketPrice;
             }
