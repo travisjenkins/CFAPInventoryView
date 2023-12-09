@@ -29,7 +29,7 @@ namespace CFAPInventoryView.Data.Models
             {
                 if (Supply is not null)
                 {
-                    return (DateDistributed - Supply.PurchaseDate).Ticks;
+                    return DateDistributed.Subtract(Supply.PurchaseDate).Ticks;
                 }
                 return default;
             }

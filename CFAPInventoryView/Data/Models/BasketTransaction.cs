@@ -29,7 +29,7 @@ namespace CFAPInventoryView.Data.Models
             {
                 if (Basket is not null)
                 {
-                    return (DateDistributed - Basket.DateAssembled).Ticks;
+                    return DateDistributed.Subtract(Basket.DateAssembled).Ticks;
                 }
                 return default;
             }

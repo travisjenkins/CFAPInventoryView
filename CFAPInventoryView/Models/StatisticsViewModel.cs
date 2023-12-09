@@ -19,7 +19,7 @@ namespace CFAPInventoryView.Models
 
         [Display(Name = "Average Duration on Shelf")]
         [DisplayFormat(DataFormatString = "{0:dd\\.hh\\:mm\\:ss}")]
-        public TimeSpan TotalSupplyDurationOnShelf { get; set; }
+        public TimeSpan AverageSupplyDurationOnShelf { get; set; }
 
         // iBelong Baskets
         [Display(Name = "Total Shopping Lists")]
@@ -35,6 +35,6 @@ namespace CFAPInventoryView.Models
 
         [Display(Name = "Average Duration on Shelf")]
         [DisplayFormat(DataFormatString = "{0:dd\\.hh\\:mm\\:ss}")]
-        public TimeSpan TotalBasketDurationOnShelf { get; set; }
+        public TimeSpan AverageBasketDurationOnShelf { get; set; }
     }
 }
