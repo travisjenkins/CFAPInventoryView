@@ -57,7 +57,7 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Create()
         {
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
-            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
+            ViewData["SuppliesList"] = await HelperMethods.GetAllAvailableSupplies(_context);
             return View();
         }
 
@@ -67,88 +67,66 @@ namespace CFAPInventoryView.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("SupplyId,RecipientId,DistributedBy,DateDistributed")] SupplyTransaction supplyTransaction)
         {
-            var product = await _context.Supplies.FindAsync(supplyTransaction.SupplyId);
-            if (product != null)
+            var supply = await _context.Supplies.FindAsync(supplyTransaction.SupplyId);
+            if (supply != null)
             {
-                if (ModelState.IsValid)
+                var category = await _context.Categories.FindAsync(supply.CategoryId);
+                var optionalCategory = await _context.OptionalCategories.FindAsync(supply.OptionalCategory);
+                int quantityAvailable = 0;
+                if (category != null)
                 {
-                    try
+                    quantityAvailable = category.Quantity;
+                }
+                if (optionalCategory != null)
+                {
+                    quantityAvailable = optionalCategory.Quantity;
+                }
+                if (quantityAvailable > 0)
+                {
+                    if (ModelState.IsValid)
                     {
-                        supplyTransaction.SupplyTransactionId = Guid.NewGuid();
-                        supplyTransaction.LastUpdateId = User.Identity?.Name;
-                        supplyTransaction.LastUpdateDateTime = DateTime.Now;
-                        _context.Add(supplyTransaction);
-                        await HelperMethods.DecreaseAssignedCategoryQuantityByOne(_context, product);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
-                    catch (DbUpdateException ex)
-                    {
-                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
-                        ModelState.AddModelError(string.Empty, "There was an issue creating the supply transaction.  If the issue persists, please contact an administrator.");
+                        try
+                        {
+                            supplyTransaction.SupplyTransactionId = Guid.NewGuid();
+                            supplyTransaction.LastUpdateId = User.Identity?.Name;
+                            supplyTransaction.LastUpdateDateTime = DateTime.Now;
+                            _context.Add(supplyTransaction);
+                            await HelperMethods.DecreaseAssignedCategoryQuantityByOne(_context, supply);
+                            if (supply.Quantity > 1)
+                            {
+                                supply.Quantity -= 1;
+                            }
+                            else if (supply.Quantity == 1)
+                            {
+                                supply.Quantity -= 1;
+                                supply.Active = false;
+                            }
+                            else
+                            {
+                                supply.Active = false;
+                            }
+                            _context.Update(supply);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        catch (DbUpdateException ex)
+                        {
+                            _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                            ModelState.AddModelError(string.Empty, "There was an issue creating the supply transaction.  If the issue persists, please contact an administrator.");
+                        }
                     }
                 }
-            }
-            ModelState.AddModelError(string.Empty, $"A supply with Id {supplyTransaction.SupplyId} could not be located in the database.");
-            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
-            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
-            return View(supplyTransaction);
-        }
-
-        // GET: SupplyTransactions/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null || _context.SupplyTransactions == null)
-            {
-                return NotFound();
-            }
-
-            var productTransaction = await _context.SupplyTransactions.FindAsync(id);
-            if (productTransaction == null)
-            {
-                return NotFound();
-            }
-            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
-            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
-            return View(productTransaction);
-        }
-
-        // POST: SupplyTransactions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("SupplyTransactionId,SupplyId,RecipientId,DistributedBy,DateDistributed")] SupplyTransaction supplyTransaction)
-        {
-            if (id != supplyTransaction.SupplyTransactionId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                else
                 {
-                    supplyTransaction.LastUpdateId = User.Identity?.Name;
-                    supplyTransaction.LastUpdateDateTime = DateTime.Now;
-                    _context.Update(supplyTransaction);
-                    await _context.SaveChangesAsync();
+                    ModelState.AddModelError(string.Empty, "Check that you have this item in stock.  If you do, please contact an administrator.");
                 }
-                catch (DbUpdateException ex)
-                {
-                    if (!SupplyTransactionExists(supplyTransaction.SupplyTransactionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
-                        ModelState.AddModelError(string.Empty, "There was an issue updating the supply transaction.  If the issue persists, please contact an administrator.");
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, $"A supply with Id {supplyTransaction.SupplyId} could not be located in the database.");
             }
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
-            ViewData["SuppliesList"] = await _context.Supplies.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
+            ViewData["SuppliesList"] = await HelperMethods.GetAllAvailableSupplies(_context);
             return View(supplyTransaction);
         }
 
@@ -181,32 +159,18 @@ namespace CFAPInventoryView.Controllers
             {
                 return Problem("Entity set 'SupplyTransactions' is null.");
             }
-            var supplyTransaction = await _context.SupplyTransactions.Include(p => p.Supply)
-                                                                      .Include(p => p.Recipient)
-                                                                      .FirstOrDefaultAsync(m => m.SupplyTransactionId == id);
+            var supplyTransaction = await _context.SupplyTransactions.FindAsync(id);
             if (supplyTransaction != null)
             {
-                var product = await _context.Supplies.FindAsync(supplyTransaction.SupplyId);
-                if (product != null)
+                try
                 {
-                    try
-                    {
-                        await HelperMethods.IncreaseAssignedCategoryQuantityByOne(_context, product);
-                        _context.SupplyTransactions.Remove(supplyTransaction);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
-                    catch (DbUpdateException ex)
-                    {
-                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
-                        ModelState.AddModelError(string.Empty, "There was an issue deleting the transaction. If the issue continues please contact an administrator.");
-                    }
+                    _context.SupplyTransactions.Remove(supplyTransaction);
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateException ex)
                 {
-                    ModelState.AddModelError(string.Empty, $"A supply with Id {supplyTransaction.SupplyId} could not be located in the database.");
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
                 }
-                return View(supplyTransaction);
             }
             return RedirectToAction(nameof(Index));
         }

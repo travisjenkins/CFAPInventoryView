@@ -164,10 +164,16 @@ namespace CFAPInventoryView.Controllers
             var storageLocation = await _context.StorageLocations.FindAsync(id);
             if (storageLocation != null)
             {
-                _context.StorageLocations.Remove(storageLocation);
+                try
+                {
+                    _context.StorageLocations.Remove(storageLocation);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

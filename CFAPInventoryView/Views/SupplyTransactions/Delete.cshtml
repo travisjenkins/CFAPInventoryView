@@ -9,12 +9,13 @@
 <h3 class="text-danger">Are you sure you want to delete this?</h3>
 <div>
     <hr />
+    <h1 class="d-lg-none">@ViewData["Title"]</h1>
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DateDistributed)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateDistributed)
+            @string.Format("{0:dd-MMM-yy}", Model.DateDistributed)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DistributedBy)
@@ -33,6 +34,18 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Recipient.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateDateTime)
         </dd>
     </dl>
     

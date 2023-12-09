@@ -4,6 +4,7 @@ using CFAPInventoryView.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace CFAPInventoryView.Controllers
 {
@@ -31,6 +32,9 @@ namespace CFAPInventoryView.Controllers
                                                       .Include(bt => bt.Basket)
                                                         .ThenInclude(b => b.Gender)
                                                       .Include(bt => bt.Recipient)
+                                                      .Include(bt => bt.Basket)
+                                                        .ThenInclude(b => b.SupplyBaskets)
+                                                            .ThenInclude(sb => sb.Supply)
                                                       .ToListAsync()) :
                 Problem("Entity set 'BasketTransactions' is null.");
         }
@@ -52,6 +56,9 @@ namespace CFAPInventoryView.Controllers
                                                   .Include(bt => bt.Basket)
                                                     .ThenInclude(b => b.Gender)
                                                   .Include(bt => bt.Recipient)
+                                                  .Include(bt => bt.Basket)
+                                                        .ThenInclude(b => b.SupplyBaskets)
+                                                            .ThenInclude(sb => sb.Supply)
                                                   .FirstOrDefaultAsync(bt => bt.BasketTransactionId == id);
             if (basketTransaction == null)
             {
@@ -65,7 +72,7 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Create()
         {
 #pragma warning disable CS8602
-            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem && b.Active).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
 #pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View();
@@ -91,8 +98,13 @@ namespace CFAPInventoryView.Controllers
                             transaction.LastUpdateId = User.Identity?.Name;
                             transaction.LastUpdateDateTime = DateTime.Now;
                             _context.Add(transaction);
-                            shoppingList.Quantity -= 1;
-                            _context.Update(shoppingList);
+                            if (shoppingList.Quantity >= 1)
+                            {
+                                shoppingList.Quantity -= 1;
+                                _context.Update(shoppingList);
+                            }
+                            basket.Active = false;
+                            _context.Update(basket);
                             await _context.SaveChangesAsync();
                             return RedirectToAction(nameof(Index));
                         }
@@ -113,68 +125,7 @@ namespace CFAPInventoryView.Controllers
                 ModelState.AddModelError(string.Empty, $"No basket found with Id {transaction.BasketId}.");
             }
 #pragma warning disable CS8602
-            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
-#pragma warning restore CS8602
-            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
-            return View(transaction);
-        }
-
-        // GET: BasketTransactions/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null || _context.BasketTransactions == null)
-            {
-                return NotFound();
-            }
-
-            var transaction = await _context.BasketTransactions.FindAsync(id);
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-#pragma warning disable CS8602
-            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
-#pragma warning restore CS8602
-            ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
-            return View(transaction);
-        }
-
-        // POST: BasketTransactions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, [Bind("BasketTransactionId,BasketId,RecipientId,DateDistributed,DistributedBy")] BasketTransaction transaction)
-        {
-            if (id != transaction.BasketTransactionId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    transaction.LastUpdateId = User.Identity?.Name;
-                    transaction.LastUpdateDateTime = DateTime.Now;
-                    _context.Update(transaction);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateException ex)
-                {
-                    if (!BasketTransactionExists(transaction.BasketTransactionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
-                        ModelState.AddModelError(string.Empty, "There was an issue updating the basket transaction.  If the issue persists, please contact an administrator.");
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-#pragma warning disable CS8602
-            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem && b.Active).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
 #pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
@@ -197,6 +148,9 @@ namespace CFAPInventoryView.Controllers
                                                   .Include(bt => bt.Basket)
                                                     .ThenInclude(b => b.Gender)
                                                   .Include(bt => bt.Recipient)
+                                                  .Include(bt => bt.Basket)
+                                                        .ThenInclude(b => b.SupplyBaskets)
+                                                            .ThenInclude(sb => sb.Supply)
                                                   .FirstOrDefaultAsync(bt => bt.BasketTransactionId == id);
             if (transaction == null)
             {
@@ -214,45 +168,18 @@ namespace CFAPInventoryView.Controllers
             {
                 return Problem("Entity set 'BasketTransactions' is null.");
             }
-            var transaction = await _context.BasketTransactions.Include(bt => bt.Basket)
-                                                                 .ThenInclude(b => b.AgeGroup)
-                                                               .Include(bt => bt.Basket)
-                                                                 .ThenInclude(b => b.Ethnicity)
-                                                               .Include(bt => bt.Basket)
-                                                                 .ThenInclude(b => b.Gender)
-                                                               .Include(bt => bt.Recipient)
-                                                               .FirstOrDefaultAsync(bt => bt.BasketTransactionId == id);
+            var transaction = await _context.BasketTransactions.FindAsync(id);
             if (transaction != null)
             {
-                var basket = await _context.Baskets.FindAsync(transaction.BasketId);
-                if (basket != null)
+                try
                 {
-                    var shoppingList = await _context.Baskets.FirstOrDefaultAsync(b => b.IsShoppingListItem && b.AgeGroupId == basket.AgeGroupId && b.EthnicityId == basket.EthnicityId && b.GenderId == basket.GenderId);
-                    if (shoppingList != null)
-                    {
-                        try
-                        {
-                            shoppingList.Quantity += 1;
-                            _context.Update(shoppingList);
-                            _context.BasketTransactions.Remove(transaction);
-                            await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateException ex)
-                        {
-                            _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
-                            ModelState.AddModelError(string.Empty, "There was an issue deleting the basket transaction.  If the issue persists, please contact an administrator.");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "There was an issue locating an iBelong Basket shopping list item that matched the basket.  This is needed up update the available quantities.");
-                    }
+                    _context.BasketTransactions.Remove(transaction);
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateException ex)
                 {
-                    ModelState.AddModelError(string.Empty, $"No basket found with Id {transaction.BasketId}.");
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
                 }
-                return View(transaction);
             }
             return RedirectToAction(nameof(Index));
         }

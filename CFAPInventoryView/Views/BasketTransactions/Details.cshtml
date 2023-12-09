@@ -8,12 +8,13 @@
 
 <div>
     <hr />
+    <h1 class="d-lg-none">@ViewData["Title"]</h1>
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DateDistributed)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateDistributed)
+            @string.Format("{0:dd-MMM-yy}", Model.DateDistributed)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DistributedBy)
@@ -27,15 +28,32 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Basket.BasketDisplayName)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Basket.TotalPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Basket.TotalPrice)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Recipient)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Recipient.FullName)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastUpdateDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastUpdateDateTime)
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.BasketTransactionId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

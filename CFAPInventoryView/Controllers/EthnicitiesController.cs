@@ -163,10 +163,16 @@ namespace CFAPInventoryView.Controllers
             var ethnicity = await _context.Ethnicities.FindAsync(id);
             if (ethnicity != null)
             {
-                _context.Ethnicities.Remove(ethnicity);
+                try
+                {
+                    _context.Ethnicities.Remove(ethnicity);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex)
+                {
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}");
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

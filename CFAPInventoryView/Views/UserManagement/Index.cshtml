@@ -5,6 +5,8 @@
 #pragma warning disable CS8602
 }
 
+<h1 class="text-center d-lg-none">@ViewData["Title"]</h1>
+
 <div asp-validation-summary="All" class="text-danger"></div>
 @if (Model is not null && Model.ElementAtOrDefault(0) is not null)
 {

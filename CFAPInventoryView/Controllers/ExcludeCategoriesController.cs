@@ -184,10 +184,16 @@ namespace CFAPInventoryView.Controllers
             var excludeCategory = await _context.ExcludeCategories.FindAsync(id);
             if (excludeCategory != null)
             {
-                _context.ExcludeCategories.Remove(excludeCategory);
+                try
+                {
+                    _context.ExcludeCategories.Remove(excludeCategory);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex) 
+                { 
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}"); 
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

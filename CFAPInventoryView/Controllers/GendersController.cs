@@ -164,10 +164,16 @@ namespace CFAPInventoryView.Controllers
             var gender = await _context.Genders.FindAsync(id);
             if (gender != null)
             {
-                _context.Genders.Remove(gender);
+                try
+                {
+                    _context.Genders.Remove(gender);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException ex) 
+                { 
+                    _logger.LogError($"ERROR:  {ex.Message}, StackTrace:  {ex.StackTrace}"); 
+                }
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

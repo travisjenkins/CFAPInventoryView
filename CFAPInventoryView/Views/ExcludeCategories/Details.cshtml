@@ -8,6 +8,7 @@
 
 <div>
     <hr />
+    <h1 class="d-lg-none">@ViewData["Title"]</h1>
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -22,7 +23,7 @@
             @Html.DisplayFor(model => model.Quantity)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AgeGroups)
+            @Html.DisplayNameFor(model => model.AgeGroups).SplitCamelAndPascalCase()
         </dt>
         <dd class="col-sm-10">
             @foreach (var ageGroupCategory in Model.AgeGroups)

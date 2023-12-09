@@ -35,7 +35,7 @@ namespace CFAPInventoryView.Controllers
             }
             return _context.SupplyBaskets != null ?
                     View(await _context.Baskets.AsNoTracking()
-                                                .Where(b => !b.IsShoppingListItem)
+                                                .Where(b => !b.IsShoppingListItem && b.Active)
                                                 .Include(b => b.StorageLocation)
                                                 .Include(b => b.AgeGroup)
                                                 .Include(b => b.Ethnicity)
@@ -116,7 +116,7 @@ namespace CFAPInventoryView.Controllers
                         try
                         {
                             basket.BasketId = Guid.NewGuid();
-                            basket.IsShoppingListItem = false;
+                            //basket.IsShoppingListItem = false;
                             basket.LastUpdateId = User.Identity?.Name;
                             basket.LastUpdateDateTime = DateTime.Now;
                             _context.Add(basket);
@@ -208,7 +208,7 @@ namespace CFAPInventoryView.Controllers
                 {
                     try
                     {
-                        basket.IsShoppingListItem = false;
+                        //basket.IsShoppingListItem = false;
                         basket.LastUpdateId = User.Identity?.Name;
                         basket.LastUpdateDateTime = DateTime.Now;
                         _context.Update(basket);
@@ -365,17 +365,7 @@ namespace CFAPInventoryView.Controllers
         {
             List<AssignedSupplyViewModel> assignedSupplyViewModels = new();
             basket.SupplyBaskets ??= new List<SupplyBasket>();
-            // Get all categories that apply to the selected age group.
-            List<Category> allCategories = await HelperMethods.GetCategoriesForAgeGroup(_context, selectedAgeGroupId);
-            var categoryIds = new HashSet<Guid>(allCategories.Select(c => c.CategoryId));
-            List<OptionalCategory> allOptionalCategories = await HelperMethods.GetOptionalCategoriesForAgeGroup(_context, selectedAgeGroupId);
-            var optionalCategoryIds = new HashSet<Guid>(allOptionalCategories.Select(c => c.OptionalCategoryId));
-            // Get all supplies that are assigned to one of the categories that apply to the selected age group.
-            var allSupplies = await _context.Supplies.AsNoTracking()
-                .Where(p => p.CategoryId != null && categoryIds.Contains((Guid)p.CategoryId) ||
-                            p.OptionalCategoryId != null && optionalCategoryIds.Contains((Guid)p.OptionalCategoryId))
-                .OrderBy(p => p.Name)
-                .ToListAsync();
+            List<Supply>? allSupplies = await HelperMethods.GetAllAvailableSupplies(_context, selectedAgeGroupId);
             // Show all currently assigned supplies and all other supplies that aren't expired and are in a category with a quantity available greater than 0
             if (allSupplies is not null && allSupplies.Count > 0)
             {

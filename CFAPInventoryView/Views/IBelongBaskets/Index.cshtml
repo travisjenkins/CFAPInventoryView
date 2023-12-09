@@ -5,6 +5,8 @@
 #pragma warning disable CS8602
 }
 
+<h1 class="text-center d-lg-none">@ViewData["Title"]</h1>
+
 <p class="text-center text-lg-start">
     <a asp-action="Create">Create New</a>
 </p>
@@ -13,14 +15,12 @@
 {
     <div class="row fw-bold d-none d-lg-flex text-start text-lg-center">
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.BasketNumber)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.AgeGroupId)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.EthnicityId)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.AgeGroupId)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.EthnicityId)</div>
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.GenderId)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.DateAssembled)</div>
-        <div class="col-lg-1">@Html.DisplayNameFor(model => model.StorageLocationId)</div>
+        <div class="col-lg-2">@Html.DisplayNameFor(model => model.DateAssembled)</div>
+        <div class="col-lg-3">@Html.DisplayNameFor(model => model.StorageLocationId)</div>
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.TotalPrice)</div>
-        <div class="col-lg-2">@Html.DisplayNameFor(model => model.SupplyBaskets)</div>
-        <div class="col-lg-1"></div>
     </div>
 
     int count = 0;
@@ -42,12 +42,12 @@
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.AgeGroupId):</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.AgeGroup.Description)</div>
             </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.AgeGroup.Description)</div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.AgeGroup.Description)</div>
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.EthnicityId):</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.Ethnicity.Description)</div>
             </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Ethnicity.Description)</div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.Ethnicity.Description)</div>
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.GenderId)</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.Gender.Description)</div>
@@ -57,24 +57,30 @@
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.DateAssembled):</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.DateAssembled)</div>
             </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DateAssembled)</div>
+            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.DateAssembled)</div>
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.StorageLocationId):</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.StorageLocation.Name)</div>
             </div>
-            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.StorageLocation.Name)</div>
+            <div class="col-lg-3 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.StorageLocation.Name)</div>
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.TotalPrice):</div>
                 <div class="col text-start">@Html.DisplayFor(modelItem => item.TotalPrice)</div>
             </div>
             <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.TotalPrice)</div>
+        </div>
+        <div class="row text-center text-lg-start my-2 @alternatingRowColorClass">
             @if (item.SupplyBaskets is not null)
             {
                 var orderedSupplyBaskets = item.SupplyBaskets.OrderBy(pb => pb.Supply.Name).ToList();
-                <div class="row row-cols-2 d-lg-none">
-                    <div class="col text-end fw-bold">Include:</div>
-                    <div class="col text-start">
-                        <ul>
+                <p>
+                    <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSuppliesWidth-@(count)" aria-expanded="false" aria-controls="collapseSuppliesWidth-@(count)">
+                        Show @Html.DisplayNameFor(model => model.SupplyBaskets):
+                    </button>
+                </p>
+                <div class="collapse text-center" id="collapseSuppliesWidth-@(count)">
+                    <div class="card card-body">
+                        <ul class="list-unstyled">
                             @foreach (var supplyBasket in orderedSupplyBaskets)
                             {
                                 <li>@Html.DisplayFor(modelItem => supplyBasket.Supply.Name)</li>
@@ -82,16 +88,10 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 text-start d-none d-lg-inline-block">
-                    <ul>
-                        @foreach (var supplyBasket in orderedSupplyBaskets)
-                        {
-                            <li>@Html.DisplayFor(modelItem => supplyBasket.Supply.Name)</li>
-                        }
-                    </ul>
-                </div>
             }
-            <div class="col-lg-1 text-center">
+        </div>
+        <div class="row text-center">
+            <div class="col-12">
                 <a asp-action="Edit" asp-route-id="@item.BasketId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.BasketId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.BasketId">Delete</a>
