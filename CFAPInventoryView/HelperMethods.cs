@@ -29,8 +29,8 @@ namespace CFAPInventoryView
             var optionalCategoryIds = new HashSet<Guid>(allOptionalCategories.Select(c => c.OptionalCategoryId));
             // Get all supplies that are assigned to one of the categories that apply to the selected age group.
             var allSupplies = await context.Supplies.AsNoTracking()
-                .Where(p => p.CategoryId != null && categoryIds.Contains((Guid)p.CategoryId) ||
-                            p.OptionalCategoryId != null && optionalCategoryIds.Contains((Guid)p.OptionalCategoryId))
+                .Where(p => p.Active && p.CategoryId != null && categoryIds.Contains((Guid)p.CategoryId) ||
+                            p.Active && p.OptionalCategoryId != null && optionalCategoryIds.Contains((Guid)p.OptionalCategoryId))
                 .OrderBy(p => p.Name)
                 .ToListAsync();
             return allSupplies;
@@ -123,103 +123,103 @@ namespace CFAPInventoryView
             return allCategories;
         }
 
-        public static async Task IncreaseAssignedCategoryQuantity(ApplicationDbContext context, Supply product)
+        public static async Task IncreaseAssignedCategoryQuantity(ApplicationDbContext context, Supply supply)
         {
-            if (product.CategoryId is not null)
+            if (supply.CategoryId is not null)
             {
-                var category = await context.Categories.FindAsync(product.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {product.CategoryId}");
-                category.Quantity += product.Quantity;
+                var category = await context.Categories.FindAsync(supply.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {supply.CategoryId}");
+                category.Quantity += supply.Quantity;
                 context.Update(category);
             }
-            if (product.OptionalCategoryId is not null)
+            if (supply.OptionalCategoryId is not null)
             {
-                var optionalCategory = await context.OptionalCategories.FindAsync(product.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {product.OptionalCategoryId}");
-                optionalCategory.Quantity += product.Quantity;
+                var optionalCategory = await context.OptionalCategories.FindAsync(supply.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {supply.OptionalCategoryId}");
+                optionalCategory.Quantity += supply.Quantity;
                 context.Update(optionalCategory);
             }
-            if (product.ExcludeCategory is not null)
+            if (supply.ExcludeCategory is not null)
             {
-                var excludeCategory = await context.ExcludeCategories.FindAsync(product.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {product.ExcludeCategoryId}");
-                excludeCategory.Quantity += product.Quantity;
+                var excludeCategory = await context.ExcludeCategories.FindAsync(supply.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {supply.ExcludeCategoryId}");
+                excludeCategory.Quantity += supply.Quantity;
                 context.Update(excludeCategory);
             }
         }
-        public static async Task IncreaseAssignedCategoryQuantityByOne(ApplicationDbContext context, Supply product)
+        public static async Task IncreaseAssignedCategoryQuantityByOne(ApplicationDbContext context, Supply supply)
         {
-            if (product.CategoryId is not null)
+            if (supply.CategoryId is not null)
             {
-                var category = await context.Categories.FindAsync(product.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {product.CategoryId}");
+                var category = await context.Categories.FindAsync(supply.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {supply.CategoryId}");
                 category.Quantity += 1;
                 context.Update(category);
             }
-            if (product.OptionalCategoryId is not null)
+            if (supply.OptionalCategoryId is not null)
             {
-                var optionalCategory = await context.OptionalCategories.FindAsync(product.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {product.OptionalCategoryId}");
+                var optionalCategory = await context.OptionalCategories.FindAsync(supply.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {supply.OptionalCategoryId}");
                 optionalCategory.Quantity += 1;
                 context.Update(optionalCategory);
             }
-            if (product.ExcludeCategory is not null)
+            if (supply.ExcludeCategory is not null)
             {
-                var excludeCategory = await context.ExcludeCategories.FindAsync(product.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {product.ExcludeCategoryId}");
+                var excludeCategory = await context.ExcludeCategories.FindAsync(supply.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {supply.ExcludeCategoryId}");
                 excludeCategory.Quantity += 1;
                 context.Update(excludeCategory);
             }
         }
 
-        public static async Task DecreaseAssignedCategoryQuantity(ApplicationDbContext context, Supply product)
+        public static async Task DecreaseAssignedCategoryQuantity(ApplicationDbContext context, Supply supply)
         {
-            if (product.CategoryId is not null)
+            if (supply.CategoryId is not null)
             {
-                var category = await context.Categories.FindAsync(product.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {product.CategoryId}");
-                if ((category.Quantity - product.Quantity) >= 0)
+                var category = await context.Categories.FindAsync(supply.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {supply.CategoryId}");
+                if ((category.Quantity - supply.Quantity) >= 0)
                 {
-                    category.Quantity -= product.Quantity;
+                    category.Quantity -= supply.Quantity;
                     context.Update(category);
                 }
             }
-            if (product.OptionalCategoryId is not null)
+            if (supply.OptionalCategoryId is not null)
             {
-                var optionalCategory = await context.OptionalCategories.FindAsync(product.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {product.OptionalCategoryId}");
-                if ((optionalCategory.Quantity - product.Quantity) >= 0)
+                var optionalCategory = await context.OptionalCategories.FindAsync(supply.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {supply.OptionalCategoryId}");
+                if ((optionalCategory.Quantity - supply.Quantity) >= 0)
                 {
-                    optionalCategory.Quantity -= product.Quantity;
+                    optionalCategory.Quantity -= supply.Quantity;
                     context.Update(optionalCategory);
                 }
             }
-            if (product.ExcludeCategory is not null)
+            if (supply.ExcludeCategory is not null)
             {
-                var excludeCategory = await context.ExcludeCategories.FindAsync(product.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {product.ExcludeCategoryId}");
-                if ((excludeCategory.Quantity - product.Quantity) >= 0)
+                var excludeCategory = await context.ExcludeCategories.FindAsync(supply.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {supply.ExcludeCategoryId}");
+                if ((excludeCategory.Quantity - supply.Quantity) >= 0)
                 {
-                    excludeCategory.Quantity -= product.Quantity;
+                    excludeCategory.Quantity -= supply.Quantity;
                     context.Update(excludeCategory);
                 }
             }
         }
 
-        public static async Task DecreaseAssignedCategoryQuantityByOne(ApplicationDbContext context, Supply product)
+        public static async Task DecreaseAssignedCategoryQuantityByOne(ApplicationDbContext context, Supply supply)
         {
-            if (product.CategoryId is not null)
+            if (supply.CategoryId is not null)
             {
-                var category = await context.Categories.FindAsync(product.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {product.CategoryId}");
+                var category = await context.Categories.FindAsync(supply.CategoryId) ?? throw new DbUpdateException($"A category could not be found in the database with ID {supply.CategoryId}");
                 if (category.Quantity > 0)
                 {
                     category.Quantity -= 1;
                     context.Update(category);
                 }
             }
-            if (product.OptionalCategoryId is not null)
+            if (supply.OptionalCategoryId is not null)
             {
-                var optionalCategory = await context.OptionalCategories.FindAsync(product.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {product.OptionalCategoryId}");
+                var optionalCategory = await context.OptionalCategories.FindAsync(supply.OptionalCategoryId) ?? throw new DbUpdateException($"An optional category could not be found in the database with ID {supply.OptionalCategoryId}");
                 if (optionalCategory.Quantity > 0)
                 {
                     optionalCategory.Quantity -= 1;
                     context.Update(optionalCategory);
                 }
             }
-            if (product.ExcludeCategory is not null)
+            if (supply.ExcludeCategory is not null)
             {
-                var excludeCategory = await context.ExcludeCategories.FindAsync(product.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {product.ExcludeCategoryId}");
+                var excludeCategory = await context.ExcludeCategories.FindAsync(supply.ExcludeCategoryId) ?? throw new DbUpdateException($"An exclude category could not be found in the database with ID {supply.ExcludeCategoryId}");
                 if (excludeCategory.Quantity > 0)
                 {
                     excludeCategory.Quantity -= 1;
@@ -228,19 +228,19 @@ namespace CFAPInventoryView
             }
         }
 
-        public static async Task UpdateAssignedCategoryQuantity(ApplicationDbContext context, Supply productToUpdate)
+        public static async Task UpdateAssignedCategoryQuantity(ApplicationDbContext context, Supply supplyToUpdate)
         {
             // Get the current product to evaluate if the quantity increased or decreased
-            var currentProduct = await context.Supplies.AsNoTracking().FirstOrDefaultAsync(s => s.SupplyId == productToUpdate.SupplyId) ?? throw new DbUpdateException($"A product could not be found in the database with ID {productToUpdate.SupplyId}");
+            var currentSupply = await context.Supplies.AsNoTracking().FirstOrDefaultAsync(s => s.SupplyId == supplyToUpdate.SupplyId) ?? throw new DbUpdateException($"A product could not be found in the database with ID {supplyToUpdate.SupplyId}");
             // Increase
-            if (currentProduct.Quantity < productToUpdate.Quantity)
+            if (currentSupply.Quantity < supplyToUpdate.Quantity)
             {
-                await IncreaseAssignedCategoryQuantity(context, productToUpdate);
+                await IncreaseAssignedCategoryQuantity(context, supplyToUpdate);
             }
             // Decrease
-            else if (currentProduct.Quantity > productToUpdate.Quantity)
+            else if (currentSupply.Quantity > supplyToUpdate.Quantity)
             {
-                await DecreaseAssignedCategoryQuantity(context, productToUpdate);
+                await DecreaseAssignedCategoryQuantity(context, supplyToUpdate);
             }
         }
 

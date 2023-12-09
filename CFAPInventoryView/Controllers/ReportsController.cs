@@ -98,8 +98,8 @@ namespace CFAPInventoryView.Controllers
         {
             RestockViewModel viewModel = new()
             {
-                Categories = await _context.Categories.AsNoTracking().Where(c => c.Quantity <= c.SafeStockLevel).OrderBy(c => c.Quantity).ToListAsync(),
-                OptionalCategories = await _context.OptionalCategories.AsNoTracking().Where(c => c.Quantity <= c.SafeStockLevel).OrderBy(c => c.Quantity).ToListAsync()
+                Categories = await _context.Categories.AsNoTracking().Where(c => c.Quantity < c.SafeStockLevel).OrderBy(c => c.Quantity).ToListAsync(),
+                OptionalCategories = await _context.OptionalCategories.AsNoTracking().Where(c => c.Quantity < c.SafeStockLevel).OrderBy(c => c.Quantity).ToListAsync()
             };
             return View(viewModel);
         }

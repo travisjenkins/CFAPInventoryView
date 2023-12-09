@@ -12,8 +12,8 @@
         <div class="col-lg-3">@Html.DisplayNameFor(model => model.Name)</div>
         <div class="col-lg-3">@Html.DisplayNameFor(model => model.Description)</div>
         <div class="col-lg-1">@Html.DisplayNameFor(model => model.Expires)</div>
-        <div class="col-lg-2">@Html.DisplayNameFor(model => model.ExpirationDate)</div>
-        <div class="col-lg-3">@Html.DisplayNameFor(model => model.StorageLocationId)</div>
+        <div class="col-lg-1">@Html.DisplayNameFor(model => model.ExpirationDate)</div>
+        <div class="col-lg-4">@Html.DisplayNameFor(model => model.StorageLocationId)</div>
     </div>
 
     int count = 0;
@@ -30,7 +30,7 @@
         {
             expiredRowColorClass = "expired-row-color";
         }
-        <div class="row text-start text-lg-center @alternatingRowColorClass @expiredRowColorClass">
+        <div class="row p-1 text-start text-lg-center @alternatingRowColorClass @expiredRowColorClass">
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.Name):</div>
                 <div action="col text-start">@Html.DisplayFor(modelItem => item.Name)</div>
@@ -50,12 +50,12 @@
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.ExpirationDate):</div>
                 <div action="col text-start">@Html.DisplayFor(modelItem => item.ExpirationDate)</div>
             </div>
-            <div class="col-lg-2 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ExpirationDate)</div>
+            <div class="col-lg-1 d-none d-lg-inline-block">@Html.DisplayFor(modelItem => item.ExpirationDate)</div>
             <div class="row row-cols-2 d-lg-none">
                 <div class="col text-end fw-bold">@Html.DisplayNameFor(model => model.StorageLocationId):</div>
                 <div action="col text-start">@HelperMethods.DisplaySafeString(item.StorageLocation)</div>
             </div>
-            <div class="col-lg-3 d-none d-lg-inline-block">@HelperMethods.DisplaySafeString(item.StorageLocation)</div>
+            <div class="col-lg-4 d-none d-lg-inline-block">@HelperMethods.DisplaySafeString(item.StorageLocation)</div>
         </div>
         @if (count != Model.Count())
         {

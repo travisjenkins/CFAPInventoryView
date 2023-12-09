@@ -89,6 +89,8 @@ namespace CFAPInventoryView.Data.Models
             }
         }
 
+        public bool Active { get; set; } = true;
+
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }
 

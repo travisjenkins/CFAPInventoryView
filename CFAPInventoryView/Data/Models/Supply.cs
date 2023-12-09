@@ -66,6 +66,8 @@ namespace CFAPInventoryView.Data.Models
         [StringLength(100)]
         public string? Barcode { get; set; }
 
+        public bool Active { get; set; } = true;
+
         [Display(Name = "Modified By")]
         public string? LastUpdateId { get; set; }
 

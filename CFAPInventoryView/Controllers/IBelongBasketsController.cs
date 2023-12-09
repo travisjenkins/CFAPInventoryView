@@ -35,7 +35,7 @@ namespace CFAPInventoryView.Controllers
             }
             return _context.SupplyBaskets != null ?
                     View(await _context.Baskets.AsNoTracking()
-                                                .Where(b => !b.IsShoppingListItem)
+                                                .Where(b => !b.IsShoppingListItem && b.Active)
                                                 .Include(b => b.StorageLocation)
                                                 .Include(b => b.AgeGroup)
                                                 .Include(b => b.Ethnicity)
@@ -116,7 +116,7 @@ namespace CFAPInventoryView.Controllers
                         try
                         {
                             basket.BasketId = Guid.NewGuid();
-                            basket.IsShoppingListItem = false;
+                            //basket.IsShoppingListItem = false;
                             basket.LastUpdateId = User.Identity?.Name;
                             basket.LastUpdateDateTime = DateTime.Now;
                             _context.Add(basket);
@@ -208,7 +208,7 @@ namespace CFAPInventoryView.Controllers
                 {
                     try
                     {
-                        basket.IsShoppingListItem = false;
+                        //basket.IsShoppingListItem = false;
                         basket.LastUpdateId = User.Identity?.Name;
                         basket.LastUpdateDateTime = DateTime.Now;
                         _context.Update(basket);

@@ -95,12 +95,17 @@ namespace CFAPInventoryView.Controllers
                             if (supply.Quantity > 1)
                             {
                                 supply.Quantity -= 1;
-                                _context.Update(supply);
+                            }
+                            else if (supply.Quantity == 1)
+                            {
+                                supply.Quantity -= 1;
+                                supply.Active = false;
                             }
                             else
                             {
-                                _context.Remove(supply);
+                                supply.Active = false;
                             }
+                            _context.Update(supply);
                             await _context.SaveChangesAsync();
                             return RedirectToAction(nameof(Index));
                         }

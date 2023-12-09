@@ -32,6 +32,9 @@ namespace CFAPInventoryView.Controllers
                                                       .Include(bt => bt.Basket)
                                                         .ThenInclude(b => b.Gender)
                                                       .Include(bt => bt.Recipient)
+                                                      .Include(bt => bt.Basket)
+                                                        .ThenInclude(b => b.SupplyBaskets)
+                                                            .ThenInclude(sb => sb.Supply)
                                                       .ToListAsync()) :
                 Problem("Entity set 'BasketTransactions' is null.");
         }
@@ -53,6 +56,9 @@ namespace CFAPInventoryView.Controllers
                                                   .Include(bt => bt.Basket)
                                                     .ThenInclude(b => b.Gender)
                                                   .Include(bt => bt.Recipient)
+                                                  .Include(bt => bt.Basket)
+                                                        .ThenInclude(b => b.SupplyBaskets)
+                                                            .ThenInclude(sb => sb.Supply)
                                                   .FirstOrDefaultAsync(bt => bt.BasketTransactionId == id);
             if (basketTransaction == null)
             {
@@ -66,7 +72,7 @@ namespace CFAPInventoryView.Controllers
         public async Task<IActionResult> Create()
         {
 #pragma warning disable CS8602
-            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem && b.Active).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
 #pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View();
@@ -92,9 +98,13 @@ namespace CFAPInventoryView.Controllers
                             transaction.LastUpdateId = User.Identity?.Name;
                             transaction.LastUpdateDateTime = DateTime.Now;
                             _context.Add(transaction);
-                            shoppingList.Quantity -= 1;
-                            _context.Update(shoppingList);
-                            _context.Remove(basket);
+                            if (shoppingList.Quantity >= 1)
+                            {
+                                shoppingList.Quantity -= 1;
+                                _context.Update(shoppingList);
+                            }
+                            basket.Active = false;
+                            _context.Update(basket);
                             await _context.SaveChangesAsync();
                             return RedirectToAction(nameof(Index));
                         }
@@ -115,7 +125,7 @@ namespace CFAPInventoryView.Controllers
                 ModelState.AddModelError(string.Empty, $"No basket found with Id {transaction.BasketId}.");
             }
 #pragma warning disable CS8602
-            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
+            ViewData["BasketsList"] = await _context.Baskets.AsNoTracking().Where(b => !b.IsShoppingListItem && b.Active).Include(b => b.AgeGroup).Include(b => b.Ethnicity).Include(b => b.Gender).Include(b => b.SupplyBaskets).OrderBy(b => b.AgeGroup.SortOrder).ToListAsync();
 #pragma warning restore CS8602
             ViewData["RecipientsList"] = await _context.Recipients.AsNoTracking().OrderBy(r => r.LastName).ToListAsync();
             return View(transaction);
@@ -138,6 +148,9 @@ namespace CFAPInventoryView.Controllers
                                                   .Include(bt => bt.Basket)
                                                     .ThenInclude(b => b.Gender)
                                                   .Include(bt => bt.Recipient)
+                                                  .Include(bt => bt.Basket)
+                                                        .ThenInclude(b => b.SupplyBaskets)
+                                                            .ThenInclude(sb => sb.Supply)
                                                   .FirstOrDefaultAsync(bt => bt.BasketTransactionId == id);
             if (transaction == null)
             {

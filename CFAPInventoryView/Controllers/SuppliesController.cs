@@ -29,6 +29,7 @@ namespace CFAPInventoryView.Controllers
         {
             return _context.Supplies != null ?
                         View(await _context.Supplies.AsNoTracking()
+                                                    .Where(s => s.Active)
                                                     .Include(p => p.Category)
                                                     .Include(p => p.OptionalCategory)
                                                     .Include(p => p.ExcludeCategory)

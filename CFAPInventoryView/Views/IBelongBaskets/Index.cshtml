@@ -74,11 +74,11 @@
             {
                 var orderedSupplyBaskets = item.SupplyBaskets.OrderBy(pb => pb.Supply.Name).ToList();
                 <p>
-                    <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSuppliesWidth" aria-expanded="false" aria-controls="collapseSuppliesWidth">
+                    <button class="btn btn-outline-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSuppliesWidth-@(count)" aria-expanded="false" aria-controls="collapseSuppliesWidth-@(count)">
                         Show @Html.DisplayNameFor(model => model.SupplyBaskets):
                     </button>
                 </p>
-                <div class="collapse text-center" id="collapseSuppliesWidth">
+                <div class="collapse text-center" id="collapseSuppliesWidth-@(count)">
                     <div class="card card-body">
                         <ul class="list-unstyled">
                             @foreach (var supplyBasket in orderedSupplyBaskets)
