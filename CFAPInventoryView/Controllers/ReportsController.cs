@@ -30,20 +30,24 @@ namespace CFAPInventoryView.Controllers
             try
             {
                 // Supplies
-                decimal totalInventoryPrice = 0;
+                
                 var supplies = await _context.Supplies.AsNoTracking().Where(s => s.Active).ToListAsync();
                 var supplyTransactions = await _context.SupplyTransactions.AsNoTracking().Include(st => st.Supply).ToListAsync();
-                viewModel.TotalSupplies = supplies.Count;
                 viewModel.TotalItemsThatExpire = supplies.Where(s => s.Expires).Count();
                 // Calculate total supply inventory price and average duration on shelf
                 if (supplies is not null && supplies.Count > 0)
                 {
-                    long temp = 0;
+                    int totalSupplies = 0;
+                    decimal totalInventoryPrice = 0;
                     foreach (var supply in supplies)
                     {
+                        totalSupplies += supply.Quantity;
                         totalInventoryPrice += supply.Price * supply.Quantity;
                     }
+                    viewModel.TotalSupplies = totalSupplies;
                     viewModel.TotalInventoryPrice = totalInventoryPrice;
+                    
+                    long temp = 0;
                     foreach (var transaction in supplyTransactions)
                     {
                         if (transaction.DurationOnShelf.HasValue && viewModel.TotalSupplies > 0)
