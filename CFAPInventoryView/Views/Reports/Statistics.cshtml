@@ -67,6 +67,58 @@
         </div>
     </div>
 </div>
+<div class="row justify-content-between text-center mt-lg-3">
+    <div class="col-lg-6 mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <div class="card-body">
+                <h4 class="card-title">Donors</h4>
+                <p class="card-text">
+                    <div class="row">
+                        <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopDonorByNumberOfDonations):</div>
+                        <div class="col-5 text-start mt-auto">
+                            @Html.DisplayFor(model => model.TopDonorByNumberOfDonations.FullName)
+                            &nbsp;&nbsp;
+                            @Html.DisplayFor(model => model.TopNumberOfDonations)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopDonorByDollarAmountDonated):</div>
+                        <div class="col-5 text-start mt-auto">
+                            @Html.DisplayFor(model => model.TopDonorByDollarAmountDonated.FullName)
+                            &nbsp;&nbsp;
+                            @Html.DisplayFor(model => model.TopDollarAmountDonated)
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-3 mb-lg-0">
+        <div class="card text-center h-100 mx-auto">
+            <div class="card-body">
+                <h4 class="card-title">Recipients</h4>
+                <p class="card-text">
+                    <div class="row">
+                        <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopRecipientByNumberOfItemsReceived):</div>
+                        <div class="col-5 text-start mt-auto">
+                            @Html.DisplayFor(model => model.TopRecipientByNumberOfItemsReceived.FullName)
+                            &nbsp;&nbsp;
+                            @Html.DisplayFor(model => model.TopNumberOfItemsReceived)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopRecipientByDollarAmountReceived):</div>
+                        <div class="col-5 text-start mt-auto">
+                            @Html.DisplayFor(model => model.TopRecipientByDollarAmountReceived.FullName)
+                            &nbsp;&nbsp;
+                            @Html.DisplayFor(model => model.TopDollarAmountReceived)
+                        </div>
+                    </div>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="my-3">
     <a asp-action="Index">Back to Reports</a>
 </div>

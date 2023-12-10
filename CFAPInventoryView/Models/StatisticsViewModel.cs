@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CFAPInventoryView.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace CFAPInventoryView.Models
@@ -36,5 +37,29 @@ namespace CFAPInventoryView.Models
         [Display(Name = "Average Duration on Shelf")]
         [DisplayFormat(DataFormatString = "{0:dd\\.hh\\:mm\\:ss}")]
         public TimeSpan AverageBasketDurationOnShelf { get; set; }
+
+        // Donors
+        [Display(Name = "Top Donor By Number")]
+        public Donor? TopDonorByNumberOfDonations { get; set; }
+        public int TopNumberOfDonations { get; set; }
+        
+        [Display(Name = "Top Donor By Amount")]
+        public Donor? TopDonorByDollarAmountDonated {  get; set; }
+
+        [DataType(DataType.Currency)]
+        [Precision(13, 4)]
+        public decimal TopDollarAmountDonated { get; set; }
+
+        // Recipient
+        [Display(Name = "Top Recipient By Number")]
+        public Recipient? TopRecipientByNumberOfItemsReceived { get; set; }
+        public int TopNumberOfItemsReceived { get; set; }
+        
+        [Display(Name = "Top Recipient By Amount")]
+        public Recipient? TopRecipientByDollarAmountReceived { get; set; }
+        
+        [DataType(DataType.Currency)]
+        [Precision(13, 4)]
+        public decimal TopDollarAmountReceived { get; set; }
     }
 }
