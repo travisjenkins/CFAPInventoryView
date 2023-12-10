@@ -27,6 +27,9 @@ namespace CFAPInventoryView.Data.Models
         [Display(Name = "Storage Location")]
         public Guid StorageLocationId { get; set; }
 
+        [Display(Name = "Donor")]
+        public Guid? DonorId { get; set; }
+
         public string? Description { get; set; }
 
         [Required]
@@ -85,5 +88,7 @@ namespace CFAPInventoryView.Data.Models
 
         [Display(Name = "Storage Location")]
         public virtual StorageLocation? StorageLocation { get; set; }
+
+        public virtual Donor? Donor { get; set; }
     }
 }

@@ -29,11 +29,7 @@ namespace CFAPInventoryView.Controllers
         {   
             return _context.Donors != null ? 
                           View(await _context.Donors.AsNoTracking()
-                                                    .Include(d => d.SupplyTransactions)
-                                                        .ThenInclude(pt => pt.Supply)
-                                                    .Include(d => d.BasketTransactions)
-                                                        .ThenInclude(bt => bt.Basket)
-                                                    .DefaultIfEmpty()
+                                                    .Include(d => d.SuppliesDonated)
                                                     .ToListAsync()) :
                           Problem("Entity set 'Donors' is null.");
         }
@@ -47,14 +43,8 @@ namespace CFAPInventoryView.Controllers
             }
 
             var donor = await _context.Donors.AsNoTracking()
-                                             .Include(d => d.SupplyTransactions)
-                                                .ThenInclude(pt => pt.Supply)
-                                             .Include(d => d.BasketTransactions)
-                                                .ThenInclude(bt => bt.Basket)
-                                             .DefaultIfEmpty()
-#pragma warning disable 8602
+                                             .Include(d => d.SuppliesDonated)
                                              .FirstOrDefaultAsync(m => m.DonorId == id);
-#pragma warning restore 8602
             if (donor == null)
             {
                 return NotFound();
@@ -172,14 +162,8 @@ namespace CFAPInventoryView.Controllers
             }
 
             var donor = await _context.Donors.AsNoTracking()
-                                             .Include(d => d.SupplyTransactions)
-                                                .ThenInclude(pt => pt.Supply)
-                                             .Include(d => d.BasketTransactions)
-                                                .ThenInclude(bt => bt.Basket)
-                                             .DefaultIfEmpty()
-#pragma warning disable 8602
+                                             .Include(d => d.SuppliesDonated)
                                              .FirstOrDefaultAsync(m => m.DonorId == id);
-#pragma warning restore 8602
             if (donor == null)
             {
                 return NotFound();

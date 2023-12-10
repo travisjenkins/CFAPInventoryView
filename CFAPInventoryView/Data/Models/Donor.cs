@@ -50,10 +50,7 @@ namespace CFAPInventoryView.Data.Models
         public string? ZipCode { get; set; }
 
         [Display(Name = "Supplies Donated")]
-        public virtual ICollection<SupplyTransaction> SupplyTransactions { get; set; } = new List<SupplyTransaction>();
-
-        [Display(Name = "Baskets Donated")]
-        public virtual ICollection<BasketTransaction> BasketTransactions { get; set; } = new List<BasketTransaction>();
+        public virtual ICollection<Supply> SuppliesDonated { get; set; } = new List<Supply>();
 
         [DataType(DataType.Currency)]
         [Precision(13,4)]
@@ -63,23 +60,13 @@ namespace CFAPInventoryView.Data.Models
             get
             {
                 decimal total = 0;
-                if (SupplyTransactions.Count > 0)
+                if (SuppliesDonated.Count > 0)
                 {
-                    foreach (var transaction in SupplyTransactions)
+                    foreach (var supply in SuppliesDonated)
                     {
-                        if (transaction.Supply is not null)
+                        if (supply is not null)
                         {
-                            total += transaction.Supply.Price;
-                        }
-                    }
-                }
-                if (BasketTransactions.Count > 0)
-                {
-                    foreach (var transaction in BasketTransactions)
-                    {
-                        if (transaction.Basket is not null)
-                        {
-                            total += transaction.Basket.TotalPrice;
+                            total += supply.Price * supply.Quantity;
                         }
                     }
                 }
