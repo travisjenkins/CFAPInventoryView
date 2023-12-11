@@ -127,10 +127,13 @@ namespace CFAPInventoryView.Controllers
                 var donors = await _context.Donors.AsNoTracking()
                                                 .Include(d => d.SuppliesDonated)
                                                 .ToListAsync();
-                viewModel.TopNumberOfDonations = donors.Max(d => d.SuppliesDonated.Count);
-                viewModel.TopDonorByNumberOfDonations = donors.FirstOrDefault(d => d.SuppliesDonated.Count == viewModel.TopNumberOfDonations);
-                viewModel.TopDollarAmountDonated = donors.Max(d => d.TotalOfDonations);
-                viewModel.TopDonorByDollarAmountDonated = donors.FirstOrDefault(d => d.TotalOfDonations == viewModel.TopDollarAmountDonated);
+                if (donors is not null && donors.Count > 0)
+                {
+                    viewModel.TopNumberOfDonations = donors.Max(d => d.SuppliesDonated.Count);
+                    viewModel.TopDonorByNumberOfDonations = donors.FirstOrDefault(d => d.SuppliesDonated.Count == viewModel.TopNumberOfDonations);
+                    viewModel.TopDollarAmountDonated = donors.Max(d => d.TotalOfDonations);
+                    viewModel.TopDonorByDollarAmountDonated = donors.FirstOrDefault(d => d.TotalOfDonations == viewModel.TopDollarAmountDonated);
+                }
             }
             catch (DbException ex)
             {
@@ -153,14 +156,17 @@ namespace CFAPInventoryView.Controllers
                                                         .Include(r => r.BasketTransactions)
                                                             .ThenInclude(bt => bt.Basket)
                                                         .ToListAsync();
-                viewModel.TopNumberOfItemsReceived = recipients
-                    .Max(r => r.SupplyTransactions.Count + r.BasketTransactions.Count);
-                viewModel.TopRecipientByNumberOfItemsReceived = recipients
-                    .FirstOrDefault(r => (r.SupplyTransactions.Count + r.BasketTransactions.Count) == viewModel.TopNumberOfItemsReceived);
-                viewModel.TopDollarAmountReceived = recipients
-                    .Max(r => r.TotalOfDonationsReceived);
-                viewModel.TopRecipientByDollarAmountReceived = recipients
-                    .FirstOrDefault(r => r.TotalOfDonationsReceived == viewModel.TopDollarAmountReceived);
+                if (recipients is not null && recipients.Count > 0)
+                {
+                    viewModel.TopNumberOfItemsReceived = recipients
+                        .Max(r => r.SupplyTransactions.Count + r.BasketTransactions.Count);
+                    viewModel.TopRecipientByNumberOfItemsReceived = recipients
+                        .FirstOrDefault(r => (r.SupplyTransactions.Count + r.BasketTransactions.Count) == viewModel.TopNumberOfItemsReceived);
+                    viewModel.TopDollarAmountReceived = recipients
+                        .Max(r => r.TotalOfDonationsReceived);
+                    viewModel.TopRecipientByDollarAmountReceived = recipients
+                        .FirstOrDefault(r => r.TotalOfDonationsReceived == viewModel.TopDollarAmountReceived);
+                }
             }
             catch (DbException ex)
             {
