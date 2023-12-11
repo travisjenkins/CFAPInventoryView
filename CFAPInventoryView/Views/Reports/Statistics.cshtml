@@ -76,17 +76,25 @@
                     <div class="row">
                         <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopDonorByNumberOfDonations):</div>
                         <div class="col-5 text-start mt-auto">
-                            @Html.DisplayFor(model => model.TopDonorByNumberOfDonations.FullName)
-                            &nbsp;&nbsp;
-                            @Html.DisplayFor(model => model.TopNumberOfDonations)
+                            @{
+                                string topDonorByNumberFullName = Model.TopDonorByNumberOfDonations?.FullName ?? string.Empty;
+                                string topNumberOfDonations = Model.TopNumberOfDonations > 0 ? Model.TopNumberOfDonations.ToString() : string.Empty;
+                            }
+                            @topDonorByNumberFullName
+                            &nbsp;
+                            @topNumberOfDonations
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopDonorByDollarAmountDonated):</div>
                         <div class="col-5 text-start mt-auto">
-                            @Html.DisplayFor(model => model.TopDonorByDollarAmountDonated.FullName)
-                            &nbsp;&nbsp;
-                            @Html.DisplayFor(model => model.TopDollarAmountDonated)
+                            @{
+                                string topDonorByAmountFullName = Model.TopDonorByDollarAmountDonated?.FullName ?? string.Empty;
+                                string topAmountDonated = Model.TopDollarAmountDonated > 0 ? Model.TopDollarAmountDonated.ToString() : string.Empty;
+                            }
+                            @topDonorByAmountFullName
+                            &nbsp;
+                            @topAmountDonated
                         </div>
                     </div>
                 </p>
@@ -101,17 +109,25 @@
                     <div class="row">
                         <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopRecipientByNumberOfItemsReceived):</div>
                         <div class="col-5 text-start mt-auto">
-                            @Html.DisplayFor(model => model.TopRecipientByNumberOfItemsReceived.FullName)
-                            &nbsp;&nbsp;
-                            @Html.DisplayFor(model => model.TopNumberOfItemsReceived)
+                            @{
+                                string topRecipientByNumberFullName = Model.TopRecipientByNumberOfItemsReceived?.FullName ?? string.Empty;
+                                string topNumberOfItemsReceived = Model.TopNumberOfItemsReceived > 0 ? Model.TopNumberOfItemsReceived.ToString() : string.Empty;
+                            }
+                            @topRecipientByNumberFullName
+                            &nbsp;
+                            @topNumberOfItemsReceived
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6 fw-bold text-end">@Html.DisplayNameFor(model => model.TopRecipientByDollarAmountReceived):</div>
                         <div class="col-5 text-start mt-auto">
-                            @Html.DisplayFor(model => model.TopRecipientByDollarAmountReceived.FullName)
-                            &nbsp;&nbsp;
-                            @Html.DisplayFor(model => model.TopDollarAmountReceived)
+                            @{
+                                string topRecipientByAmountFullName = Model.TopRecipientByDollarAmountReceived?.FullName ?? string.Empty;
+                                string topAmountReceived = Model.TopDollarAmountReceived > 0 ? Model.TopDollarAmountReceived.ToString() : string.Empty;
+                            }
+                            @topRecipientByAmountFullName
+                            &nbsp;
+                            @topAmountReceived
                         </div>
                     </div>
                 </p>
