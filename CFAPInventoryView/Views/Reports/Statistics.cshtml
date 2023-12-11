@@ -90,11 +90,10 @@
                         <div class="col-5 text-start mt-auto">
                             @{
                                 string topDonorByAmountFullName = Model.TopDonorByDollarAmountDonated?.FullName ?? string.Empty;
-                                string topAmountDonated = Model.TopDollarAmountDonated > 0 ? Model.TopDollarAmountDonated.ToString() : string.Empty;
                             }
                             @topDonorByAmountFullName
                             &nbsp;
-                            @topAmountDonated
+                            @Html.DisplayFor(model => model.TopDollarAmountDonated)
                         </div>
                     </div>
                 </p>
@@ -123,11 +122,10 @@
                         <div class="col-5 text-start mt-auto">
                             @{
                                 string topRecipientByAmountFullName = Model.TopRecipientByDollarAmountReceived?.FullName ?? string.Empty;
-                                string topAmountReceived = Model.TopDollarAmountReceived > 0 ? Model.TopDollarAmountReceived.ToString() : string.Empty;
                             }
                             @topRecipientByAmountFullName
                             &nbsp;
-                            @topAmountReceived
+                            @Html.DisplayFor(model => model.TopDollarAmountReceived)
                         </div>
                     </div>
                 </p>
