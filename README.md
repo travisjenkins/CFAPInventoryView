@@ -1,6 +1,6 @@
 # CFAPInventoryView
 
-#### This ASP.NET Core v7 MVC web app with a MS SQL Express DB backend was created for the Columbia Foster and Adoption Program (CFAP) to track their product and iBelong Basket inventory status.
+This ASP.NET Core v7 MVC web app with a MS SQL Express DB backend was created for the Columbia Foster and Adoption Program (CFAP) to track their product and iBelong Basket inventory status.
 
 # How do I evaluate this repo using Docker?
 
